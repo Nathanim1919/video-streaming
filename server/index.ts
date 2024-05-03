@@ -1,28 +1,28 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const cors = require('cors')
-const bcrypt = require('bcrypt')
-const http = require('http')
-const socketio = require('socket.io')
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import bcrypt from 'bcrypt';
+import http from 'http';
+import socketio from 'socket.io';
+import db from './config/db';
 
 
 const app = express();
-const server  = http.createServer(app, {
-    cors:{
-        origin:"http://localhost:5173"
-    }
+
+// database connection
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', function() {
+  console.log("MongoDB database connection established successfully");
 });
 
-const io = socketio(server, {
-    cors:{
-        origin:"http://localhost:5173"
-    }
-});
 
-let streamerSocket = null;
+const server = http.createServer(app); // Remove the second argument
 
+const io = new socketio.Server(server);
 
-io.on('connection', (socket) => {
+let streamerSocket: socketio.Socket | null = null; // Define type for streamerSocket
+
+io.on('connection', (socket: socketio.Socket) => {
     console.log('User has connected', socket.id)
     socket.on('offer', (data) => {
         console.log('user sents an offer')
@@ -56,8 +56,8 @@ io.on('connection', (socket) => {
     })
 
     socket.on('join-stream', () => {
-        console.log('User sent a join-stream to the streamer: ',`${streamerSocket.id}`);
         if (streamerSocket) {
+            console.log('User sent a join-stream to the streamer: ',`${streamerSocket.id}`);
             console.log('user sents an join-stream')
             streamerSocket.emit('viewer-wants-to-join')
         }

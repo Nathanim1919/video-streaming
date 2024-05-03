@@ -69,7 +69,7 @@ const Container = styled.div`
     .features{
         display: flex;
         justify-content: space-around;
-        padding: 20px;
+        padding: 4rem;
         gap: 20px;
 
         .startStream, .joinStream, .streams{
@@ -140,7 +140,7 @@ const Container = styled.div`
         background-position: center;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         /* margin: 2rem 0; */
-        height: 50vh;
+        height: 100vh;
         display: flex;
         flex-direction: column;
         justify-content: center;

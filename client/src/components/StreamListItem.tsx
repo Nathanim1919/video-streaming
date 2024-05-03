@@ -114,8 +114,9 @@ const Container = styled.div`
         .buttons{
             display: flex;
             gap: 1rem;
-
+            
             button{
+                font-family: inherit;
                 padding: 10px 20px;
                 background: #007bff;
                 color: #fff;
