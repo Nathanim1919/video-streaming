@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
+
 const peerConnection = new RTCPeerConnection();
 const socket = io('http://localhost:3000');
 
@@ -85,8 +86,16 @@ const Streamer = () => {
   }, []);
 
   return (
-    <div>
-      <video ref={videoRef} autoPlay playsInline />
+    <div style={{
+      backgroundColor:'red',
+      width:"100vw",
+      height:"100vh"
+    }}>
+      <h1>Welcome to the Streamer</h1>
+      <video style={{
+         width:"100%",
+         height:"100%"
+      }} ref={videoRef} autoPlay playsInline />
       {streamStarted ? (
         <button onClick={stopStream}>Stop Stream</button>
       ) : (

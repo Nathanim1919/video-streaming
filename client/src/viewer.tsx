@@ -20,6 +20,8 @@ const Viewer = () => {
     }
   };
 
+ 
+
   useEffect(() => {
     socket.on('streamer-confirmed', async () => {
       alert('Streamer confirmed');
@@ -89,6 +91,7 @@ const Viewer = () => {
 
   return (
       <div>
+          <h1>Welcome to the Viewer</h1>
         <video ref={videoRef} autoPlay playsInline />
         <button onClick={joinOrLeaveStream}>{isJoined ? 'Leave Stream' : 'Join Stream'}</button>
       </div>

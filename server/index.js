@@ -23,8 +23,8 @@ let streamerSocket = null;
 
 
 io.on('connection', (socket) => {
+    console.log('User has connected', socket.id)
     socket.on('offer', (data) => {
-        streamerSocket = socket;
         console.log('user sents an offer')
         socket.broadcast.emit('offer', data);
     });
@@ -41,8 +41,13 @@ io.on('connection', (socket) => {
 
     socket.on('start-stream', () => {
         streamerSocket = socket;
-        console.log('user sents an start-stream')
+        console.log('user sents an start-stream', streamerSocket.id)
         // socket.broadcast.emit('start-stream')
+    });
+
+    socket.on('leave-stream', () => {
+        console.log('User sent a leave-stream');
+        socket.broadcast.emit('user-left', socket.id);
     });
 
     socket.on('streamer-confirmed', () => {
@@ -51,6 +56,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('join-stream', () => {
+        console.log('User sent a join-stream to the streamer: ',`${streamerSocket.id}`);
         if (streamerSocket) {
             console.log('user sents an join-stream')
             streamerSocket.emit('viewer-wants-to-join')
