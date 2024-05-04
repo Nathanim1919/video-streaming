@@ -2,18 +2,24 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { IoArrowBackOutline } from "react-icons/io5";
+import axios from 'axios';
 
 
 
 const LoginPage: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
 
-  const handleRegister = () => {
-    // Here you would typically send the username and password to your server
-    console.log(username, password);
-  };
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    try {
+      const res = await axios.post('http://localhost:3000/api/v1/auth/login', {email, password});
+      console.log(res)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <Container>
@@ -24,8 +30,8 @@ const LoginPage: React.FC = () => {
         <h1>DevSphere</h1> 
         <p>Virtual Streaming App</p>
       </div>
-      <form onSubmit={handleRegister}>
-        <input type="email" value={username} onChange={e => setUsername(e.target.value)} placeholder="Email" />
+      <form onSubmit={handleLogin}>
+        <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
         <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
         <button type='submit'>Login</button>
         <Link to="/forgot-password">Forgot Password?</Link>

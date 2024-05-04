@@ -3,6 +3,7 @@ import ProImage from '/image/bg.jpg';
 import styled from 'styled-components';
 
 
+
 const EventDetail = () => {
     return (
         <Container>
@@ -69,7 +70,7 @@ const EventDetail = () => {
             <div className="upcoming">
                 <h2>Upcoming Events</h2>
                 <p>Check out other upcoming events in the DevSphere community.</p>
-                <Link to={'/'} className='rsvp'>Browse Upcoming Events</Link>
+                <Link to={'/streames'} className='rsvp'>Browse Upcoming Events</Link>
             </div>
         </Container>
     );

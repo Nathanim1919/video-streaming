@@ -1,6 +1,9 @@
 import React from 'react';
 import StreamListItem from '../components/StreamListItem';
 import styled from 'styled-components';
+import { IoArrowBackOutline } from "react-icons/io5";
+import { Link } from 'react-router-dom';
+
 
 interface Stream {
   id: string;
@@ -36,6 +39,7 @@ const StreamList: React.FC = () => {
   return (
     <Container>
       <div className='header'>
+        <Link to={'/'}><IoArrowBackOutline/></Link>
       <h1>Upcoming Streams</h1>
       <div>
         filter and search
@@ -63,6 +67,11 @@ const Container = styled.div`
       top: 0;
       z-index: 10;
       background-color: black;
+
+      a{
+        font-size: 1.5rem;
+        color: #fff;
+      }
 
       @media screen and (max-width:600px){
        

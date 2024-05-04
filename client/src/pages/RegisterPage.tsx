@@ -11,6 +11,7 @@ import axios from 'axios'
 
 const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState('');
+  const [fullname, setFullName] = useState('')
   const [password, setPassword] = useState('');
   const [profession, setProfession] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -21,7 +22,7 @@ const RegisterPage: React.FC = () => {
         if (!(password === confirmPassword)){
           return
         }
-        const res = await axios.post('http://localhost:3000/api/v1/auth/register', {email, password, profession})
+        const res = await axios.post('http://localhost:3000/api/v1/auth/register', {email, password, profession, fullname})
         console.log(res)
   } catch (error) {
       console.error(error)
@@ -38,6 +39,7 @@ const RegisterPage: React.FC = () => {
         <p>Virtual Streaming App</p>
       </div>
       <form onSubmit={handleRegister}>
+        <input type='text' value={fullname} onChange={e => setFullName(e.target.value)} placeholder='Full Name'/>
         <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
         <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
         <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Confirm Password" />

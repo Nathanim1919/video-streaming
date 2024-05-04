@@ -1,4 +1,5 @@
 import mongoose, {Document, ObjectId, Schema} from 'mongoose'
+import bcrypt from 'bcrypt';
 
 export interface IUser extends Document {
     _id: string;
@@ -11,6 +12,8 @@ export interface IUser extends Document {
     raing: number;
     comparePassword: (password: string) => Promise<boolean>;
 }
+
+
 
 
 const UserSchema: Schema = new Schema({
@@ -44,6 +47,10 @@ const UserSchema: Schema = new Schema({
         default:0
     }
 }, {timestamps:true});
+
+UserSchema.methods.comparePassword = function(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
+};
 
 
 export default mongoose.model<IUser>('User', UserSchema);

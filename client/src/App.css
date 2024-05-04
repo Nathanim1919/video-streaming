@@ -8,3 +8,25 @@ body{
     font-style: normal;
     background-color: #000000df;
 }
+
+
+/* Define the styles for the scrollbar */
+::-webkit-scrollbar {
+    width: 4px; /* width of the scrollbar */
+  }
+  
+  /* Track styles */
+  ::-webkit-scrollbar-track {
+    background: #222020; /* color of the track */
+  }
+  
+  /* Handle styles */
+  ::-webkit-scrollbar-thumb {
+    background: #282727; /* color of the handle */
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; /* color of the handle on hover */
+  }
+  

@@ -55,15 +55,22 @@ const StreamerPage = () => {
 export default StreamerPage;
 
 const Container = styled.div`
-    background-color: #000000d1;
+    /* background-color: #000000d1; */
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
     align-items: center;
     justify-content: center;
     height: 100vh;
     overflow: hidden;
     color: #fff;
+    width: 80vw;
+    margin: auto;
+
+
+    @media screen and (max-width:800px){
+        width: 95vw;
+    }
 
     
     .topheader{
@@ -71,7 +78,7 @@ const Container = styled.div`
         display: flex;
         justify-content: center;
         top: 0;
-        background-color: #000000;
+        /* background-color: #000000; */
         width: 100%;
         .back{
             position: absolute;
@@ -88,11 +95,12 @@ const Container = styled.div`
 
     .streamer-list{
         display: flex;
-        gap: 2rem;
+        gap: 1rem;
         flex-wrap: wrap;
         justify-content: center;
         height: 100%;
         overflow-y: auto;
         padding-bottom: 2rem;
+        padding: 2rem;
     }
 `;

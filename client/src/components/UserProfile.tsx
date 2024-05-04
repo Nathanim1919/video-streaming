@@ -11,6 +11,8 @@ import { MdOutlineWatchLater } from "react-icons/md";
 import { MdOutlineStarRate } from "react-icons/md";
 import { LuGhost } from "react-icons/lu";
 import TechImage from '/image/bg.jpg';
+import { IoMdClose } from "react-icons/io";
+
 
 
 
@@ -32,6 +34,7 @@ const UserProfile = () => {
             </div>
           </div>
           <div className="social">
+            <Link to={'/streamers'}><IoMdClose/></Link>
             <div className='social-links'>
               <Link to="/"><FaFacebook size={20} color='#eee' /></Link>
               <Link to="/"><FaLinkedin size={20} color='#eee' /></Link>
@@ -145,6 +148,7 @@ const Container = styled.div`
         /* border-radius: 10px; */
         margin-top: 2rem;
         border-bottom: 1px solid #5c5959;
+        position: relative;
 
         .header-info{
           display: flex;
@@ -194,6 +198,14 @@ const Container = styled.div`
             display: flex;
             flex-direction: column;
             align-items: center;
+
+            >a{
+              position: absolute;
+              top: 0;
+              right: 0;
+              color: #fff;
+              font-size: 2rem;
+            }
 
             .social-links{
               display: flex;

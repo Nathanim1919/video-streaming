@@ -44,13 +44,13 @@ export default StreamerList;
 
 
 const Card = styled.div`
-    background-color: #363535a6;
+    background-color: #000000a6;
     display: flex;
     flex-direction: column;
     position: relative;
     padding:1rem;
     border-radius: 10px;
-    margin-top: 2rem;
+    margin-top: .3rem;
 
 
     .header{
@@ -62,11 +62,11 @@ const Card = styled.div`
         top: -3rem;
 
         .profilePic{
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             overflow: hidden;
-            border: 10px solid #000;
+            border: 10px solid #222121;
             
 
             img{
@@ -85,6 +85,7 @@ const Card = styled.div`
             p{
                 font-size: .9rem;
                 margin: 0;
+                color: #7c7676;
             }
         }
     }   
