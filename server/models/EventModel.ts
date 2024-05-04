@@ -6,7 +6,6 @@ export interface IEvent extends Document  {
     owner: ObjectId;
     title: string;
     description: string;
-    date: string;
     location: string;
     image: string;
     user: string;
@@ -34,10 +33,6 @@ const EventSchema: Schema = new Schema({
         required: true
     },
     description: {
-        type: String,
-        required: true
-    },
-    date: {
         type: String,
         required: true
     },
