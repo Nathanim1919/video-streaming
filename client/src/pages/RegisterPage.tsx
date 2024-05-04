@@ -5,6 +5,7 @@ import { FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { IoArrowBackOutline } from "react-icons/io5";
+import axios from 'axios'
 
 
 
@@ -14,9 +15,17 @@ const RegisterPage: React.FC = () => {
   const [profession, setProfession] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleRegister = () => {
-    // Here you would typically send the username and password to your server
-    console.log(email, password);
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault()
+  try {
+        if (!(password === confirmPassword)){
+          return
+        }
+        const res = await axios.post('http://localhost:3000/api/v1/auth/register', {email, password, profession})
+        console.log(res)
+  } catch (error) {
+      console.error(error)
+   }
   };
 
   return (
@@ -25,7 +34,7 @@ const RegisterPage: React.FC = () => {
         <Link to="/"><IoArrowBackOutline size={30} color='#fff' /></Link>
       </div>
       <div className='header'>
-        <h1>DevSphere</h1> 
+        <h1>Dev-Sphere</h1> 
         <p>Virtual Streaming App</p>
       </div>
       <form onSubmit={handleRegister}>

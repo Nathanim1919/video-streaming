@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import StreamImage from '/image/join.jpg'
+import StreamImage from '/image/bg.jpg'
 
 interface Stream {
   id: string;
@@ -63,6 +63,15 @@ const Container = styled.div`
     background: #000;
     margin: 1rem auto;
     cursor: pointer;
+
+    @media screen and (max-width:1000px){
+        grid-template-columns: 1fr;
+    }
+
+    @media screen and (max-width:600px){
+        grid-template-columns: 1fr;
+        width: 90vw;
+    }
 
 
     .info{

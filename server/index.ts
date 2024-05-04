@@ -5,9 +5,18 @@ import bcrypt from 'bcrypt';
 import http from 'http';
 import socketio from 'socket.io';
 import db from './config/db';
+import authRoter from './routes/authRote'
+import bodyParser from 'body-parser';
+
 
 
 const app = express();
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(cors({
+    origin:"http://localhost:5173"
+}))
+
 
 // database connection
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -18,7 +27,9 @@ db.once('open', function() {
 
 const server = http.createServer(app); // Remove the second argument
 
+
 const io = new socketio.Server(server);
+
 
 let streamerSocket: socketio.Socket | null = null; // Define type for streamerSocket
 
@@ -68,10 +79,17 @@ io.on('connection', (socket: socketio.Socket) => {
     });
 
     socket.on('disconnect', () => {
-        console.log('User has left')
+        console.log('User has left');
     });
 
 });
+
+
+
+
+// routes
+app.use('/api/v1/auth', authRoter)
+
 
 
 // With this line

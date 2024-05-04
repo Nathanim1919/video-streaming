@@ -6,6 +6,7 @@ import StreamList from './pages/StreamListPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import './App.css';
+import StreamerPage from './pages/StreamerPage';
 
 
 
@@ -18,7 +19,7 @@ const App = () => {
       <Route path='/' element={<HomePage/>}/>
       <Route path="/login" element={<LoginPage/>}/>
       <Route path="/signup" element={<RegisterPage/>}/>
-      <Route path="/streamer" element={<Streamer/>}/>
+      <Route path="/streamers" element={<StreamerPage/>}/>
       <Route path="/viewer" element={<Viewer/>}/>
       <Route path="/streams" element={<StreamList/>}/>
       

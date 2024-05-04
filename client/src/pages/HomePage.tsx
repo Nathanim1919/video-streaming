@@ -18,6 +18,7 @@ const HomePage = () => {
             <div className='menu'>
                 <Link to="/">Home</Link>
                 <Link to="/streams">Streams</Link>
+                <Link to={'/streamers'}>Streamers</Link>
                 <Link to="/signup">Sign Up</Link>
                 <Link to="/login">Login</Link>
             </div>
@@ -135,12 +136,12 @@ const Container = styled.div`
         text-align: center;
         padding:3rem 20px;
         color: #fff;
-        background:linear-gradient(to bottom, #0000008d, #00000079), url(${CommunityImage});
-        background-size: cover;
-        background-position: center;
+        background:linear-gradient(to bottom, #000000ea, #00000079), url(${CommunityImage});
+        /* background-size: cover;
+        background-position: center; */
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        /* margin: 2rem 0; */
-        height: 100vh;
+        margin: 2rem 0;
+        height: 50vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
