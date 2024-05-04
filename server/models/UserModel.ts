@@ -1,9 +1,14 @@
-import mongoose, {Document, Schema} from 'mongoose'
+import mongoose, {Document, ObjectId, Schema} from 'mongoose'
 
 export interface IUser extends Document {
+    _id: string;
     email: string;
+    fullName: string;
     password: string;
     profession: string;
+    followers: ObjectId[];
+    events: ObjectId[];
+    raing: number;
     comparePassword: (password: string) => Promise<boolean>;
 }
 
@@ -21,8 +26,24 @@ const UserSchema: Schema = new Schema({
     profession:{
         type:String,
         required:true
+    },
+    fullName:{
+        type:String,
+        required:true
+    },
+    followers:[{
+        type:Schema.Types.ObjectId,
+        ref:'User'
+    }],
+    events:[{
+        type:Schema.Types.ObjectId,
+        ref:'Event'
+    }],
+    rating:{
+        type:Number,
+        default:0
     }
-});
+}, {timestamps:true});
 
 
 export default mongoose.model<IUser>('User', UserSchema);

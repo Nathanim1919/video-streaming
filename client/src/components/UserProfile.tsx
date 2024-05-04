@@ -76,8 +76,8 @@ const UserProfile = () => {
                 <h4>Complete Intro to Containers</h4>
               </div>
               <div className="event-buttons">
-                <button>RSVP</button>
-                <button>Details</button>
+                <Link to={'/'}>RSVP</Link>
+                <Link to={'/streames/23'}>Details</Link>
               </div>
             </div>
             <div className="event">
@@ -89,8 +89,8 @@ const UserProfile = () => {
                 <h4>Complete Intro to Containers</h4>
               </div>
               <div className="event-buttons">
-                <button>RSVP</button>
-                <button>Details</button>
+                <Link to={'/'}>RSVP</Link>
+                <Link to={'/streames/23'}>Details</Link>
               </div>
             </div>
             <div className="event">
@@ -102,8 +102,8 @@ const UserProfile = () => {
                 <h4>Complete Intro to Containers</h4>
               </div>
               <div className="event-buttons">
-                <button>RSVP</button>
-                <button>Details</button>
+                <Link to={'/'}>RSVP</Link>
+                <Link to={'/streames/23'}>Details</Link>
               </div>
             </div>
             <div className="event">
@@ -115,60 +115,8 @@ const UserProfile = () => {
                 <h4>Complete Intro to Containers</h4>
               </div>
               <div className="event-buttons">
-                <button>Cancle RSVP</button>
-                <button>Details</button>
-              </div>
-            </div>
-            <div className="event">
-              <div className="event-info">
-                <img src={TechImage} alt="profile-pic" />
-              </div>
-              <div className='info'>
-                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
-                <h4>Complete Intro to Containers</h4>
-              </div>
-              <div className="event-buttons">
-                <button>RSVP</button>
-                <button>Details</button>
-              </div>
-            </div>
-            <div className="event">
-              <div className="event-info">
-                <img src={TechImage} alt="profile-pic" />
-              </div>
-              <div className='info'>
-                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
-                <h4>Complete Intro to Containers</h4>
-              </div>
-              <div className="event-buttons">
-                <button>RSVP</button>
-                <button>Details</button>
-              </div>
-            </div>
-            <div className="event">
-              <div className="event-info">
-                <img src={TechImage} alt="profile-pic" />
-              </div>
-              <div className='info'>
-                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
-                <h4>Complete Intro to Containers</h4>
-              </div>
-              <div className="event-buttons">
-                <button>RSVP</button>
-                <button>Details</button>
-              </div>
-            </div>
-            <div className="event">
-              <div className="event-info">
-                <img src={TechImage} alt="profile-pic" />
-              </div>
-              <div className='info'>
-                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
-                <h4>Complete Intro to Containers</h4>
-              </div>
-              <div className="event-buttons">
-                <button>Cancle RSVP</button>
-                <button>Details</button>
+                <Link to={'/'}>RSVP</Link>
+                <Link to={'/streames/23'}>Details</Link>
               </div>
             </div>
           </div>
@@ -372,10 +320,10 @@ const Container = styled.div`
           justify-content: center;
           gap: 1rem;
           padding: 1rem;
-          button:nth-child(1){
+          a:nth-child(1){
             background-color: #e68d21;
           }
-          button{
+          a{
             flex: 1;
             padding: .4rem 1rem;
             background-color: #7d5729;
@@ -384,6 +332,7 @@ const Container = styled.div`
             border-radius: 5px;
             cursor: pointer;
             font-family: inherit;
+            text-decoration: none;
           }
         }
       }

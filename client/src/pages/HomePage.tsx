@@ -17,7 +17,7 @@ const HomePage = () => {
             </div>
             <div className='menu'>
                 <Link to="/">Home</Link>
-                <Link to="/streams">Streams</Link>
+                <Link to="/streames">Streams</Link>
                 <Link to={'/streamers'}>Streamers</Link>
                 <Link to="/signup">Sign Up</Link>
                 <Link to="/login">Login</Link>
@@ -41,7 +41,7 @@ const HomePage = () => {
         <div className='joinStream'>
             <h2>Join a Stream</h2>
             <p>Want to see what others are up to? Join a stream and interact with the streamer and other viewers in real time.</p>
-            <Link to="/streams">View Streams</Link>
+            <Link to="/streames">View Streams</Link>
         </div>
         <div className='streames'>
             <h2>Create and Schedule Stream</h2>
