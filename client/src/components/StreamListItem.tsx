@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import StreamImage from '/image/bg.jpg'
+import { Link } from 'react-router-dom';
 
 interface Stream {
   id: string;
@@ -41,8 +42,8 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
         </p>
 
         <div className='buttons'>
-            <button className='rsvp' onClick={handleRSVP}>RSVP to Attend Online</button>
-            <button className='details'>Details and Schedule</button>
+            <Link to={'/'} className='rsvp' onClick={handleRSVP}>RSVP to Attend Online</Link>
+            <Link to={'/streames/23'} className='details'>Details and Schedule</Link>
         </div>
       </div>
     </Container>
@@ -124,7 +125,7 @@ const Container = styled.div`
             display: flex;
             gap: 1rem;
             
-            button{
+            a{
                 font-family: inherit;
                 padding: 10px 20px;
                 background: #007bff;

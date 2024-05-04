@@ -43,7 +43,7 @@ const HomePage = () => {
             <p>Want to see what others are up to? Join a stream and interact with the streamer and other viewers in real time.</p>
             <Link to="/streams">View Streams</Link>
         </div>
-        <div className='streams'>
+        <div className='streames'>
             <h2>Create and Schedule Stream</h2>
             <p>Streamers can create and schedule streams for their viewers to RSVP and join in at the scheduled time.</p>
             <Link to="/create-stream">wanna see?</Link>

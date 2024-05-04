@@ -8,6 +8,7 @@ import RegisterPage from './pages/RegisterPage';
 import './App.css';
 import StreamerPage from './pages/StreamerPage';
 import UserProfilePage from './pages/UserProfilePage';
+import EventDetailPage from './pages/EventDetailPage';
 
 
 
@@ -23,7 +24,8 @@ const App = () => {
       <Route path="/streamers" element={<StreamerPage/>}/>
       <Route path='/streamers/:id' element={<UserProfilePage/>}/>
       <Route path="/viewer" element={<Viewer/>}/>
-      <Route path="/streams" element={<StreamList/>}/>
+      <Route path="/streames" element={<StreamList/>}/>
+      <Route path='/streames/:id' element={<EventDetailPage/>}/>
       
     </Routes>
   );

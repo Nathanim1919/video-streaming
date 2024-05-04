@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { MdEmojiEvents } from "react-icons/md";
 import { RiUserFollowLine } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
+import { Link } from "react-router-dom";
 
 
 
@@ -32,8 +33,8 @@ const StreamerList: React.FC<StreamerListProps> = ({streamer}) => {
             </div>
 
             <div className="buttons">
-                <button className="rsvp"><RiUserFollowLine/>Follow</button>
-                <button className="details"><CgProfile/>View Profile</button>
+                <Link to={'/follow'} className="rsvp"><RiUserFollowLine/>Follow</Link>
+                <Link to={'/streamers/23'}className="details"><CgProfile/>View Profile</Link>
             </div>
         </Card>
     );
@@ -110,7 +111,7 @@ const Card = styled.div`
         padding: 1rem;
         position: relative;
 
-        button{
+        a{
             font-family: inherit;
             padding: 10px 20px;
             background: #ffffff;
