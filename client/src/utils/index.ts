@@ -13,24 +13,26 @@ export const requestHandler = async (
     // Show loading state if setLoading function is provided
     setLoading && setLoading(true);
     try {
-        
+        // Make the API request
+        const response = await api();
+        const {data} = response;
+        if (data?.success){
+            // Call the onSuccess callback with the response data
+            onSuccess(data)
+        }
     } catch (error: any) {
         // Handle error cases, including unauthorized and forbidded case
         if ([401, 403].includes(error?.response.data?.statusCode)) {
-
+            localStorage.clear(); // Clear local storage on authentication issues
+            if (isBrowser) window.location.href = '/login'; // Redirect to login page
         }
+
+        onError(error?.response?.data?.message || "Something went wrong");
     } finally{
         // Hide loading state if setLoading function is provided
         setLoading && setLoading(false)
     }
 }
-
-
-
-
-
-
-
 
 
 

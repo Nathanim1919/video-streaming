@@ -1,25 +1,34 @@
+// Importing necessary components and hooks
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { IoArrowBackOutline } from "react-icons/io5";
 import axios from 'axios';
+import { useAuth } from '../contexts/AuthContext';
 
 
-
+// Components for the login page
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  //  State to manage input data (username and password)
+  const [data, setData] = useState({
+    email:"",
+    password:"",
+  })
 
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    try {
-      const res = await axios.post('http://localhost:3000/api/v1/auth/login', {email, password});
-      console.log(res)
-    } catch (error) {
-      console.error(error)
+  // Accessing the login function from the AuthContext
+  const {login} = useAuth();
+
+  // Function to update state when input chnages
+  const handleDataChange = 
+    (name: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setData({
+        ...data,
+        [name]: e.target.value
+      })
     }
-  }
+ 
+  const handleLogin = async () => await login(data);
 
   return (
     <Container>
@@ -30,12 +39,12 @@ const LoginPage: React.FC = () => {
         <h1>DevSphere</h1> 
         <p>Virtual Streaming App</p>
       </div>
-      <form onSubmit={handleLogin}>
-        <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
-        <button type='submit'>Login</button>
+      {/* <form> */}
+        <input type="email" value={data.email} onChange={handleDataChange('email')} placeholder="Email" />
+        <input type="password" value={data.password} onChange={handleDataChange('password')} placeholder="Password" />
+        <button onClick={handleLogin}>Login</button>
         <Link to="/forgot-password">Forgot Password?</Link>
-      </form>
+      {/* </form> */}
       <p>Don't have an account? <Link to="/signup">Register</Link></p>
     </Container>
   );
