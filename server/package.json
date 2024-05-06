@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "This project is supposed to be a final project for my alx full stack software engineering program",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "nodemon --exec ts-node ./index.ts",
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

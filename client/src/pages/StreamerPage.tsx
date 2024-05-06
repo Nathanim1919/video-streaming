@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import StreamerList from "../components/StreamerList";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
+import { fetchStreamers } from "../api";
 
 export interface Streamer {
     id: string;
@@ -17,17 +18,13 @@ const StreamerPage = () => {
     const [streamers, setStreamers] = useState([]);
 
     // fetch all streamers
-    const fetchStreamers = async () => {
-        try {
-            const res = await axios.get('http://localhost:3000/api/v1/auth/streamers')
-            setStreamers(res.data)
-        } catch (error) {
-            console.error(error)
-        }
+    const fetchAllStreamers = async () => {
+        const res = await fetchStreamers();
+        setStreamers(res.data.data);
     };
 
     useEffect(() => {
-        fetchStreamers();
+        fetchAllStreamers();
     }, []);
 
 

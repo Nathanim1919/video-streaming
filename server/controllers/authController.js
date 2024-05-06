@@ -1,8 +1,8 @@
 import crypto from "crypto";
 import jwt from 'jsonwebtoken'
-import UserModel from "../models/UserModel";
-import {ApiResponse} from '../utils/ApiResponse';
-import {asyncHandler} from '../utils/asyncHandler';
+import UserModel from "../models/UserModel.js";
+import {ApiResponse} from '../utils/ApiResponse.js';
+import {asyncHandler} from '../utils/asyncHandler.js';
 
 
 
@@ -154,10 +154,24 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 });
 
 
+const getAllUsers = asyncHandler(async (req, res) => {
+    const users = await UserModel.find({});
+
+    res.status(200).json(
+        new ApiResponse(
+            200,
+            users,
+            "Users fetched successfully"
+        )
+    )
+});
+
+
 
 export {
     registerUser,
     loginUser,
     logoutUser,
-    getCurrentUser
+    getCurrentUser,
+    getAllUsers
 };

@@ -41,7 +41,7 @@ const UserSchema = new Schema({
 
 
 // Hash the password before saving the user
-UserSchema.pre<IUser>('save', async function(next){
+UserSchema.pre('save', async function(next){
     if(this.isModified('password')){
         this.password = await bcrypt.hash(this.password, 10);
     }
@@ -57,15 +57,15 @@ UserSchema.methods.comparePassword = async function(password){
 UserSchema.methods.generateAccessToken = function () {
     return jwt.sign({ _id: this._id,
                         email: this.email,
-     }, process.env.JWT_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRY });
+     }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRY });
 }
 
 
 UserSchema.methods.generateRefreshToken = function () {
     return jwt.sign({ _id: this._id
-     }, process.env.JWT_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRY });
+     }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRY });
 
 }
 
 // Generate the refresh token
-export default mongoose.model<IUser>('User', UserSchema);
+export default mongoose.model('User', UserSchema);

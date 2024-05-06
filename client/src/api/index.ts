@@ -43,11 +43,17 @@ const logoutUser = () => {
     return apiClient.post("/auth/logout");
 };
 
+const fetchStreamers = () => {
+    return apiClient.get("/auth/streamers");
+}
+
+
 
 
 // Export all the API functions
 export {
     loginUser,
     logoutUser,
-    registerUser
+    registerUser,
+    fetchStreamers
 }

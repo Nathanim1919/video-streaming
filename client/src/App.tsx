@@ -11,6 +11,7 @@ import UserProfilePage from './pages/UserProfilePage';
 import EventDetailPage from './pages/EventDetailPage';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
+import AuthenticatedPage from './pages/authenticatedPage';
 
 
 const App = () => {
@@ -19,7 +20,14 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path='/' element={<HomePage/>}/>
+      <Route 
+        path='/'
+        element={
+        <PublicRoute>
+          <HomePage/>
+        </PublicRoute>
+        }
+      />
       <Route 
         path="/login" 
         element={
@@ -34,6 +42,14 @@ const App = () => {
           <PublicRoute>
             <RegisterPage/>
           </PublicRoute>
+        }
+      />
+        <Route 
+        path="/me" 
+        element={
+          <PrivateRoute>
+            <AuthenticatedPage/>
+          </PrivateRoute>
         }
       />
       <Route 
