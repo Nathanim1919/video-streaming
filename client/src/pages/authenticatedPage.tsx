@@ -11,7 +11,6 @@ const AuthenticatedPage = () => {
             <Hero/>
             <UpcomingStreams/>
             <CreateStream/>
-            <UpcomingStreams/>
             <TopStreamers/>
         </Conatiner>
     );
