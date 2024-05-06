@@ -48,11 +48,12 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({
         email: string;
         password: string
     }) => {
+        alert("hey: ", data)
         await requestHandler(
             async () => await loginUser(data),
             setIsLoading,
             (res) => {
-                const {data} = res;
+                const { data } = res;
                 setUser(data.user);
                 setToken(data.accessToken);
                 LocalStorage.set('user', data.user);
@@ -61,8 +62,8 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({
             },
             alert
         );
+       
     };
-
 
 
     // Function to handle user registration
@@ -72,6 +73,7 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({
         password: string;
         profession: string;
     }) => {
+        console.log("hey2")
         await requestHandler(
             async () => await registerUser(data),
             setIsLoading,

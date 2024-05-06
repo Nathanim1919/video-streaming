@@ -9,7 +9,8 @@ import './App.css';
 import StreamerPage from './pages/StreamerPage';
 import UserProfilePage from './pages/UserProfilePage';
 import EventDetailPage from './pages/EventDetailPage';
-
+import PrivateRoute from './components/PrivateRoute';
+import PublicRoute from './components/PublicRoute';
 
 
 const App = () => {
@@ -19,14 +20,32 @@ const App = () => {
   return (
     <Routes>
       <Route path='/' element={<HomePage/>}/>
-      <Route path="/login" element={<LoginPage/>}/>
-      <Route path="/signup" element={<RegisterPage/>}/>
-      <Route path="/streamers" element={<StreamerPage/>}/>
+      <Route 
+        path="/login" 
+        element={
+          <PublicRoute>
+            <LoginPage/>
+          </PublicRoute>
+        }
+      />
+      <Route 
+        path="/signup" 
+        element={
+          <PublicRoute>
+            <RegisterPage/>
+          </PublicRoute>
+        }
+      />
+      <Route 
+        path="/streamers"
+        element={<StreamerPage/>}
+      />
+
       <Route path='/streamers/:id' element={<UserProfilePage/>}/>
-      <Route path="/viewer" element={<Viewer/>}/>
+      {/* <Route path="/viewer" element={<Viewer/>}/> */}
       <Route path="/streames" element={<StreamList/>}/>
       <Route path='/streames/:id' element={<EventDetailPage/>}/>
-      
+      <Route path="*" element={<p>404 Not found</p>} />
     </Routes>
   );
 };

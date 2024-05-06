@@ -39,12 +39,12 @@ const LoginPage: React.FC = () => {
         <h1>DevSphere</h1> 
         <p>Virtual Streaming App</p>
       </div>
-      {/* <form> */}
+      <div className='form'>
         <input type="email" value={data.email} onChange={handleDataChange('email')} placeholder="Email" />
         <input type="password" value={data.password} onChange={handleDataChange('password')} placeholder="Password" />
         <button onClick={handleLogin}>Login</button>
         <Link to="/forgot-password">Forgot Password?</Link>
-      {/* </form> */}
+      </div>
       <p>Don't have an account? <Link to="/signup">Register</Link></p>
     </Container>
   );
@@ -88,7 +88,7 @@ const Container = styled.div`
   }
 
 
-  form{
+  .form{
     display: flex;
     flex-direction: column;
     width: 30%;
@@ -124,7 +124,7 @@ const Container = styled.div`
       }
     }
 
-    button[type='submit']{
+    button:nth-child(3){
       background-color: #007bff;
       color: #fff;
       justify-content: center;

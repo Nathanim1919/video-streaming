@@ -1,3 +1,4 @@
+// Import necessary components and hooks
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaGoogle } from "react-icons/fa";
@@ -6,28 +7,36 @@ import { FaGithub } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { IoArrowBackOutline } from "react-icons/io5";
 import axios from 'axios'
+import { useAuth } from '../contexts/AuthContext';
 
 
-
+// Component for user registration
 const RegisterPage: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [fullname, setFullName] = useState('')
-  const [password, setPassword] = useState('');
-  const [profession, setProfession] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault()
-  try {
-        if (!(password === confirmPassword)){
-          return
-        }
-        const res = await axios.post('http://localhost:3000/api/v1/auth/register', {email, password, profession, fullname})
-        console.log(res)
-  } catch (error) {
-      console.error(error)
-   }
-  };
+  // State to manage user registration data
+  const [data, setData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    profession: "",
+  });
+
+// Access the register function from the authentication context
+  const {register} = useAuth();
+
+
+  // Handle data change for input fields
+  const handleDataChange = (name: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setData({
+      ...data,
+      [name]: e.target.value
+    })
+  }
+
+
+  // Handle user registration
+  const handleRegister = async () => {await register(data)};
+  
 
   return (
     <Container>
@@ -38,17 +47,18 @@ const RegisterPage: React.FC = () => {
         <h1>Dev-Sphere</h1> 
         <p>Virtual Streaming App</p>
       </div>
-      <form onSubmit={handleRegister}>
-        <input type='text' value={fullname} onChange={e => setFullName(e.target.value)} placeholder='Full Name'/>
-        <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
-        <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Confirm Password" />
-        <input type="text" value={profession} onChange={e => setProfession(e.target.value)} placeholder="Profession" />
-        <button type='submit'>Register</button>
+      <div className='form'>
+        <input type='text' value={data.fullName} onChange={handleDataChange('fullName')} placeholder='Full Name'/>
+        <input type="email" value={data.email} onChange={handleDataChange('email')} placeholder="Email" />
+        <input type="password" value={data.password} onChange={handleDataChange("password")} placeholder="Password" />
+        <input type="text" value={data.profession} onChange={handleDataChange('profession')} placeholder="Profession" />
+        <button className='submit' onClick={handleRegister}
+          disabled={Object.values(data).some((val) => !val)}
+        >Register</button>
         <button className='google'><FaGoogle/>Sign up with Google Account</button>
         <button className='linkedin'><FaLinkedin/>Sign up with LinkedIn Account</button>
         <button className='github'><FaGithub/>Sign up with GitHub Account</button>
-      </form>
+      </div>
       <p>Already have an account? <Link to="/login">Login</Link></p>
     </Container>
   );
@@ -92,7 +102,7 @@ const Container = styled.div`
   }
 
 
-  form{
+  .form{
     display: flex;
     flex-direction: column;
     width: 30%;
@@ -128,7 +138,7 @@ const Container = styled.div`
       }
     }
 
-    button[type='submit']{
+    button.submit{
       background-color: #007bff;
       color: #fff;
       justify-content: center;
