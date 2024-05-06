@@ -20,7 +20,7 @@ export default AuthenticatedPage;
 
 
 const Conatiner = styled.div`
-    background-color: #252424;
+    background-color: #191919;
     min-height: 100vh;
     display: flex;
     flex-direction: column;

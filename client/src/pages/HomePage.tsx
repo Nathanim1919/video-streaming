@@ -16,9 +16,6 @@ const HomePage = () => {
                 <h1>DevSphere</h1>
             </div>
             <div className='menu'>
-                <Link to="/">Home</Link>
-                <Link to="/streames">Streams</Link>
-                <Link to={'/streamers'}>Streamers</Link>
                 <Link to="/signup">Sign Up</Link>
                 <Link to="/login">Login</Link>
             </div>
@@ -73,7 +70,7 @@ const Container = styled.div`
         padding: 4rem;
         gap: 20px;
 
-        .startStream, .joinStream, .streams{
+        .startStream, .joinStream, .streames{
             width: 30%;
             padding:2rem;
             border-radius: 5px;
@@ -122,7 +119,7 @@ const Container = styled.div`
             background-position: center;
         }
 
-        .streams{
+        .streames{
             background:linear-gradient(to bottom, #0000008d, #00000079), url(${ScheduleImage});
             background-size: cover;
             background-position: center;

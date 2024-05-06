@@ -1,10 +1,13 @@
 import styled from "styled-components";
+import { useAuth } from "../../contexts/AuthContext";
 
 export const Hero = () => {
+
+    const {user} = useAuth()
     return (
         <Conatiner className="hero">
             <div>
-                <h1>Welcome Nathan</h1>
+                <h1>Welcome, {user.fullName}</h1>
                 <p>Get access to all the features by upgrading your account</p>
                 <button>Who is Live Now? </button>
             </div>
@@ -18,10 +21,10 @@ const Conatiner = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding:4rem 2rem;
-    width: 80%;
+    padding:5rem 0;
+    width: 100%;
     margin: 2rem auto;
-    border-radius: 10px;
+    /* border-radius: 10px; */
 
 
     >*{

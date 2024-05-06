@@ -5,62 +5,62 @@ import coverImage from '/image/join.jpg'
 export const TopStreamers = () => {
     const streamers = [
         {
-            name: "Streamer 1",
+            name: "Nathanim Tadele 1",
             followers: 1000,
             profession: "Software Engineer"
         },
         {
-            name: "Streamer 2",
+            name: "Nathanim Tadele 2",
             followers: 2000,
             profession: "Software Engineer"
         },
         {
-            name: "Streamer 3",
+            name: "Nathanim Tadele 3",
             followers: 3000,
             profession: "Software Engineer"
         },
         {
-            name: "Streamer 1",
+            name: "Nathanim Tadele 1",
             followers: 1000,
             profession: "Software Engineer"
         },
         {
-            name: "Streamer 2",
+            name: "Nathanim Tadele 2",
             followers: 2000,
             profession: "Software Engineer"
         },
         {
-            name: "Streamer 3",
+            name: "Nathanim Tadele 3",
             followers: 3000,
             profession: "Software Engineer"
         },
         {
-            name: "Streamer 1",
+            name: "Nathanim Tadele 1",
             followers: 1000,
             profession: "Software Engineer"
         },
         {
-            name: "Streamer 2",
+            name: "Nathanim Tadele 2",
             followers: 2000,
             profession: "Software Engineer"
         },
         {
-            name: "Streamer 3",
+            name: "Nathanim Tadele 3",
             followers: 3000,
             profession: "Software Engineer"
         },
         {
-            name: "Streamer 1",
+            name: "Nathanim Tadele 1",
             followers: 1000,
             profession: "Software Engineer"
         },
         {
-            name: "Streamer 2",
+            name: "Nathanim Tadele 2",
             followers: 2000,
             profession: "Software Engineer"
         },
         {
-            name: "Streamer 3",
+            name: "Nathanim Tadele 3",
             followers: 3000,
             profession: "Software Engineer"
         },
@@ -117,7 +117,7 @@ export const TopStreamers = () => {
     ]
     return (
         <Container>
-            <h1>Top Streamers</h1>
+            <h1>Get to know The Top Streamers around the globe</h1>
             <div className="streamerList">
                 {
                     streamers.map((streamer, index) => {
@@ -128,11 +128,14 @@ export const TopStreamers = () => {
                                         <img src={coverImage} alt="profile" />
                                     </div>
                                     <div className="info">
-                                       <h3>{streamer.name}</h3>
-                                        <p>{streamer.profession}</p>
+                                       <h3>{(streamer.name).slice(0, 10)}</h3>
+                                        <p>{(streamer.profession).slice(0, 10)}..</p>
                                     </div>
                                 </div>
-                                <button>follow</button>
+                                <div className="btn">
+                                    <button>follow</button>
+                                    <p>200 followers</p>
+                                </div>
                             </div>
                         )
                     })
@@ -145,13 +148,16 @@ export const TopStreamers = () => {
 
 const Container = styled.div`
     background: linear-gradient(to right, #2e2e83 10%, rgba(0, 0, 0, 0.8));
-    padding: 2rem 1rem;
+    padding: 10rem 1rem;
     color: #fff;
+    position: relative;
+    top: -8rem;
 
     .streamerList {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        place-items: center;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-auto-rows: minmax(100px, auto);
+        place-items: end;
         margin: auto;
         gap: 1rem;
 
@@ -161,11 +167,18 @@ const Container = styled.div`
             justify-content: space-between;
             align-items: center;
             border-radius: 10px;
-            grid-column: span 2;
-            box-shadow: 0 10px 30px #000000d1;
+            box-shadow: 0 3px 10px #000000d1;
             width: 100%;
+
+
             &:nth-child(even) {
-                grid-column: span 1;
+                grid-column: span 0;
+               
+            }
+
+            
+            &:nth-child(odd) {
+                grid-column: span 2;
 
 
                 .info{
@@ -179,11 +192,26 @@ const Container = styled.div`
                 }
             }
 
+            .btn{
+                display: flex;
+                flex-direction: column;
+                margin-right: 1rem;
+
+                >*{
+                    margin: 0;
+
+                }
+                p{
+                    font-size: .7rem;
+                    color: #716a6a;
+                }
+            }
+
             button{
-                background-color: #ffffff;
-                padding: .5rem 1rem;
+                background: linear-gradient(to right, #217aff, #0e2f9d);
+                padding:.3rem .5rem;
                 border-radius: 5px;
-                color: #333;
+                color: #e9e3e3;
                 border: none;
                 cursor: pointer;
                 font-family: inherit;
@@ -195,6 +223,7 @@ const Container = styled.div`
                 display: grid;
                 grid-template-columns: .3fr 1fr;
                 background-color: #471f1f;
+                /* background-color: #740445; */
                 gap: .5rem;
                 padding: 1rem;
                 align-items: center;
@@ -205,8 +234,8 @@ const Container = styled.div`
                 /* width: 100%; */
 
                 .profilePic{
-                    width: 50px;
-                    height: 50px;
+                    width: 40px;
+                    height: 40px;
                     border-radius: 50%;
                     overflow: hidden;
 
@@ -224,11 +253,13 @@ const Container = styled.div`
                     h3{
                         color: #fff;
                         margin: 0;
+                        font-size: .9rem;
                     }
 
                     p{
-                        color: #fff;
+                        color: #aaa5a5;
                         margin: 0;
+                        font-size: .8rem;
                     }
                 }
             }

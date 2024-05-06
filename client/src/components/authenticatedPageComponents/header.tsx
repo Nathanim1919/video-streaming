@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { logoutUser } from '../../api';
+import { useAuth } from '../../contexts/AuthContext';
 
 
 export const Header = () => {
+    const {logout} = useAuth()
     const handleLogout = async () => {
         try {
-            await logoutUser();
+            await logout();
             // window.location.href = "/login";
         } catch (error) {
             console.log(error);
@@ -20,7 +21,7 @@ export const Header = () => {
                 <li><Link to="/streames">Streames</Link></li>
                 <li><Link to="/streamers">Streamers</Link></li>
                 <li><Link to="/Account">Account</Link></li>
-                <li><Link to="/login" onClick={handleLogout}>Logout</Link></li>
+                <li><Link to={'/login'} onClick={handleLogout}>Logout</Link></li>
             </ul>
         </Conatiner>
     );

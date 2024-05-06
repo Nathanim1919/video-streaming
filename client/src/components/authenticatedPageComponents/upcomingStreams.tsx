@@ -80,7 +80,6 @@ const Container = styled.div`
     gap: 3rem;
     color: #fff;
     padding: 2rem;
-    border-bottom: 1px solid #ddd;
     margin-bottom: 2rem;
 
     a{
@@ -159,7 +158,7 @@ const StreamList = styled.div`
                     width: 80px;
                     height: 80px;
                     border-radius: 50%;
-                    border: 10px solid #252424;
+                    border: 10px solid #191919;
                     
                 }
             }

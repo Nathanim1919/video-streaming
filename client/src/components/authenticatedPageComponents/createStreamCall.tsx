@@ -18,7 +18,7 @@ const Container = styled.div`
     align-items: center;
     gap: 2rem;
     margin-top: 2rem;
-    background: linear-gradient(to right, #f32e1c, rgba(0, 0, 0, 0.8));
+    background: linear-gradient(to right, #f32e1c, rgba(0, 0, 0, 1));
     width: 80%;
     margin: auto;
     margin-bottom: 2rem;
@@ -26,6 +26,10 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
+    border-radius: 10px;
 
 
 
