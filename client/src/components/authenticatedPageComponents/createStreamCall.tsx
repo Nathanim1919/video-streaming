@@ -19,9 +19,9 @@ const Container = styled.div`
     gap: 2rem;
     margin-top: 2rem;
     background: linear-gradient(to right, #f32e1c, rgba(0, 0, 0, 1));
-    width: 80%;
+    width: 50%;
     margin: auto;
-    margin-bottom: 2rem;
+    margin: 2rem auto;
     padding: 2rem;
     display: flex;
     flex-direction: column;
@@ -35,7 +35,7 @@ const Container = styled.div`
 
     h1{
         color: #fff;
-        font-size: 4rem;
+        font-size: 2rem;
         margin: 0;
     }
     p{

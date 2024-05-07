@@ -1,33 +1,50 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import coverImage from '/image/join.jpg'
+import coverImage from '/image/stream.jpg'
+import profilePic from '/image/profile.jpg'
 
 export const UpcomingStreams = () => {
     const streams = [
         {
-            title: "Stream 1",
-            date: "2021-09-01",
-            time: "10:00",
-            streamer: "Streamer 1"
+            title: "Web Development Fundamentals",
+            date: "2022-01-15",
+            time: "14:00",
+            streamer: "John Doe",
+            profession: "Full Stack Developer",
+            pic:'/image/bg.jpg'
         },
         {
-            title: "Stream 2",
-            date: "2021-09-02",
-            time: "11:00",
-            streamer: "Streamer 2"
+            title: "Data Science and Machine Learning",
+            date: "2022-01-20",
+            time: "16:30",
+            streamer: "Jane Smith",
+            profession: "Data Scientist",
+            pic:'/image/join.jpg'
         },
         {
-            title: "Stream 3",
-            date: "2021-09-03",
-            time: "12:00",
-            streamer: "Streamer 3"
+            title: "Mobile App Development with React Native",
+            date: "2022-01-25",
+            time: "18:00",
+            streamer: "Alex Johnson",
+            profession: "Mobile App Developer",
+            pic:'/image/stream.jpg'
         },
-        
+        {
+            title: "Cloud Computing and AWS",
+            date: "2022-01-30",
+            time: "20:30",
+            streamer: "Sarah Thompson",
+            profession: "Cloud Architect",
+            pic:'/image/schedule.jpg'
+        },
     ]
     return (
         <Container>
+            <div className="header">
         <h1>Upcoming Streams</h1>
+        <Link to={'/streames'}>Browse all</Link>
+            </div>
             <StreamList>
                 {
                     streams.map((stream, index) => {
@@ -36,24 +53,24 @@ export const UpcomingStreams = () => {
                                 <div className='header'>
                                     <div className="profile">
                                         <div className='profilePic'>
-                                        <img src={coverImage} alt="profile" />
+                                        <img src={profilePic} alt="profile" />
                                         </div>
                                         <div className='profileInfo'>
-                                            <h3>Nathanim Tadele</h3>
-                                            <p>Software Engineer</p>
+                                            <h3>{stream.streamer}</h3>
+                                            <p>{stream.profession}</p>
                                         </div>
                                     </div>
-                                    <div className="streamCoverImage">
-                                        <img src={coverImage} alt="stream" />
+                                    <div className="streamCoverImage" style={{backgroundImage:`linear-gradient(to bottom, #00000098, #000001),URL(${stream.pic})`}}>
+                                        {/* <img src={coverImage} alt="stream" /> */}
                                     </div>
                                 </div>
                                 <div className="streamInfo">
                                     <div>
-                                        <h2>Containers</h2>
+                                        <h2>{(stream.title).slice(0,20)}..</h2>
                                         <p>{stream.date} {stream.time}</p>
                                     </div>
                                     <div className="timeCountDown">
-                                        <h1>10:00:00</h1>
+                                        <h1>{stream.time}</h1>
                                         <p>Time Left</p>
                                     </div>
                                     <div className='btns'>
@@ -66,28 +83,35 @@ export const UpcomingStreams = () => {
                     })
                 }
             </StreamList>
-            <Link to="/streams">View All Streams</Link>
         </Container>
     );
 }
 
 
 const Container = styled.div`
-    width: 80%;
+    width: 100vw;
     margin:auto;
     display: flex;
     flex-direction: column;
     gap: 3rem;
     color: #fff;
-    padding: 2rem;
+    /* padding: 2rem; */
     margin-bottom: 2rem;
+    background: linear-gradient(45deg, #1a1919, #1a1919);
+    overflow: hidden;
+
+    >div.header{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
 
     a{
         text-decoration: none;
         color: #fff;
         padding: .5rem 1rem;
         border-radius: 5px;
-        background-color: #ff0000;
+        background: linear-gradient(45deg, red, orange);
         width: fit-content;
         align-self: center;
     }
@@ -97,24 +121,34 @@ const StreamList = styled.div`
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 1rem;
+    width: 90%;
+    margin: auto;
 
     >*{
         color: #fff;
         flex: 1;
         display: grid;
-        grid-template-rows: .3fr .7fr;
-        background-color: #000000d1;
+        grid-template-rows: 1fr 1fr;
+        background-color: #000000;
 
 
         .header{
             position: relative;
+            display: grid;
+            width: 100%;
 
             .streamCoverImage{
-                background-color: red;
+                overflow: hidden;
+                max-height: 300px;
+                background-image:linear-gradient(to bottom, #00000098, #000000ca), url(${coverImage});
+
+                background-position: center;
+                background-size: cover;
+
                 img{
                     width: 100%;
-                    height: 100%;
+                    height: auto;
                     object-fit: cover;
                     filter: brightness(50%);
                 }
@@ -124,7 +158,7 @@ const StreamList = styled.div`
                 display: flex;
                 gap: 1rem;
                 position: absolute;
-                top: -20%;
+                top: -10%;
                 display: flex;
                 flex-direction: column;
                 width: 100%;
@@ -158,7 +192,9 @@ const StreamList = styled.div`
                     width: 80px;
                     height: 80px;
                     border-radius: 50%;
-                    border: 10px solid #191919;
+                    object-fit: cover;
+    
+                    border: 5px solid #1a1919;
                     
                 }
             }

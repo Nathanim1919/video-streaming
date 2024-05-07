@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import coverImage from '/image/join.jpg'
+import { Link } from "react-router-dom"
 
 
 export const TopStreamers = () => {
@@ -117,7 +118,10 @@ export const TopStreamers = () => {
     ]
     return (
         <Container>
+            <div className="header">
             <h1>Get to know The Top Streamers around the globe</h1>
+            <Link to={'/streamers'}>Browse All</Link>
+            </div>
             <div className="streamerList">
                 {
                     streamers.map((streamer, index) => {
@@ -152,6 +156,22 @@ const Container = styled.div`
     color: #fff;
     position: relative;
     top: -8rem;
+
+    .header{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+
+        a{
+            color: #fff;
+            text-decoration: none;
+
+            &:hover{
+                color: #ddd;
+            }
+        }
+    }
 
     .streamerList {
         display: grid;

@@ -44,7 +44,7 @@ export default StreamerList;
 
 
 const Card = styled.div`
-    background-color: #000000a6;
+    background: linear-gradient(45deg, #060c28, #000000d1);
     display: flex;
     flex-direction: column;
     position: relative;
@@ -66,7 +66,7 @@ const Card = styled.div`
             height: 80px;
             border-radius: 50%;
             overflow: hidden;
-            border: 10px solid #222121;
+            border: 3px solid #ffffff;
             
 
             img{
@@ -77,6 +77,9 @@ const Card = styled.div`
         }
 
         .streamerInfo{
+            display: flex;
+            flex-direction: column;
+            align-items: center;    
             h4{
                 font-size: 1.2rem;
                 margin: 0;

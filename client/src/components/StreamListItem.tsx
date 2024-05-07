@@ -57,7 +57,7 @@ export default StreamListItem;
 const Container = styled.div`
     display: grid;
     grid-template-columns: .35fr .6fr;
-    width: 75vw;
+    width: 85vw;
     gap: 2rem;
     margin: 0 auto;
     color: #fff;

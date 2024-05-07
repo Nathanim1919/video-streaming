@@ -40,7 +40,7 @@ const StreamList: React.FC = () => {
     <Container>
       <div className='header'>
         <Link to={'/'}><IoArrowBackOutline/></Link>
-      <h1>Upcoming Streams</h1>
+      <h1>Streams</h1>
       <div>
         filter and search
       </div>
@@ -57,7 +57,7 @@ export default StreamList;
 
 const Container = styled.div`
     .header{
-      width: 75vw;
+      width: 100vw;
       margin: auto;
       color: #fff;
       display: flex;
@@ -75,7 +75,7 @@ const Container = styled.div`
 
       @media screen and (max-width:600px){
        
-        width: 90vw;
+        width: 100vw;
     }
 
 

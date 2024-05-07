@@ -12,6 +12,8 @@ import { MdOutlineStarRate } from "react-icons/md";
 import { LuGhost } from "react-icons/lu";
 import TechImage from '/image/bg.jpg';
 import { IoMdClose } from "react-icons/io";
+import profilePic from '/image/profile.jpg'
+import { CreateEventForm } from './CreateEventForm';
 
 
 
@@ -21,11 +23,12 @@ import { IoMdClose } from "react-icons/io";
 const UserProfile = () => {
   return (
     <Container>
+      <CreateEventForm />
       <div className='profile'>
         <div className='header-info'>
           <div className='profileInfo'>
             <div className='profile-pic'>
-              <img src="https://via.placeholder.com/150" alt="profile-pic" />
+              <img src={profilePic} alt="profile-pic" />
             </div>
             <div className='profile-info'>
               <h4>John Doe</h4>
@@ -68,8 +71,63 @@ const UserProfile = () => {
       </div>
       <div className="evets">
         <div>
-          <h3>Upcoming Events</h3>
+          <div className='header'>
+            <h3>Scheduled Events</h3>
+            <button>Schedule new Event</button>
+          </div>
           <div className="events-list">
+            <div className="event">
+              <div className="event-info">
+                <img src={TechImage} alt="profile-pic" />
+              </div>
+              <div className='info'>
+                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
+                <h4>Complete Intro to Containers</h4>
+              </div>
+              <div className="event-buttons">
+                <Link to={'/'}>RSVP</Link>
+                <Link to={'/streames/23'}>Details</Link>
+              </div>
+            </div>
+            <div className="event">
+              <div className="event-info">
+                <img src={TechImage} alt="profile-pic" />
+              </div>
+              <div className='info'>
+                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
+                <h4>Complete Intro to Containers</h4>
+              </div>
+              <div className="event-buttons">
+                <Link to={'/'}>RSVP</Link>
+                <Link to={'/streames/23'}>Details</Link>
+              </div>
+            </div>
+            <div className="event">
+              <div className="event-info">
+                <img src={TechImage} alt="profile-pic" />
+              </div>
+              <div className='info'>
+                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
+                <h4>Complete Intro to Containers</h4>
+              </div>
+              <div className="event-buttons">
+                <Link to={'/'}>RSVP</Link>
+                <Link to={'/streames/23'}>Details</Link>
+              </div>
+            </div>
+            <div className="event">
+              <div className="event-info">
+                <img src={TechImage} alt="profile-pic" />
+              </div>
+              <div className='info'>
+                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
+                <h4>Complete Intro to Containers</h4>
+              </div>
+              <div className="event-buttons">
+                <Link to={'/'}>RSVP</Link>
+                <Link to={'/streames/23'}>Details</Link>
+              </div>
+            </div>
             <div className="event">
               <div className="event-info">
                 <img src={TechImage} alt="profile-pic" />
@@ -160,6 +218,18 @@ const Container = styled.div`
             flex-direction: column;
             align-items: center;
             gap: 1rem;
+
+            .profile-pic{
+              width: 150px;
+              height: 200px;
+              background-color: red;
+              height: auto;
+
+              img{
+                width: 100%;
+                height: 100%;
+              }
+            }
 
             p{
               font-size: 0.8rem;
@@ -260,17 +330,32 @@ const Container = styled.div`
 
     .evets{
 
+      .header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+          width: 100%;
+          z-index: 10;
+      top: 0;
+      background-color: #222020;
+
+
+      button{
+        padding: .5rem 1rem;
+        background: linear-gradient(45deg, #2846ce, #0e478d);
+        border: none;
+        color: #fff;
+        font-family: inherit;
+      }
+      }
+
       >div{
         display: flex;
         flex-direction: column;
         margin-top: 1rem;
         
-        >h3{
-          position: sticky;
-          width: 100%;
-          z-index: 10;
-      top: 0;
-        }
+      
   
         >*{
           margin: 0;

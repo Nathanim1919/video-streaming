@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { useAuth } from "../../contexts/AuthContext";
+import { UserInterface } from "../../interfaces/user";
+
 
 export const Hero = () => {
 

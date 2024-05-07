@@ -52,7 +52,7 @@ const StreamerPage = () => {
 export default StreamerPage;
 
 const Container = styled.div`
-    /* background-color: #000000d1; */
+    background-color: #181818;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -61,7 +61,7 @@ const Container = styled.div`
     height: 100vh;
     overflow: hidden;
     color: #fff;
-    width: 80vw;
+    width: 100vw;
     margin: auto;
 
 
@@ -93,6 +93,7 @@ const Container = styled.div`
     .streamer-list{
         display: flex;
         gap: 1rem;
+        grid-row-gap: 2rem;
         flex-wrap: wrap;
         justify-content: center;
         height: 100%;

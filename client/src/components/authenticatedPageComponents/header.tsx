@@ -20,7 +20,7 @@ export const Header = () => {
             <ul>
                 <li><Link to="/streames">Streames</Link></li>
                 <li><Link to="/streamers">Streamers</Link></li>
-                <li><Link to="/Account">Account</Link></li>
+                <li><Link to="/account">Account</Link></li>
                 <li><Link to={'/login'} onClick={handleLogout}>Logout</Link></li>
             </ul>
         </Conatiner>

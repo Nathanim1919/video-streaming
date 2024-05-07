@@ -12,6 +12,7 @@ import EventDetailPage from './pages/EventDetailPage';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import AuthenticatedPage from './pages/authenticatedPage';
+import { Account } from './pages/AccountPage';
 
 
 const App = () => {
@@ -49,6 +50,14 @@ const App = () => {
         element={
           <PrivateRoute>
             <AuthenticatedPage/>
+          </PrivateRoute>
+        }
+      />
+        <Route 
+        path="/account" 
+        element={
+          <PrivateRoute>
+            <Account/>
           </PrivateRoute>
         }
       />
