@@ -20,6 +20,14 @@ export const CreateEventForm = () => {
         rsvp: false,
         status: 'scheduled',
         tags: [],
+        eventInformations: [
+            {
+              title: '',
+              description: '',
+              saved: false,
+              error: ''
+            }
+          ]
     });
 
     const [eventInformations, setEventInformations] = useState([
@@ -36,11 +44,23 @@ export const CreateEventForm = () => {
 
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setEvent({
-            ...event,
-            [e.target.name]: e.target.value
-        });
+    // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
+    //     const { name, value } = e.target;
+    //     const list = [...event.eventInformations];
+    //     list[index][name] = value;
+    //     setEvent(prevState => ({
+    //       ...prevState,
+    //       eventInformations: list
+    //     }));
+    // };
+
+
+    const handleInputOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setEvent(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -60,14 +80,14 @@ export const CreateEventForm = () => {
         setEventInformations([...eventInformations, { title: '', description: '', saved: false, error:'' }]);
       };
 
-      const handleInputChange = (e, index) => {
+      const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const { name, value } = e.target;
         const list = [...eventInformations];
         list[index][name] = value;
         setEventInformations(list);
       };
 
-      const handleSave = (index) => {
+      const handleSave = (index: number) => {
         const list = [...eventInformations];
         if (!list[index].title || !list[index].description) {
           list[index].error = 'Please fill out the title and description.';
@@ -75,23 +95,33 @@ export const CreateEventForm = () => {
             list[index].error = '';
           list[index].saved = true;
         }
-        console.log(list);
-        setEventInformations(list);
+        const listToSave = list.map(({...keepAttrs }) => keepAttrs);
+        // setEventInformations(listToSave);
+        setEvent(prevState => ({
+            ...prevState,
+            eventInformations: listToSave
+        }));
+        console.log(event.eventInformations)
       };
 
 
-      const editInformation = (index) => {
+      const editInformation = (index: number) => {
         const list = [...eventInformations];
         list[index].saved = false;
         setEventInformations(list);
       }
 
 
-      const handleDelete = (index) => {
+    const handleDelete = (index: number) => {
         const list = [...eventInformations];
-        list.splice(index, 1);
-        setEventInformations(list);
-      };
+        list.slice(index, 1);
+        const listToSave = list.map(({ ...keepAttrs }) => keepAttrs);
+        setEvent(prevState => ({
+                ...prevState,
+                eventInformations: listToSave
+        }));
+        console.log(event.eventInformations)
+    };
 
     return (
         <Container>
@@ -103,42 +133,42 @@ export const CreateEventForm = () => {
             <div>
                 <div>
                     <label htmlFor="title">Title</label>
-                    <input type="text" id="title" name="title" value={event.title} onChange={handleChange} />
+                    <input type="text" id="title" name="title" value={event.title} onChange={handleInputOnChange} />
                 </div>
                 <div>
                     <label htmlFor="location">Location</label>
-                    <input type="text" id="location" name="location" value={event.location} onChange={handleChange} />
+                    <input type="text" id="location" name="location" value={event.location} onChange={handleInputOnChange} />
                 </div>
             </div>
             <div>
                 <div>
                     <label htmlFor="description">Description</label>
-                    <textarea id="description" name="description" value={event.description} onChange={handleChange} />
+                    <textarea id="description" name="description" value={event.description} onChange={handleInputOnChange} />
                 </div>
                 <div>
                     <div>
                         <label htmlFor="price">Price</label>
-                        <input type="number" id="price" name="price" value={event.price} onChange={handleChange} />
+                        <input type="number" id="price" name="price" value={event.price} onChange={handleInputOnChange} />
                     </div>
                     <div>
                         <label htmlFor="capacity">Capacity</label>
-                        <input type="number" id="capacity" name="capacity" value={event.capacity} onChange={handleChange} />
+                        <input type="number" id="capacity" name="capacity" value={event.capacity} onChange={handleInputOnChange} />
                     </div>
                     <div>
                     <label htmlFor="time">Time</label>
-                    <input type="time" id="time" name="time" value={event.time} onChange={handleChange} />
+                    <input type="time" id="time" name="time" value={event.time} onChange={handleInputOnChange} />
                 </div>
                 </div>
             </div>
             <div>
                 <div>
                     <label htmlFor="date">Date</label>
-                    <input type="date" id="date" name="date" value={event.date} onChange={handleChange} />
+                    <input type="date" id="date" name="date" value={event.date} onChange={handleInputOnChange} />
                 </div>
              
                 <div>
                     <label htmlFor="eventType">Event Type</label>
-                    <select id="eventType" name="eventType" value={event.eventType} onChange={handleChange}>
+                    <select id="eventType" name="eventType" value={event.eventType} onChange={handleInputOnChange}>
                         <option value="meetup">Meetup</option>
                         <option value="webinar">Webinar</option>
                         <option value="seminar">Seminar</option>
@@ -157,11 +187,11 @@ export const CreateEventForm = () => {
                 
                 <div>
                     <label htmlFor="tags">Tags</label>
-                    <input type="text" id="tags" name="tags" value={event.tags.join(',')} onChange={handleChange} />
+                    <input type="text" id="tags" name="tags" value={event.tags.join(',')} onChange={handleInputOnChange} />
                 </div>
                 <div>
                         <label htmlFor="rsvp">RSVP</label>
-                        <input type="checkbox" id="rsvp" name="rsvp" checked={event.rsvp} onChange={handleChange} />
+                        <input type="checkbox" id="rsvp" name="rsvp" checked={event.rsvp} onChange={handleInputOnChange} />
                     </div>
             </div>
             <div className="eventInformations">
@@ -175,10 +205,10 @@ export const CreateEventForm = () => {
                         </div>
                     </div>
                     {eventInformations.map((info, index) => (
-                        <div key={index}>
+                        <div key={index} className="infoCard">
                            {!info.saved && <input type="text" name="title" value={info.title} placeholder="Title" onChange={e => handleInputChange(e, index)}/>}
                             {!info.saved && <textarea name="description" value={info.description} placeholder="Description" onChange={e => handleInputChange(e, index)}/>}
-                            {info.saved && <p onClick={() => editInformation(index)}>{info.title}</p>}
+                            {info.saved && <h3 className="title" onClick={() => editInformation(index)}>{info.title}</h3>}
                             {info.error && <p>{info.error}</p>}
                             {!info.saved && <div className="btns">
                                 <button onClick={()=> handleSave(index)} type="button">Save</button>
@@ -233,6 +263,7 @@ const Container = styled.div`
         padding: 3rem;
         max-height: 70vh;
         overflow-y: auto;
+        border-top: 6px solid red;
 
 
         input{
@@ -241,8 +272,9 @@ const Container = styled.div`
             margin: .5rem 0;
             margin-bottom: 1rem;
             background-color: transparent;
-            border: 1px solid #666363;
+            border: 1px solid #2b2929;
             color: #fff;
+            outline: none;
         }
 
         textarea{
@@ -252,8 +284,9 @@ const Container = styled.div`
             height: 11rem;
             resize: none;
             background-color: transparent;
-            border: 1px solid #666363;
+            border: 1px solid #2b2929;
             color: #fff;
+            outline: none;
         }
 
         select{
@@ -261,18 +294,19 @@ const Container = styled.div`
             padding: .5rem;
             margin-top: .5rem;
             background-color: transparent;
-            border: 1px solid #666363;
+            border: 1px solid #2b2929;
             color: #fff;
         }
 
         button{
             width: 100%;
-            padding: .5rem;
+            padding: .5rem 1rem;
             margin-top: 1rem;
-            background-color: #007bff;
+            background: linear-gradient(45deg, #ef9206, #8c0c0c);
             color: #fff;
             border: none;
             cursor: pointer;
+            font-family: inherit;
         }
 
 
@@ -299,6 +333,34 @@ const Container = styled.div`
             margin-top: 1rem;
             display: grid;
             grid-template-columns: 1fr;
+
+            .infoCard{
+                background-color: #2b2929;
+                padding: 1rem;
+                margin: .5rem 0;
+                border-radius: 5px;
+                position: relative;
+                width: 100%;
+                cursor: pointer;
+                font-family: inherit;
+
+                input, textarea{
+                    font-family: inherit;
+                }
+
+                p{
+                    color: red;
+                }
+            }
+
+
+            h3.title{
+               
+
+                &:hover{
+                    color: #615b5b;
+                }
+            }
 
             div.btns{
                 display: flex;
