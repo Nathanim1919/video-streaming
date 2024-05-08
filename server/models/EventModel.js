@@ -1,29 +1,8 @@
-import { ObjectId } from "mongoose";
-import mongoose, { Document, Schema } from "mongoose";
 
-export interface IEvent extends Document  {
-    _id: string;
-    owner: ObjectId;
-    title: string;
-    description: string;
-    location: string;
-    image: string;
-    user: string;
-    createdAt: string;
-    updatedAt: string;
-    scheduleDate: string;
-    attendees: ObjectId[];
-    rsvp: boolean;
-    status: string;
-    eventType: string;
-    capacity: number;
-    price: number;
-    isOnline: boolean;
-    tags: string[];
-}
+import mongoose, { Schema } from "mongoose";
 
 
-const EventSchema: Schema = new Schema({
+const EventSchema = new Schema({
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -81,7 +60,13 @@ const EventSchema: Schema = new Schema({
     tags: {
         type: [String],
         default: []
-    }
+    },
+    eventInfo:[
+        {
+            title:"",
+            description:""
+        }
+    ]
 }, { timestamps: true });
 
-export default mongoose.model<IEvent>('Event', EventSchema);
+export default mongoose.model('Event', EventSchema);

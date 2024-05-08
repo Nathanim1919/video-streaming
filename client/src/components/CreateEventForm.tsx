@@ -19,8 +19,22 @@ export const CreateEventForm = () => {
         isOnline: true,
         rsvp: false,
         status: 'scheduled',
-        tags: []
+        tags: [],
     });
+
+    const [eventInformations, setEventInformations] = useState([
+        {
+            title: '',
+            description: '',
+            saved: false,
+            error: ''
+        }
+    ]);
+
+
+    const handleCreateEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setEvent({
@@ -33,6 +47,51 @@ export const CreateEventForm = () => {
         e.preventDefault();
         console.log(event);
     };
+
+    const createInfo = () => {
+        // Check if the last set of inputs is populated
+        const lastInfo = eventInformations[eventInformations.length - 1];
+        if (lastInfo && (!lastInfo.title || !lastInfo.description)) {
+          alert('Please fill out the previous title and description before adding a new one.');
+          return;
+        }
+      
+        // Add a new set of inputs
+        setEventInformations([...eventInformations, { title: '', description: '', saved: false, error:'' }]);
+      };
+
+      const handleInputChange = (e, index) => {
+        const { name, value } = e.target;
+        const list = [...eventInformations];
+        list[index][name] = value;
+        setEventInformations(list);
+      };
+
+      const handleSave = (index) => {
+        const list = [...eventInformations];
+        if (!list[index].title || !list[index].description) {
+          list[index].error = 'Please fill out the title and description.';
+        } else {
+            list[index].error = '';
+          list[index].saved = true;
+        }
+        console.log(list);
+        setEventInformations(list);
+      };
+
+
+      const editInformation = (index) => {
+        const list = [...eventInformations];
+        list[index].saved = false;
+        setEventInformations(list);
+      }
+
+
+      const handleDelete = (index) => {
+        const list = [...eventInformations];
+        list.splice(index, 1);
+        setEventInformations(list);
+      };
 
     return (
         <Container>
@@ -109,10 +168,24 @@ export const CreateEventForm = () => {
                 <div className="info">
                     <div className="header">
                         <h3>Event Information</h3>
-                        <div className="add">
-                            <FaPlus/>
+                        <div>
+                            <div className="add" onClick={createInfo}>
+                              <FaPlus/>
+                            </div>
                         </div>
                     </div>
+                    {eventInformations.map((info, index) => (
+                        <div key={index}>
+                           {!info.saved && <input type="text" name="title" value={info.title} placeholder="Title" onChange={e => handleInputChange(e, index)}/>}
+                            {!info.saved && <textarea name="description" value={info.description} placeholder="Description" onChange={e => handleInputChange(e, index)}/>}
+                            {info.saved && <p onClick={() => editInformation(index)}>{info.title}</p>}
+                            {info.error && <p>{info.error}</p>}
+                            {!info.saved && <div className="btns">
+                                <button onClick={()=> handleSave(index)} type="button">Save</button>
+                                <button onClick={()=> handleDelete(index)} type="button">Delete</button>
+                            </div>}
+                        </div>
+                    ))}
                 </div>
             </div>
             <button type="submit">Create Event</button>
@@ -165,7 +238,8 @@ const Container = styled.div`
         input{
             width: 100%;
             padding: .5rem;
-            margin-top: .5rem;
+            margin: .5rem 0;
+            margin-bottom: 1rem;
             background-color: transparent;
             border: 1px solid #666363;
             color: #fff;
@@ -175,7 +249,7 @@ const Container = styled.div`
             width: 100%;
             padding: .5rem;
             margin-top: .5rem;
-            height: 10rem;
+            height: 11rem;
             resize: none;
             background-color: transparent;
             border: 1px solid #666363;
@@ -218,23 +292,50 @@ const Container = styled.div`
             }
         }
 
-
         >div.eventInformations{
             width: 100%;
-            background-color: #c02121;
+            /* background-color: #c02121; */
+            padding: 0;
+            margin-top: 1rem;
             display: grid;
             grid-template-columns: 1fr;
+
+            div.btns{
+                display: flex;
+                justify-content: center;
+                gap: 1rem;
+
+                button{
+                    background-color: #1c201c;
+                    font-family: inherit;
+                }
+            }
             
             .info{
                 width: 100%;
                 div.header{
                     display: grid;
                     grid-template-columns: .4fr .6fr;
-                    
                     align-items: center;
                     justify-content: space-between;
                     width: 100%;
-                    background-color: orange;
+                    background-color: #333;
+                  
+
+                    div.add{
+                        width: 30px;
+                        height: 30px;
+                        background-color: #1c201c;
+                        display: grid;
+                        place-items: center;
+                        border-radius: 50%;
+                    }
+
+                    >*{
+                       
+                        display: flex;
+                        justify-content: end;
+                    }
                 }
             }
         }

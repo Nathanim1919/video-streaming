@@ -48,6 +48,25 @@ const fetchStreamers = () => {
 }
 
 
+const createEvent = (data: {
+    title: string;
+    description: string;
+    streamer: string;
+    date: string;
+    time: string;
+    duration: number;
+    price: number;
+    maxTickets: number;
+    location: string;
+    eventType: string;
+    rsvp: false;
+    
+
+}) => {
+    return apiClient.post("/events/create", data);
+}
+
+
 
 
 // Export all the API functions
@@ -55,5 +74,6 @@ export {
     loginUser,
     logoutUser,
     registerUser,
-    fetchStreamers
+    fetchStreamers,
+    createEvent
 }
