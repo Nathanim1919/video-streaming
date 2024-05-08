@@ -5,7 +5,7 @@ import {FaTimes} from 'react-icons/fa';
 import {FaPlus} from 'react-icons/fa';
 
 
-export const CreateEventForm = () => {
+export const CreateEventForm = ({setCreateEvent}) => {
     const [event, setEvent] = useState({
         title: '',
         description: '',
@@ -40,21 +40,6 @@ export const CreateEventForm = () => {
     ]);
 
 
-    const handleCreateEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-    }
-
-    // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
-    //     const { name, value } = e.target;
-    //     const list = [...event.eventInformations];
-    //     list[index][name] = value;
-    //     setEvent(prevState => ({
-    //       ...prevState,
-    //       eventInformations: list
-    //     }));
-    // };
-
-
     const handleInputOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setEvent(prevState => ({
@@ -72,7 +57,6 @@ export const CreateEventForm = () => {
         // Check if the last set of inputs is populated
         const lastInfo = eventInformations[eventInformations.length - 1];
         if (lastInfo && (!lastInfo.title || !lastInfo.description)) {
-          alert('Please fill out the previous title and description before adding a new one.');
           return;
         }
       
@@ -112,50 +96,65 @@ export const CreateEventForm = () => {
       }
 
 
-    const handleDelete = (index: number) => {
+      const handleDelete = (index: number) => {
+        // Update eventInformations state
         const list = [...eventInformations];
-        list.slice(index, 1);
-        const listToSave = list.map(({ ...keepAttrs }) => keepAttrs);
+        list.splice(index, 1);
+        setEventInformations(list);
+      
+        // Update event state
         setEvent(prevState => ({
-                ...prevState,
-                eventInformations: listToSave
+          ...prevState,
+          eventInformations: list
         }));
-        console.log(event.eventInformations)
-    };
+      };
+
+
+    const handleTags = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setEvent(prevState => ({
+            ...prevState,
+            tags: value.split(',')
+        }));
+    }
 
     return (
         <Container>
+
             <div className="header">
+                <div>
                 <h4>Create Event</h4>
-                 <FaTimes/>
+                 <FaTimes onClick={()=>setCreateEvent(false)}/>
+
+                </div>
             </div>
         <form onSubmit={handleSubmit}>
             <div>
                 <div>
-                    <label htmlFor="title">Title</label>
-                    <input type="text" id="title" name="title" value={event.title} onChange={handleInputOnChange} />
+                    {/* <label htmlFor="title">Title</label> */}
+                    <input type="text" id="title" name="title" value={event.title} onChange={handleInputOnChange} placeholder="Just Short Title"/>
                 </div>
                 <div>
-                    <label htmlFor="location">Location</label>
-                    <input type="text" id="location" name="location" value={event.location} onChange={handleInputOnChange} />
+                    {/* <label htmlFor="location">Location</label> */}
+                    <input type="text" id="location" name="location" value={event.location} onChange={handleInputOnChange} placeholder="Where?"/>
                 </div>
             </div>
             <div>
                 <div>
-                    <label htmlFor="description">Description</label>
-                    <textarea id="description" name="description" value={event.description} onChange={handleInputOnChange} />
+                    {/* <label htmlFor="description">Description</label> */}
+                    <textarea id="description" name="description" value={event.description} onChange={handleInputOnChange} placeholder="What is this Event about?"/>
                 </div>
                 <div>
                     <div>
-                        <label htmlFor="price">Price</label>
+                        {/* <label htmlFor="price">Price</label> */}
                         <input type="number" id="price" name="price" value={event.price} onChange={handleInputOnChange} />
                     </div>
                     <div>
-                        <label htmlFor="capacity">Capacity</label>
+                        {/* <label htmlFor="capacity">Capacity</label> */}
                         <input type="number" id="capacity" name="capacity" value={event.capacity} onChange={handleInputOnChange} />
                     </div>
                     <div>
-                    <label htmlFor="time">Time</label>
+                    {/* <label htmlFor="time">Time</label> */}
                     <input type="time" id="time" name="time" value={event.time} onChange={handleInputOnChange} />
                 </div>
                 </div>
@@ -187,16 +186,16 @@ export const CreateEventForm = () => {
                 
                 <div>
                     <label htmlFor="tags">Tags</label>
-                    <input type="text" id="tags" name="tags" value={event.tags.join(',')} onChange={handleInputOnChange} />
+                    <input type="text" id="tags" name="tags" value={event.tags.join(',')} onChange={handleTags} placeholder="Technology, Business, Freelance"/>
                 </div>
-                <div>
-                        <label htmlFor="rsvp">RSVP</label>
+                <div className="rsvp">
+                        <label htmlFor="rsvp">OPEN FOR RSVP</label>
                         <input type="checkbox" id="rsvp" name="rsvp" checked={event.rsvp} onChange={handleInputOnChange} />
                     </div>
             </div>
             <div className="eventInformations">
                 <div className="info">
-                    <div className="header">
+                    <div className="info-header">
                         <h3>Event Information</h3>
                         <div>
                             <div className="add" onClick={createInfo}>
@@ -211,8 +210,8 @@ export const CreateEventForm = () => {
                             {info.saved && <h3 className="title" onClick={() => editInformation(index)}>{info.title}</h3>}
                             {info.error && <p>{info.error}</p>}
                             {!info.saved && <div className="btns">
-                                <button onClick={()=> handleSave(index)} type="button">Save</button>
-                                <button onClick={()=> handleDelete(index)} type="button">Delete</button>
+                                <button className="save" onClick={()=> handleSave(index)} type="button">Save</button>
+                                <button className="delete" onClick={()=> handleDelete(index)} type="button">Delete</button>
                             </div>}
                         </div>
                     ))}
@@ -240,20 +239,35 @@ const Container = styled.div`
     backdrop-filter: blur(5px);
 
     .header{
+        width: 100%;
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        width: 60%;
         padding: 1rem;
-        /* background-color: #232222; */
         color: #fff;
-        border-radius: 5px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        font-family: inherit;
         position: relative;
-        z-index: 100;
+
+        div{
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: space-between;
+            width: 60%;
+        }
 
         svg{
             cursor: pointer;
         }
+
+
+        >*{
+            margin: 0;
+        }
+       
     }
 
 
@@ -264,6 +278,24 @@ const Container = styled.div`
         max-height: 70vh;
         overflow-y: auto;
         border-top: 6px solid red;
+        overflow-x: hidden;
+        position: relative;
+
+        
+
+        .rsvp{
+            background-color: #232222;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: flex-start;
+            /* border: 1px solid #2b2929; */
+
+            >*{
+                flex: 1;
+            }
+        }
+
 
 
         input{
@@ -351,6 +383,22 @@ const Container = styled.div`
                 p{
                     color: red;
                 }
+
+            }
+            div.btns{
+                display: flex;
+                justify-content: flex-end;
+                gap: 1rem;
+                button.save, button.delete{
+                    font-family: inherit;
+                    background: linear-gradient(60deg, #282626, #191818);
+                    color: #fff;
+                    box-shadow: 0 5px 13px #0000004c;
+
+                    &:hover{
+                        background: linear-gradient(60deg, #191818, #282626);
+                    }
+                }
             }
 
 
@@ -361,27 +409,17 @@ const Container = styled.div`
                     color: #615b5b;
                 }
             }
-
-            div.btns{
-                display: flex;
-                justify-content: center;
-                gap: 1rem;
-
-                button{
-                    background-color: #1c201c;
-                    font-family: inherit;
-                }
-            }
             
             .info{
                 width: 100%;
-                div.header{
+                div.info-header{
                     display: grid;
-                    grid-template-columns: .4fr .6fr;
-                    align-items: center;
-                    justify-content: space-between;
+                    grid-template-columns: 1fr 1fr;
+                    place-items: center;
+                    background-color: #292828;
                     width: 100%;
-                    background-color: #333;
+                    color: orange;
+                    padding:0 1rem;
                   
 
                     div.add{
@@ -391,6 +429,16 @@ const Container = styled.div`
                         display: grid;
                         place-items: center;
                         border-radius: 50%;
+                        place-self: flex-end;
+                        cursor: pointer;
+                        color: orange;
+
+                       
+
+                        &:hover{
+                            background-color: #1c1c1c;
+                            color: #fff;
+                        }
                     }
 
                     >*{

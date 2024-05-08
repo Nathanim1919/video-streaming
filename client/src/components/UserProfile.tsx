@@ -21,9 +21,10 @@ import { CreateEventForm } from './CreateEventForm';
 
 
 const UserProfile = () => {
+  const [createEvent, setCreateEvent] = React.useState(false);
   return (
     <Container>
-      <CreateEventForm />
+     {createEvent && <CreateEventForm setCreateEvent={setCreateEvent}/>}
       <div className='profile'>
         <div className='header-info'>
           <div className='profileInfo'>
@@ -73,7 +74,7 @@ const UserProfile = () => {
         <div>
           <div className='header'>
             <h3>Scheduled Events</h3>
-            <button>Schedule new Event</button>
+            <button onClick={() => setCreateEvent(true)}>Schedule new Event</button>
           </div>
           <div className="events-list">
             <div className="event">
