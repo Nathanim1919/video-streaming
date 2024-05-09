@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import StreamImage from '/image/bg.jpg'
 import { Link } from 'react-router-dom';
@@ -17,11 +17,40 @@ interface StreamListItemProps {
 }
 
 const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
-  const handleRSVP = () => {
+    const [countdown, setCountdown] = React.useState<{days: number, hours: number, minutes: number, seconds: number}>({days: 0, hours: 0, minutes: 0, seconds: 0});  const handleRSVP = () => {
     // Here you would typically handle the RSVP action, such as sending a request to your server
     console.log(`RSVP for stream ${stream.id}`);
   };
 
+//   const [countdown, setCountdown] = useState<number>(0);
+
+
+useEffect(() => {
+    // Parse the event date and time
+    const eventDate = new Date(stream?.date);
+  
+    // Update the countdown every second
+    const intervalId = setInterval(() => {
+      const now = new Date();
+      const distance = eventDate.getTime() - now.getTime();
+  
+      if (distance < 0) {
+        // Event has already occurred
+        setCountdown({days: 0, hours: 0, minutes: 0, seconds: 0});
+        clearInterval(intervalId);
+      } else {
+        // Calculate and set the countdown time
+        const seconds = Math.floor((distance / 1000) % 60);
+        const minutes = Math.floor((distance / 1000 / 60) % 60);
+        const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        setCountdown({days, hours, minutes, seconds});
+      }
+    }, 1000);
+  
+    // Clear the interval when the component is unmounted
+    return () => clearInterval(intervalId);
+  }, []);
 
 
 
@@ -31,14 +60,15 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
         <img src={StreamImage} alt='Stream' />
       </div>
       <div className='info'>
-        <p>{formatDate(stream?.scheduledDate)} Eastern centeral time </p>
+        <p>{formatDate(stream?.date)} Eastern centeral time </p>
+        <h3>Time remaining: {countdown.days} days {countdown.hours} hr {countdown.minutes} min {countdown.seconds} s</h3>
         <h3>{stream.title}</h3>
         <div className='streamer'>
             <div className='profilePic'>
                 <img src={StreamImage} alt='Streamer' />
             </div>
             <div className='streamerInfo'>
-                <h4>Nathanim Tadele</h4>
+                <h4>{stream.owner?.fullName}</h4>
                 <p>Full-Stack Engineer</p>
             </div>
         </div>

@@ -5,6 +5,7 @@ import StreamerList from "../components/StreamerList";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { fetchStreamers } from "../api";
+import { requestHandler } from "../utils";
 
 export interface Streamer {
     id: string;
@@ -14,17 +15,24 @@ export interface Streamer {
 }
 
 
+
 const StreamerPage = () => {
     const [streamers, setStreamers] = useState([]);
 
-    // fetch all streamers
-    const fetchAllStreamers = async () => {
-        const res = await fetchStreamers();
-        setStreamers(res.data.data);
-    };
 
+    // fetch all streamers
     useEffect(() => {
-        fetchAllStreamers();
+        (async () => {await requestHandler(
+            async () => await fetchStreamers(),
+            null,
+            (response) => {
+                console.log(response.data);
+                setStreamers(response.data);
+            },
+            (error) => {
+                console.log(error);
+            }
+        )})();
     }, []);
 
 
