@@ -21,9 +21,9 @@ const EventSchema = new Schema({
     },
     image: {
         type: String,
-        required: true
+        // required: true
     },
-    scheduleDate: {
+    date: {
         type: String,
         required: true
     },
@@ -32,7 +32,7 @@ const EventSchema = new Schema({
         ref: 'User'
     }],
     rsvp: {
-        type: Boolean,
+        type: String,
         default: false
     },
     status: {
@@ -61,12 +61,18 @@ const EventSchema = new Schema({
         type: [String],
         default: []
     },
-    eventInfo:[
+    eventInformations: [
         {
-            title:"",
-            description:""
+          title: {
+            type: String,
+            default: ""
+          },
+          description: {
+            type: String,
+            default: ""
+          }
         }
-    ]
+      ]
 }, { timestamps: true });
 
 export default mongoose.model('Event', EventSchema);

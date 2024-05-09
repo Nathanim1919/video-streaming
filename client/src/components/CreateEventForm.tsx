@@ -3,119 +3,173 @@ import styled from "styled-components";
 // import close icon from 'react-icons/fa';
 import {FaTimes} from 'react-icons/fa';
 import {FaPlus} from 'react-icons/fa';
+import { createEvent } from "../api";
+import { requestHandler } from "../utils";
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import { DateTimePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { createTheme, ThemeProvider } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
+const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
 
-export const CreateEventForm = ({setCreateEvent}) => {
-    const [event, setEvent] = useState({
-        title: '',
-        description: '',
-        date: '',
-        time: '',
-        location: '',
-        image: '',
-        price: 0,
-        capacity: 100,
-        eventType: 'meetup',
-        isOnline: true,
-        rsvp: false,
-        status: 'scheduled',
-        tags: [],
-        eventInformations: [
-            {
-              title: '',
-              description: '',
-              saved: false,
-              error: ''
-            }
-          ]
-    });
+type EventInformation = {
+    title: string;
+    description: string;
+    saved: boolean;
+    error: string;
+  };
+  
+  type Event = {
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    location: string;
+    image: string;
+    price: number;
+    capacity: number;
+    eventType: string;
+    isOnline: boolean;
+    rsvp: string;
+    status: string;
+    tags: string[];
+    duration: number;
+    eventInformations: EventInformation[];
+  };
 
-    const [eventInformations, setEventInformations] = useState([
-        {
+type CreateEventFormProps = {
+    setCreateEvent: (value: boolean) => void;
+
+}
+export const CreateEventForm = ({setCreateEvent}: CreateEventFormProps) => {
+    const [date, setDate] = React.useState<dayjs.Dayjs | null>(dayjs());
+    const [event, setEvent] = useState<Event>({
             title: '',
             description: '',
-            saved: false,
-            error: ''
-        }
+            date: '',
+            time: '',
+            location: '',
+            image: '',
+            price: 0,
+            capacity: 100,
+            eventType: 'meetup',
+            isOnline: true,
+            rsvp: "off",
+            status: 'scheduled',
+            tags: [],
+            duration: 130,
+            eventInformations: [
+                    {
+                        title: '',
+                        description: '',
+                        saved: false,
+                        error: ''
+                    }
+            ]
+    });
+
+    const [eventInformations, setEventInformations] = useState<EventInformation[]>([
+            {
+                    title: '',
+                    description: '',
+                    saved: false,
+                    error: ''
+            }
     ]);
 
 
     const handleInputOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setEvent(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+            const { name, value } = e.target;
+            setEvent(prevState => ({
+                    ...prevState,
+                    [name]: value
+            }));
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log(event);
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            await requestHandler(
+                    async () => await createEvent(event),
+                    null,
+                    () => setCreateEvent(false),
+                    (error) => console.log(error)
+            );
+            console.log(event)
+            
     };
 
     const createInfo = () => {
-        // Check if the last set of inputs is populated
-        const lastInfo = eventInformations[eventInformations.length - 1];
-        if (lastInfo && (!lastInfo.title || !lastInfo.description)) {
-          return;
+            // Check if the last set of inputs is populated
+            const lastInfo = eventInformations[eventInformations.length - 1];
+            if (lastInfo && (!lastInfo.title || !lastInfo.description)) {
+                return;
+            }
+        
+            // Add a new set of inputs
+            setEventInformations([...eventInformations, { title: '', description: '', saved: false, error:'' }]);
+        };
+
+        const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
+            const { name, value } = e.target;
+            const list = [...eventInformations];
+            list[index][name] = value;
+            setEventInformations(list);
+        };
+
+        const handleSave = (index: number) => {
+            const list = [...eventInformations];
+            if (!list[index].title || !list[index].description) {
+                list[index].error = 'Please fill out the title and description.';
+            } else {
+                    list[index].error = '';
+                list[index].saved = true;
+            }
+            const listToSave = list.map(({...keepAttrs }) => keepAttrs);
+            // setEventInformations(listToSave);
+            setEvent(prevState => ({
+                    ...prevState,
+                    eventInformations: listToSave
+            }));
+            console.log(event.eventInformations)
+        };
+
+
+        const editInformation = (index: number) => {
+            const list = [...eventInformations];
+            list[index].saved = false;
+            setEventInformations(list);
         }
-      
-        // Add a new set of inputs
-        setEventInformations([...eventInformations, { title: '', description: '', saved: false, error:'' }]);
-      };
-
-      const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        const { name, value } = e.target;
-        const list = [...eventInformations];
-        list[index][name] = value;
-        setEventInformations(list);
-      };
-
-      const handleSave = (index: number) => {
-        const list = [...eventInformations];
-        if (!list[index].title || !list[index].description) {
-          list[index].error = 'Please fill out the title and description.';
-        } else {
-            list[index].error = '';
-          list[index].saved = true;
-        }
-        const listToSave = list.map(({...keepAttrs }) => keepAttrs);
-        // setEventInformations(listToSave);
-        setEvent(prevState => ({
-            ...prevState,
-            eventInformations: listToSave
-        }));
-        console.log(event.eventInformations)
-      };
 
 
-      const editInformation = (index: number) => {
-        const list = [...eventInformations];
-        list[index].saved = false;
-        setEventInformations(list);
-      }
-
-
-      const handleDelete = (index: number) => {
-        // Update eventInformations state
-        const list = [...eventInformations];
-        list.splice(index, 1);
-        setEventInformations(list);
-      
-        // Update event state
-        setEvent(prevState => ({
-          ...prevState,
-          eventInformations: list
-        }));
-      };
+        const handleDelete = (index: number) => {
+            // Update eventInformations state
+            const list = [...eventInformations];
+            list.splice(index, 1);
+            setEventInformations(list);
+        
+            // Update event state
+            setEvent(prevState => ({
+                ...prevState,
+                eventInformations: list
+            }));
+        };
 
 
     const handleTags = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        setEvent(prevState => ({
-            ...prevState,
-            tags: value.split(',')
-        }));
+            const { value } = e.target;
+            setEvent(prevState => ({
+                    ...prevState,
+                    tags: value.split(',')
+            }));
     }
 
     return (
@@ -153,16 +207,26 @@ export const CreateEventForm = ({setCreateEvent}) => {
                         {/* <label htmlFor="capacity">Capacity</label> */}
                         <input type="number" id="capacity" name="capacity" value={event.capacity} onChange={handleInputOnChange} />
                     </div>
-                    <div>
-                    {/* <label htmlFor="time">Time</label> */}
-                    <input type="time" id="time" name="time" value={event.time} onChange={handleInputOnChange} />
-                </div>
                 </div>
             </div>
             <div>
-                <div>
-                    <label htmlFor="date">Date</label>
-                    <input type="date" id="date" name="date" value={event.date} onChange={handleInputOnChange} />
+                <div className="datetimepicker">
+                <ThemeProvider theme={darkTheme}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateTimePicker
+                        label="Event Date and Time"
+                        minDate={dayjs()}
+                        value={date}
+                        onChange={(newDate) => {
+                            setDate(newDate);
+                            setEvent(prevState => ({
+                            ...prevState,
+                            date: newDate?.toDate(),  // Convert the Dayjs object back to a Date object
+                            }));
+                        }}
+                        />
+                    </LocalizationProvider>
+                </ThemeProvider>
                 </div>
              
                 <div>
@@ -347,6 +411,7 @@ const Container = styled.div`
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
 
+
             >div{
                 display: flex;
                 flex-direction: column;
@@ -354,6 +419,15 @@ const Container = styled.div`
                 >div{
                 display: flex;
                 flex-direction: column;
+
+                .datetimepicker{
+                    color: #fff;
+
+                    >*{
+
+                        background-color: #333;
+                    }
+                }
             }
             }
         }

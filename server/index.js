@@ -6,6 +6,7 @@ import http from 'http';
 // import socketio from 'socket.io';
 import db from './config/db.js';
 import authRoter from './routes/authRote.js'
+import eventRouter from './routes/eventRoute.js';
 import bodyParser from 'body-parser';
 
 
@@ -90,6 +91,7 @@ let streamerSocket= null; // Define type for streamerSocket
 
 // routes
 app.use('/api/v1/auth', authRoter)
+app.use('/api/v1/events', eventRouter)
 
 
 

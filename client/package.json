@@ -10,13 +10,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@fontsource/roboto": "^5.0.13",
+    "@mui/material": "^5.15.17",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+    "@mui/x-date-pickers": "^7.3.2",
     "axios": "^1.6.8",
+    "dayjs": "^1.11.11",
+    "dayjs-timezone-iana-plugin": "^0.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.0",
     "socket.io-client": "^4.7.5",
     "styled-component": "^2.8.0",
-    "styled-components": "^6.1.9"
+    "styled-components": "^6.1.10"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

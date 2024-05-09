@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import StreamImage from '/image/bg.jpg'
 import { Link } from 'react-router-dom';
+import { formatDate } from '../utils';
+
 
 interface Stream {
   id: string;
@@ -20,14 +22,17 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
     console.log(`RSVP for stream ${stream.id}`);
   };
 
+
+
+
   return (
     <Container>
       <div className='image'>
         <img src={StreamImage} alt='Stream' />
       </div>
       <div className='info'>
-        <p>May 22 to 23, 2024 - 9:30am to 5:30pm Central Daylight Time </p>
-        <h3>Complete Intro to Containers</h3>
+        <p>{formatDate(stream?.scheduledDate)} Eastern centeral time </p>
+        <h3>{stream.title}</h3>
         <div className='streamer'>
             <div className='profilePic'>
                 <img src={StreamImage} alt='Streamer' />

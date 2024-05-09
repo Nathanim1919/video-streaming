@@ -77,3 +77,20 @@ export class LocalStorage {
         localStorage.clear()
     }
 }
+
+
+// A utility function to format date strings
+export function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+  
+    const options: Intl.DateTimeFormatOptions = {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    };
+  
+    return date.toLocaleString('en-US', options);
+  }
