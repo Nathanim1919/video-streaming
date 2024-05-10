@@ -6,7 +6,6 @@ import { FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { IoArrowBackOutline } from "react-icons/io5";
-import axios from 'axios'
 import { useAuth } from '../contexts/AuthContext';
 
 
@@ -16,6 +15,7 @@ const RegisterPage: React.FC = () => {
   // State to manage user registration data
   const [data, setData] = useState({
     fullName: "",
+    username: "",
     email: "",
     password: "",
     profession: "",
@@ -36,6 +36,10 @@ const RegisterPage: React.FC = () => {
 
   // Handle user registration
   const handleRegister = async () => {await register(data)};
+
+  const handleSocialRegister = (social: string) => {
+    window.location.href = `http://localhost:3000/api/v1/auth/${social}`;
+  } 
   
 
   return (
@@ -49,15 +53,16 @@ const RegisterPage: React.FC = () => {
       </div>
       <div className='form'>
         <input type='text' value={data.fullName} onChange={handleDataChange('fullName')} placeholder='Full Name'/>
+        <input type='text' value={data.username} onChange={handleDataChange('username')} placeholder='Username'/>
         <input type="email" value={data.email} onChange={handleDataChange('email')} placeholder="Email" />
         <input type="password" value={data.password} onChange={handleDataChange("password")} placeholder="Password" />
         <input type="text" value={data.profession} onChange={handleDataChange('profession')} placeholder="Profession" />
         <button className='submit' onClick={handleRegister}
           disabled={Object.values(data).some((val) => !val)}
         >Register</button>
-        <button className='google'><FaGoogle/>Sign up with Google Account</button>
-        <button className='linkedin'><FaLinkedin/>Sign up with LinkedIn Account</button>
-        <button className='github'><FaGithub/>Sign up with GitHub Account</button>
+        <button onClick={() => handleSocialRegister('google')} className='google'><FaGoogle/>Sign up with Google Account</button>        
+        <button onClick={() => handleSocialRegister('linkedin')} className='linkedin'><FaLinkedin/>Sign up with LinkedIn Account</button>
+        <button onClick={() => handleSocialRegister('github')} className='github'><FaGithub/>Sign up with GitHub Account</button>
       </div>
       <p>Already have an account? <Link to="/login">Login</Link></p>
     </Container>

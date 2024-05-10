@@ -168,11 +168,38 @@ const getAllUsers = asyncHandler(async (req, res) => {
 });
 
 
+const handleSocialLogin = asyncHandler(async (req, res) => {
+    const user = await UserModel.findById(req.user._id);
+
+    if (!user) {
+        return res.status(404).json({message:"User not found"});
+    }
+
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
+
+    const options = {
+        httpOnly: true,
+    }
+
+    return res.
+        status(200).
+        cookie("refreshToken", refreshToken, options).
+        cookie("accessToken", accessToken, options)
+        // redirect(
+        //     // redirect user to the frontend with access and refresh token in case user is not using cookies
+        //     `${process.env.CLIENT_SSO_REDIRECT_URL}`
+        // );
+        .redirect(
+            // redirect user to the frontend with access and refresh token in case user is not using cookies
+            `${process.env.CLIENT_SSO_REDIRECT_URL}?accessToken=${accessToken}&refreshToken=${refreshToken}`
+          );
+});
 
 export {
     registerUser,
     loginUser,
     logoutUser,
     getCurrentUser,
-    getAllUsers
+    getAllUsers,
+    handleSocialLogin
 };

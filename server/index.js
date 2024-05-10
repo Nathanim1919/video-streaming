@@ -1,23 +1,38 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import cors from 'cors';
-import bcrypt from 'bcrypt';
 import http from 'http';
-// import socketio from 'socket.io';
 import db from './config/db.js';
 import authRoter from './routes/authRote.js'
 import eventRouter from './routes/eventRoute.js';
 import bodyParser from 'body-parser';
+import passport from 'passport';
+import session from "express-session";
+import './passport/index.js';
 
 
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors({
     origin:"http://localhost:5173",
     credentials:true
 }))
+
+
+// required for passport
+app.use(
+  session({
+    secret: "secret",
+    resave: true,
+    saveUninitialized: true,
+  })
+); // session secret
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
 
 
 // database connection
@@ -92,7 +107,6 @@ let streamerSocket= null; // Define type for streamerSocket
 // routes
 app.use('/api/v1/auth', authRoter)
 app.use('/api/v1/events', eventRouter)
-
 
 
 // With this line

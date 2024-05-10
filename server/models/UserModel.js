@@ -2,6 +2,7 @@
 import mongoose, {Schema} from 'mongoose'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { AvailableSocialLogins, userLoginTypes } from '../constants.js';
 
 // Define the schema
 const UserSchema = new Schema({
@@ -16,11 +17,21 @@ const UserSchema = new Schema({
     },
     profession:{
         type:String,
-        required:true
+        // required:true
+    },
+    username:{
+        type:String,
+        required:true,
+        unique:true
     },
     fullName:{
         type:String,
         required:true
+    },
+    loginType:{
+        type: String,
+        enum: AvailableSocialLogins,
+        default: userLoginTypes.EMAIL_PASSWORD,
     },
     followers:[{
         type:Schema.Types.ObjectId,
