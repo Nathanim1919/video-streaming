@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { IoArrowBackOutline } from "react-icons/io5";
-import axios from 'axios';
+import { FaGoogle } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import { useAuth } from '../contexts/AuthContext';
 
 
@@ -30,6 +32,11 @@ const LoginPage: React.FC = () => {
  
   const handleLogin = async () => await login(data);
 
+
+  const handleSocialRegister = (social: string) => {
+    window.location.href = `http://localhost:3000/api/v1/auth/${social}`;
+  } 
+
   return (
     <Container>
       <div className='back'>
@@ -44,6 +51,9 @@ const LoginPage: React.FC = () => {
         <input type="password" value={data.password} onChange={handleDataChange('password')} placeholder="Password" />
         <button onClick={handleLogin}>Login</button>
         <Link to="/forgot-password">Forgot Password?</Link>
+        <button onClick={() => handleSocialRegister('google')} className='google'><FaGoogle/>Sign in with Google Account</button>        
+        <button onClick={() => handleSocialRegister('linkedin')} className='linkedin'><FaLinkedin/>Sign in with LinkedIn Account</button>
+        <button onClick={() => handleSocialRegister('github')} className='github'><FaGithub/>Sign in with GitHub Account</button>
       </div>
       <p>Don't have an account? <Link to="/signup">Register</Link></p>
     </Container>

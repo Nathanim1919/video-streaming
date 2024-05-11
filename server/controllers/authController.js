@@ -15,7 +15,6 @@ const generateAccessAndRefreshToken = async (userId) => {
         const refreshToken = user?.generateRefreshToken();
 
         user.refreshToken = refreshToken;
-
         await user.save({ validateBeforeSave: false });
         return { accessToken, refreshToken };
     } catch (error) {
@@ -178,7 +177,7 @@ const handleSocialLogin = asyncHandler(async (req, res) => {
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
 
     const options = {
-        httpOnly: true,
+        httpOnly: false,
     }
 
     return res.
@@ -191,7 +190,7 @@ const handleSocialLogin = asyncHandler(async (req, res) => {
         // );
         .redirect(
             // redirect user to the frontend with access and refresh token in case user is not using cookies
-            `${process.env.CLIENT_SSO_REDIRECT_URL}?accessToken=${accessToken}&refreshToken=${refreshToken}`
+            `http://localhost:5173/me?accessToken=${accessToken}&refreshToken=${refreshToken}`
           );
 });
 

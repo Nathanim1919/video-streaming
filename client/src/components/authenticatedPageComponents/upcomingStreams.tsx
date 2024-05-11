@@ -95,10 +95,11 @@ const Container = styled.div`
     flex-direction: column;
     gap: 3rem;
     color: #fff;
-    /* padding: 2rem; */
+    padding-bottom: 4rem;
     margin-bottom: 2rem;
-    background: linear-gradient(45deg, #1a1919, #1a1919);
+    background: linear-gradient(45deg, #2a2929, #1a1919);
     overflow: hidden;
+    
 
     >div.header{
         display: flex;
@@ -131,6 +132,19 @@ const StreamList = styled.div`
         display: grid;
         grid-template-rows: 1fr 1fr;
         background-color: #000000;
+
+
+        &:hover{
+            cursor: pointer;
+            .header{
+
+                .streamCoverImage{
+                    overflow: hidden;
+                    max-height: 300px;
+                    background-image:linear-gradient(to bottom, #00000020, #00000023), url(${coverImage});
+                }
+            }
+        }
 
 
         .header{

@@ -1,70 +1,11 @@
 import styled from "styled-components"
 import coverImage from '/image/join.jpg'
 import { Link } from "react-router-dom"
+import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa"
 
 
 export const TopStreamers = () => {
     const streamers = [
-        {
-            name: "Nathanim Tadele 1",
-            followers: 1000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Nathanim Tadele 2",
-            followers: 2000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Nathanim Tadele 3",
-            followers: 3000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Nathanim Tadele 1",
-            followers: 1000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Nathanim Tadele 2",
-            followers: 2000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Nathanim Tadele 3",
-            followers: 3000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Nathanim Tadele 1",
-            followers: 1000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Nathanim Tadele 2",
-            followers: 2000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Nathanim Tadele 3",
-            followers: 3000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Nathanim Tadele 1",
-            followers: 1000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Nathanim Tadele 2",
-            followers: 2000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Nathanim Tadele 3",
-            followers: 3000,
-            profession: "Software Engineer"
-        },
         {
             name: "Streamer 2",
             followers: 2000,
@@ -132,8 +73,17 @@ export const TopStreamers = () => {
                                         <img src={coverImage} alt="profile" />
                                     </div>
                                     <div className="info">
-                                       <h3>{(streamer.name).slice(0, 10)}</h3>
-                                        <p>{(streamer.profession).slice(0, 10)}..</p>
+                                       <h3>{(streamer.name)}</h3>
+                                        <p>{(streamer.profession)}</p>
+                                    </div>
+                                </div>
+                                <div className="bio">
+                                    <p>As a software engineer, I enjoy building high-quality software that solves real-world problems. When I'm not coding, you can find me sharing my development journey on Twitch, where I stream my code, answer questions, and collaborate with other developers. I'm passionate about helping others learn and grow in their careers, and I'm always looking for opportunities to do so.</p>
+                                    <div className="social-link">
+                                        <Link to={'/facebook'}><FaFacebook size={20} color='#eee' /></Link>
+                                        <Link to={'/twitter'}><FaTwitter size={20} color='#eee' /></Link>
+                                        <Link to={'/instagram'}><FaInstagram size={20} color='#eee' /></Link>
+                                        <Link to={'/linkedin'}><FaLinkedin size={20} color='#eee' /></Link>
                                     </div>
                                 </div>
                                 <div className="btn">
@@ -174,115 +124,112 @@ const Container = styled.div`
     }
 
     .streamerList {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        grid-auto-rows: minmax(100px, auto);
-        place-items: end;
-        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
         gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
 
-        > div {
-            background-color: #000000d1;
+
+        .streamer{
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px #000000d1;
-            width: 100%;
+            flex-direction: column;
+            max-width: 300px;
+            /* background-color: #164481a1; */
+            padding: 1rem;
+            
+            /* border-radius: 10px; */
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            border: 1px solid #032b45;
 
-
-            &:nth-child(even) {
-                grid-column: span 0;
-               
+            &:hover{
+                /* border: 1px solid #0670fa; */
+                box-shadow: 0 5px 10px rgba(0, 0, 0, .15);
             }
 
-            
-            &:nth-child(odd) {
-                grid-column: span 2;
-
-
+            .profile{
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                .profilePic{
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    border: 3px solid #ffffff;
+                    img{
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
                 .info{
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+
                     h3{
-                        font-size: .9rem;
+                        font-size: 1.5rem;
+                        margin: 0;
+                    }
+                    p{
+                        font-size: .8rem;
+                        margin: 0;
+                        color: #ddd;
                     }
 
-                    p{
-                        font-size: .7rem;
+
+                }
+            }
+
+            .bio{
+                p{
+                    font-size: .9rem;
+                    margin: 1rem 0;
+                    color: #d8d2d2;
+                    font-weight: 500;
+
+                }
+                .social-link{
+                    display: flex;
+                    gap: 1rem;
+                    a{
+                        color: #fff;
+                        text-decoration: none;
                     }
                 }
             }
 
             .btn{
                 display: flex;
-                flex-direction: column;
-                margin-right: 1rem;
+                align-items: end;
+                justify-content: space-between;
 
-                >*{
-                    margin: 0;
-
+                button{
+                    margin-top: 1rem;
+                    background-color: #0670fa;
+                    color: #ffffff;
+                    padding: .4rem 1rem;
+                    border: none;
+                    border-radius: 5px;
+                    font-size: .8rem;
+                    font-weight: 800;
+                    cursor: pointer;
+                    transition: all .3s;
+                    &:hover{
+                        background-color: #ddd;
+                        color: #000;
+                    }
                 }
+
                 p{
-                    font-size: .7rem;
-                    color: #716a6a;
+                    font-size: .8rem;
+                    margin: 0;
+                    color: #a09b9b;
                 }
             }
 
-            button{
-                background: linear-gradient(to right, #217aff, #0e2f9d);
-                padding:.3rem .5rem;
-                border-radius: 5px;
-                color: #e9e3e3;
-                border: none;
-                cursor: pointer;
-                font-family: inherit;
-                margin-right: 1rem;
-            }
-
-
-            .profile{
-                display: grid;
-                grid-template-columns: .3fr 1fr;
-                background-color: #471f1f;
-                /* background-color: #740445; */
-                gap: .5rem;
-                padding: 1rem;
-                align-items: center;
-                justify-content: flex-start;
-                border-radius: 10px;
-                margin: 1rem;
-                position: relative;
-                /* width: 100%; */
-
-                .profilePic{
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                    overflow: hidden;
-
-                    img{
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                    }
-                }
-
-                .info{
-                    display: flex;
-                    flex-direction: column;
-                    /* align-items: center; */
-                    h3{
-                        color: #fff;
-                        margin: 0;
-                        font-size: .9rem;
-                    }
-
-                    p{
-                        color: #aaa5a5;
-                        margin: 0;
-                        font-size: .8rem;
-                    }
-                }
-            }
         }
-    }
+        
+        }
 `

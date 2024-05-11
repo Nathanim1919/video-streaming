@@ -8,6 +8,7 @@ import bodyParser from 'body-parser';
 import passport from 'passport';
 import session from "express-session";
 import './passport/index.js';
+import cookieParser from 'cookie-parser';
 
 
 
@@ -20,6 +21,9 @@ app.use(cors({
     credentials:true
 }))
 
+
+// cookie parser
+app.use(cookieParser());
 
 // required for passport
 app.use(

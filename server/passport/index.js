@@ -34,6 +34,7 @@ try {
         async (_, __, profile, next) => {
             // Check if user already exists
             const user = await UserModel.findOne({ email: profile._json.email });
+            console.log(user)
             if (user) {
                 // If user exists, check if the user has logged in using google ssocial login
                 if (user.loginType !== userLoginTypes.GOOGLE){
@@ -58,6 +59,8 @@ try {
                     loginType: userLoginTypes.GOOGLE,
                 });
 
+            
+
                 // Return the newly created user
                 if (newUser) next(null, newUser);
                 else next(new Error("Something went wrong while creating the user"), null);
@@ -75,7 +78,7 @@ try {
                 clientSecret: process.env.GITHUB_CLIENT_SECRET,
                 callbackURL: process.env.GITHUB_CALL_BACK_URL,
             },
-            
+
             async (_, __, profile, next) => {
                 const user = await UserModel.findOne({ email: profile._json.email });
                 if (user){
@@ -88,6 +91,7 @@ try {
                     } else {
                         next(null, user);
                     }
+                    console.log(user)
                 } else {
                         const userNameExists = await UserModel.findOne({ username: profile?.username });
 
