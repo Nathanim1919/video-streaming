@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Image from '/image/bg.jpg';
-import Footer from './footer';
+import Image2 from '/image/join.jpg';
+import Image3 from '/image/stream.jpg';
+import Image4 from '/image/profile.jpg';
 
 export const TopStreams = () => {
     return (
@@ -17,7 +19,7 @@ export const TopStreams = () => {
                             <img src={Image} alt='streamer' />
                             <div className="proInfo">
                                 <div>
-                                    <img src={Image}/>
+                                    <img src={Image4}/>
                                 </div>
                                 <div>
                                     <h3>PikachuPro</h3>
@@ -36,10 +38,10 @@ export const TopStreams = () => {
                 <Stream>
                     <div className="container">
                         <div className='streamer-info'>
-                            <img src={Image} alt='streamer' />
+                            <img src={Image3} alt='streamer' />
                             <div className="proInfo">
                                 <div>
-                                    <img src={Image}/>
+                                    <img src={Image4}/>
                                 </div>
                                 <div>
                                     <h3>PikachuPro</h3>
@@ -58,10 +60,10 @@ export const TopStreams = () => {
                 <Stream>
                     <div className="container">
                         <div className='streamer-info'>
-                            <img src={Image} alt='streamer' />
+                            <img src={Image2} alt='streamer' />
                             <div className="proInfo">
                                 <div>
-                                    <img src={Image}/>
+                                    <img src={Image4}/>
                                 </div>
                                 <div>
                                     <h3>PikachuPro</h3>
@@ -129,18 +131,39 @@ const Container = styled.div`
         position: relative;
         top:-50%;
         margin-top: -2rem;
+
+
+        @media screen and (max-width: 800px){
+            grid-template-columns: 1fr;
+            width: 95%;
+            
+        }
        
 
 
         >div:nth-child(1){
             position: relative;
             top: 20%;
+
+            @media screen and (max-width: 800px){
+            top: 0;
+        }
         }
 
         >div:nth-child(3){
             position: relative;
             top: 40%;
+            @media screen and (max-width: 800px){
+            top: 40%;
         }
+        }
+
+        >div:nth-child(2){
+            position: relative;
+           
+            @media screen and (max-width: 800px){
+            top: 20%;
+        }}
         
     }
 
@@ -226,6 +249,7 @@ const Stream = styled.div`
                 width: 50px;
                 height: 50px;
                 border-radius: 50%;
+                object-fit: cover;
                 margin-right: .5rem;
             }
 

@@ -51,6 +51,7 @@ const Card = styled.div`
     padding:1rem;
     border-radius: 10px;
     margin-top: .3rem;
+    max-height: 50%;
 
 
     .header{

@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import coverImage from '/image/join.jpg'
+import coverImage from '/image/profile.jpg'
 import { Link } from "react-router-dom"
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa"
 import { RiUserFollowLine } from "react-icons/ri";
@@ -161,6 +161,7 @@ const Container = styled.div`
                     img{
                         width: 100%;
                         height: 100%;
+                        object-fit: cover;
                     }
                 }
                 .info{

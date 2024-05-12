@@ -1,28 +1,6 @@
-import axios from "axios";
-import { LocalStorage } from "../utils";
+import apiClient from "./config";
 
 
-// Create an axios instance for API requests
-const apiClient = axios.create({
-    baseURL: 'http://localhost:3000/api/v1',
-    withCredentials: true,
-    timeout: 120000,
-})
-
-
-// Add an interceptor to set authorization header with user token before requests
-apiClient.interceptors.request.use(
-    function (config) {
-        // Retrieve user token from local storage
-        const token = LocalStorage.get("token");
-        // Set authorization header with bearer token
-        config.headers.Authorization = `Bearer ${token}`
-        return config;
-    },
-    function (error) {
-        return Promise.reject(error);
-    }
-)
 
 // API functions for different actions
 const loginUser = (data: {email: string; password: string}) => {
@@ -48,33 +26,6 @@ const fetchStreamers = () => {
 }
 
 
-const createEvent = (data: {
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    duration: number;
-    price: number;
-    capacity: number;
-    location: string;
-    eventType: string;
-    rsvp: string,
-    eventInformations: [
-        {
-          title: string,
-          description: string,
-          saved: boolean,
-          error: string,
-        }
-      ]
-}) => {
-    return apiClient.post("/events/create", data);
-}
-
-
-const getEvents = () => {
-    return apiClient.get("/events/all");
-}
 
 
 
@@ -85,6 +36,4 @@ export {
     logoutUser,
     registerUser,
     fetchStreamers,
-    createEvent,
-    getEvents
 }

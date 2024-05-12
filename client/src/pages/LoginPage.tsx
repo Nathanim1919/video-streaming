@@ -1,12 +1,13 @@
 // Importing necessary components and hooks
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { IoArrowBackOutline } from "react-icons/io5";
 import { FaGoogle } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { useAuth } from '../contexts/AuthContext';
+import { jwtDecode } from 'jwt-decode';
 
 
 // Components for the login page
@@ -19,7 +20,7 @@ const LoginPage: React.FC = () => {
 
 
   // Accessing the login function from the AuthContext
-  const {login} = useAuth();
+  const {login, setToken, setUser} = useAuth();
 
   // Function to update state when input chnages
   const handleDataChange = 
@@ -36,6 +37,27 @@ const LoginPage: React.FC = () => {
   const handleSocialRegister = (social: string) => {
     window.location.href = `http://localhost:3000/api/v1/auth/${social}`;
   } 
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const accessToken = urlParams.get('accessToken');
+    const refreshToken = urlParams.get('refreshToken');
+
+    console.log(accessToken, refreshToken);
+  
+    if (accessToken && refreshToken) {
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      setToken(accessToken);
+
+
+      // Decode the accessToken to get the user information
+    const decodedToken = jwtDecode(accessToken);
+    setUser(decodedToken.user); // Store the user in the authentication context
+    }
+  }, [location, setToken, setUser]);
 
   return (
     <Container>
@@ -156,3 +178,4 @@ const Container = styled.div`
     }
   }
 `
+

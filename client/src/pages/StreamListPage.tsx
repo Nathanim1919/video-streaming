@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { IoArrowBackOutline } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import { requestHandler } from '../utils';
-import { getEvents } from '../api';
 
 
 interface Stream {
@@ -16,32 +15,7 @@ interface Stream {
 
 const StreamList: React.FC = () => {
   const [streams, setStreams] = React.useState<Stream[]>([]);
-  // const streams: Stream[] = [
-  //   { id: '1', title: 'Stream 1', streamer: 'Streamer 1', scheduledDate: '2022-01-01' },
-  //   { id: '2', title: 'Stream 2', streamer: 'Streamer 2', scheduledDate: '2022-01-02' },
-  //   { id: '3', title: 'Stream 3', streamer: 'Streamer 3', scheduledDate: '2022-01-03' },
-  //   { id: '4', title: 'Stream 4', streamer: 'Streamer 4', scheduledDate: '2022-01-04' },
-  //   { id: '5', title: 'Stream 5', streamer: 'Streamer 5', scheduledDate: '2022-01-05' },
-  //   { id: '1', title: 'Stream 1', streamer: 'Streamer 1', scheduledDate: '2022-01-01' },
-  //   { id: '2', title: 'Stream 2', streamer: 'Streamer 2', scheduledDate: '2022-01-02' },
-  //   { id: '3', title: 'Stream 3', streamer: 'Streamer 3', scheduledDate: '2022-01-03' },
-  //   { id: '4', title: 'Stream 4', streamer: 'Streamer 4', scheduledDate: '2022-01-04' },
-  //   { id: '5', title: 'Stream 5', streamer: 'Streamer 5', scheduledDate: '2022-01-05' },
-  //   { id: '1', title: 'Stream 1', streamer: 'Streamer 1', scheduledDate: '2022-01-01' },
-  //   { id: '2', title: 'Stream 2', streamer: 'Streamer 2', scheduledDate: '2022-01-02' },
-  //   { id: '3', title: 'Stream 3', streamer: 'Streamer 3', scheduledDate: '2022-01-03' },
-  //   { id: '4', title: 'Stream 4', streamer: 'Streamer 4', scheduledDate: '2022-01-04' },
-  //   { id: '5', title: 'Stream 5', streamer: 'Streamer 5', scheduledDate: '2022-01-05' },
-  //   { id: '1', title: 'Stream 1', streamer: 'Streamer 1', scheduledDate: '2022-01-01' },
-  //   { id: '2', title: 'Stream 2', streamer: 'Streamer 2', scheduledDate: '2022-01-02' },
-  //   { id: '3', title: 'Stream 3', streamer: 'Streamer 3', scheduledDate: '2022-01-03' },
-  //   { id: '4', title: 'Stream 4', streamer: 'Streamer 4', scheduledDate: '2022-01-04' },
-  //   { id: '5', title: 'Stream 5', streamer: 'Streamer 5', scheduledDate: '2022-01-05' },
-  // ];
 
-  const handleStreamClick = (streamId: string) => {
-    console.log(`Stream clicked: ${streamId}`);
-  };
 
 
   const getAllStreams = async () => {
@@ -84,6 +58,7 @@ export default StreamList;
 
 
 const Container = styled.div`
+    
     .header{
       width: 100vw;
       margin: auto;
@@ -112,3 +87,7 @@ const Container = styled.div`
       }
     }
 `
+
+function getEvents(): import("axios").AxiosResponse<import("../interfaces/api").APISuccessResponseInterface, any> | PromiseLike<import("axios").AxiosResponse<import("../interfaces/api").APISuccessResponseInterface, any>> {
+  throw new Error('Function not implemented.');
+}

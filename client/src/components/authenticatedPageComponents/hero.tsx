@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useAuth } from "../../contexts/AuthContext";
-import { UserInterface } from "../../interfaces/user";
+import { Link } from "react-router-dom";
 
 
 export const Hero = () => {
@@ -9,11 +9,11 @@ export const Hero = () => {
     return (
         <Conatiner className="hero">
             <div>
-                <h1>Welcome, {user.fullName}</h1>
+                <h1>Welcome, {user?.fullName}</h1>
                 <p>Get access to all the features by upgrading your account</p>
                 <button>Who is Live Now? </button>
             </div>
-            <button>Upgrade Account</button>
+            <Link to="/subscription">Upgrade Account</Link>
         </Conatiner>
     );
 }
@@ -51,7 +51,7 @@ const Conatiner = styled.div`
         color: #fff;
     }
 
-    button{
+    a, button{
         background-color: #ffffff;
         padding: .6rem 1rem;
         border-radius: 5px;
@@ -60,5 +60,6 @@ const Conatiner = styled.div`
         cursor: pointer;
         font-family: inherit;
         border: none;
+        text-decoration: none;
     }
 `

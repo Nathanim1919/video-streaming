@@ -13,6 +13,7 @@ import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import AuthenticatedPage from './pages/authenticatedPage';
 import { Account } from './pages/AccountPage';
+import PricingPage from './pages/pricingPage';
 
 
 const App = () => {
@@ -50,6 +51,14 @@ const App = () => {
         element={
           <PrivateRoute>
             <AuthenticatedPage/>
+          </PrivateRoute>
+        }
+      />
+       <Route 
+        path="/subscription" 
+        element={
+          <PrivateRoute>
+            <PricingPage/>
           </PrivateRoute>
         }
       />

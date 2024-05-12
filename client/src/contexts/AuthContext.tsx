@@ -6,6 +6,7 @@ import { LocalStorage , requestHandler} from '../utils'
 import Loader from '../components/Loader'
 
 
+
 // Create a context to manage authentication-related data and functions
 const AuthContext = createContext<{
     user: UserInterface | null;
@@ -119,7 +120,7 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({
 
     //  Provide authentication-related data and functions through the context
     return (
-        <AuthContext.Provider value={{user, login, register, logout, token}}>
+        <AuthContext.Provider value={{user, login, register, logout, token, setToken, setUser}}>
             {isLoading ? <Loader /> : children}
         </AuthContext.Provider>
     )

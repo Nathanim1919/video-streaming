@@ -3,7 +3,6 @@ import styled from "styled-components";
 // import close icon from 'react-icons/fa';
 import {FaTimes} from 'react-icons/fa';
 import {FaPlus} from 'react-icons/fa';
-import { createEvent } from "../api";
 import { requestHandler } from "../utils";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -14,6 +13,7 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { createTheme, ThemeProvider } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import createEvent from "../api/event";
 
 const darkTheme = createTheme({
     palette: {
