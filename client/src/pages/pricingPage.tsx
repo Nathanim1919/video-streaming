@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaCheckCircle } from "react-icons/fa";
 import styled from 'styled-components';
 
@@ -8,8 +7,8 @@ const Container = styled.div`
     justify-content: flex-start;
     align-items: center;
     color: #fff;
-    background: #000;
-    padding: 0rem;
+    background: linear-gradient(50deg, #000, #034264);
+    padding: 1rem;
     min-height: 100vh;
     gap: 3rem;
 
@@ -23,8 +22,8 @@ const Container = styled.div`
         align-items: center;
 
         h4{
-            font-size: 1.5rem;
-            color: #ddd;
+            font-size: 1rem;
+            color: #8b8787;
             margin: 0;
         }
         h1{
@@ -36,7 +35,7 @@ const Container = styled.div`
 
 
     .plans{
-        width: 70%;
+        width: 60%;
         gap: 2rem;
         /* place-items: center; */
         display: grid;
@@ -44,10 +43,13 @@ const Container = styled.div`
 
 
         div:nth-child(2){
-            transform: scale(1.1);
+            transform: scale(1.14);
+
+          
 
             button{
                 background-color: #c6c6ff;
+                color:#333
             }
             
         }
@@ -66,6 +68,20 @@ const Container = styled.div`
         background: linear-gradient(34deg, #181717, #041542);
         border-radius: 10px;
         transition: all .3s ease;
+        cursor: pointer;
+        border:1px solid #c6c6ff;
+
+
+        >button#popular{
+            background: #222121;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: .3rem 1rem;
+            color:#fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border:1px solid #6d6d8d
+        }
 
 
         .price{
@@ -81,7 +97,7 @@ const Container = styled.div`
             }
 
             span{
-                font-size: 1.5rem;
+                font-size: 1rem;
             }
 
 
@@ -107,6 +123,22 @@ const Container = styled.div`
             
         }
 
+        .head{
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+            margin-top: 3rem;
+
+            p{
+                font-size: .8rem;
+                color: #9f9a9a;
+            }
+
+            >*{
+                margin: 0;
+            }
+        }
+
 
         button{
             padding: 0.6rem 3rem;
@@ -116,11 +148,15 @@ const Container = styled.div`
             background-color: #2f2d2d;
             color: #fff;
             box-shadow: 0 10px 34px rgba(0,0,0,.2);
+
+
+            &:hover{
+                cursor: pointer;
+                opacity: .9;
+            }
         }
 
-        &:hover{
-            background: #424141;
-        }
+      
 
         h2{
             font-size: 1.8rem;
@@ -133,6 +169,15 @@ const Container = styled.div`
 
 
       
+    }
+
+    .subscription-box:nth-child(2){
+        background: linear-gradient(-145deg, #2e2c2c, #06124d);
+        .head{
+            h2{
+                color: #1d99dc;
+            }
+        }
     }
 
 `;
@@ -153,7 +198,7 @@ const PricingPage = () => {
                     </div>
                     <div className="price">
                         <h1>0</h1>
-                        <span>ETB</span>
+                        <span>ETB/month</span>
                     </div>
                     <button>Get Started</button>
                     <div className="desc">
@@ -165,13 +210,16 @@ const PricingPage = () => {
                     </div>
                 </div>
                 <div className="subscription-box">
+                    <button id="popular">
+                        Popular
+                    </button>
                     <div className="head">
                         <h2>Premium</h2>
                         <p className="desc">Perfect for streamers who want to reach a small audience and build a loyal following.</p>
                     </div>
                     <div className="price">
                         <h1>200</h1>
-                        <span>ETB</span>
+                        <span>ETB/month</span>
                     </div>
                     <button>Enterprise</button>
                     <div className="desc">
