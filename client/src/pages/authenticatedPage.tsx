@@ -7,6 +7,7 @@ import { CreateStream } from "../components/authenticatedPageComponents/createSt
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { TopStreams } from "../components/authenticatedPageComponents/TopStreames";
+import Footer from "../components/authenticatedPageComponents/footer";
 const AuthenticatedPage = () => {
     const location = useLocation();
 
@@ -31,6 +32,7 @@ const AuthenticatedPage = () => {
             <CreateStream/>
             <TopStreamers/>
             <TopStreams/>
+            <Footer/>
         </Conatiner>
     );
 }

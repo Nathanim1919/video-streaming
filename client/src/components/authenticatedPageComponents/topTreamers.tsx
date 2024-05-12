@@ -2,7 +2,7 @@ import styled from "styled-components"
 import coverImage from '/image/join.jpg'
 import { Link } from "react-router-dom"
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa"
-
+import { RiUserFollowLine } from "react-icons/ri";
 
 export const TopStreamers = () => {
     const streamers = [
@@ -87,7 +87,7 @@ export const TopStreamers = () => {
                                     </div>
                                 </div>
                                 <div className="btn">
-                                    <button>follow</button>
+                                    <button><RiUserFollowLine/>follow</button>
                                     <p>200 followers</p>
                                 </div>
                             </div>
@@ -216,6 +216,10 @@ const Container = styled.div`
                     font-weight: 800;
                     cursor: pointer;
                     transition: all .3s;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: .5rem;
                     &:hover{
                         background-color: #ddd;
                         color: #000;

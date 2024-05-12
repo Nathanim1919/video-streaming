@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import Image from '/image/join.jpg';
+import Image from '/image/bg.jpg';
+import Footer from './footer';
 
 export const TopStreams = () => {
     return (
@@ -146,9 +147,8 @@ const Container = styled.div`
 
 
     .call-to-action{
-        background-color: #f32e1c;
-        padding: 3rem;
-        border-radius: 10px;
+        background-color: #0d2550;
+        padding: 5rem 0;
         position: relative;
         margin-top: 5rem;
         width: 100%;
@@ -166,6 +166,11 @@ const Container = styled.div`
             background-color: #fff;
             margin-top: 1rem;
             padding: .5rem 1rem;
+        }
+
+        h1{
+            font-size: 3rem;
+            color: #fff;
         }
     }
 
