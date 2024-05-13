@@ -3,6 +3,7 @@ import coverImage from '/image/profile.jpg'
 import { Link } from "react-router-dom"
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa"
 import { RiUserFollowLine } from "react-icons/ri";
+import { useAuth } from "../../contexts/AuthContext";
 
 export const TopStreamers = () => {
     const streamers = [
@@ -57,11 +58,12 @@ export const TopStreamers = () => {
             profession: "Software Engineer"
         },
     ]
+    const {isAuthenticated} = useAuth();
     return (
         <Container>
             <div className="header">
             <h1>Get to know The Top Streamers around the globe</h1>
-            <Link to={'/streamers'}>Browse All</Link>
+            <Link to={isAuthenticated()?'/streamers':"/login"}>Browse All</Link>
             </div>
             <div className="streamerList">
                 {

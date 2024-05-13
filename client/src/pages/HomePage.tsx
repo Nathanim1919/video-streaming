@@ -5,6 +5,11 @@ import StreamImage from '/image/stream.jpg';
 import JoinImage from '/image/join.jpg';
 import CommunityImage from '/image/community.jpg';
 import ScheduleImage from '/image/schedule.jpg';
+import { UpcomingStreams } from '../components/authenticatedPageComponents/upcomingStreams';
+import { TopStreamers } from '../components/authenticatedPageComponents/topTreamers';
+import { TopStreams } from '../components/authenticatedPageComponents/TopStreames';
+import Footer from '../components/authenticatedPageComponents/footer';
+import { CreateStream } from '../components/authenticatedPageComponents/createStreamCall';
 
 
 const HomePage = () => {
@@ -55,6 +60,11 @@ const HomePage = () => {
         <p>DevSphere &copy; 2024</p>
         <p>Made with ❤️ by Nathanim.T</p>
     </div>
+    <UpcomingStreams/>
+    <CreateStream/>
+    <TopStreamers/>
+    <TopStreams/>
+    <Footer/>
     </Container>
   );
 };

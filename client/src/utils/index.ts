@@ -1,6 +1,6 @@
-import { Axios, AxiosResponse } from "axios";
+import {AxiosResponse } from "axios";
 import { APISuccessResponseInterface } from "../interfaces/api";
-import { UserInterface } from "../interfaces/user";
+
 
 
 // A utility function for handling API requests with loading, success and error handling
@@ -38,6 +38,8 @@ export const requestHandler = async (
 
 // Check if the code is running in a browser environment
 export const isBrowser = typeof window !== "undefined";
+
+
 
 
 // A class that provides utility functions for working with local storage

@@ -1,10 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import coverImage from '/image/stream.jpg'
 import profilePic from '/image/profile.jpg'
+import { useAuth } from '../../contexts/AuthContext';
 
 export const UpcomingStreams = () => {
+    const navigate = useNavigate()
     const streams = [
         {
             title: "Web Development Fundamentals",
@@ -39,11 +41,14 @@ export const UpcomingStreams = () => {
             pic:'/image/schedule.jpg'
         },
     ]
+
+    const {isAuthenticated} = useAuth();
+
     return (
         <Container>
             <div className="header">
         <h1>Upcoming Streams</h1>
-        <Link to={'/streames'}>Browse all</Link>
+        <Link to={isAuthenticated() ? '/streames' : "/login"}>Browse all</Link>
             </div>
             <StreamList>
                 {

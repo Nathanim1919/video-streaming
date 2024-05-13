@@ -18,13 +18,15 @@ const AuthContext = createContext<{
         profession: string;
         password: string;
     }) => Promise<void>;
-    logout: () => Promise<void>
+    logout: () => Promise<void>;
+    isAuthenticated: () => boolean;
 }>({
     user: null,
     token:null,
     login: async () => {},
     register: async () => {},
-    logout: async () => {}
+    logout: async () => {},
+    isAuthenticated: () => false
 })
 
 
@@ -86,6 +88,8 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({
         )
     }
 
+    const isAuthenticated = () => (user && token) ? true : false;
+
 
     // Function to handle user logout
     const logout = async () => {
@@ -120,7 +124,7 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({
 
     //  Provide authentication-related data and functions through the context
     return (
-        <AuthContext.Provider value={{user, login, register, logout, token, setToken, setUser}}>
+        <AuthContext.Provider value={{user, login, register, logout, token, isAuthenticated}}>
             {isLoading ? <Loader /> : children}
         </AuthContext.Provider>
     )

@@ -1,5 +1,9 @@
 import { FaCheckCircle } from "react-icons/fa";
 import styled from 'styled-components';
+import BgImage from '/image/pattern.png';
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { Link } from "react-router-dom";
+
 
 const Container = styled.div`
     display: flex;
@@ -7,7 +11,9 @@ const Container = styled.div`
     justify-content: flex-start;
     align-items: center;
     color: #fff;
-    background: linear-gradient(50deg, #000, #034264);
+    background-image: linear-gradient(50deg, #000000, #07212fee), url(${BgImage});
+    background-position: center;
+    background-size: cover;
     padding: 1rem;
     min-height: 100vh;
     gap: 3rem;
@@ -17,18 +23,28 @@ const Container = styled.div`
     }
 
     .header{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        h4{
-            font-size: 1rem;
-            color: #8b8787;
-            margin: 0;
+        a{
+            position: absolute;
+            top: 1rem;
+            left: 10rem;
+            color:#fff;
+            font-size: 2rem;
         }
-        h1{
-            font-size: 3rem;
-            margin: 0;
+        div{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+    
+            h4{
+                font-size: 1rem;
+                color: #8b8787;
+                margin: 0;
+            }
+            h1{
+                font-size: 3rem;
+                margin: 0;
+            }
+
         }
 
     }
@@ -187,8 +203,11 @@ const PricingPage = () => {
     return (
         <Container>
             <div className='header'>
-                <h1>Choose your plan</h1>
-                <h4>Choose the plan that's right for you</h4>
+                <Link to={'/me'}><IoMdArrowRoundBack/></Link>
+                <div>
+                    <h1>Choose your plan</h1>
+                    <h4>Choose the plan that's right for you</h4>
+                </div>
             </div>
             <div className="plans">
                 <div className="subscription-box">
@@ -221,7 +240,7 @@ const PricingPage = () => {
                         <h1>200</h1>
                         <span>ETB/month</span>
                     </div>
-                    <button>Enterprise</button>
+                    <button>Get Started</button>
                     <div className="desc">
                        
                             <li><FaCheckCircle /><span>10 streams per month</span></li>
@@ -232,7 +251,7 @@ const PricingPage = () => {
                 </div>
                 <div className="subscription-box">
                     <div className="head">
-                        <h2>Basic</h2>
+                        <h2>Ultimate</h2>
                         <p className="desc">Perfect for streamers who want to reach a small audience and build a loyal following.</p>
                     </div>
                     <button>Contact sale</button>
