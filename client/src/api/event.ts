@@ -20,6 +20,7 @@ const createEvent = (data: {
         }
       ]
 }) => {
+    console.log(data);
     return apiClient.post("/events/create", data);
 }
 
@@ -29,8 +30,14 @@ const getEvents = () => {
 }
 
 
+const handleRSVP =  (eventId: string) => {
+    return apiClient.post(`/events/${eventId}/rsvp`);
+}
 
-export default {
+
+
+export  {
     createEvent,
-    getEvents
+    getEvents,
+    handleRSVP
 }

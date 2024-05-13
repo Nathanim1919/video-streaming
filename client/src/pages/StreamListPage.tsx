@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { IoArrowBackOutline } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import { requestHandler } from '../utils';
+import { getEvents } from '../api/event';
 
 
 interface Stream {
@@ -87,7 +88,3 @@ const Container = styled.div`
       }
     }
 `
-
-function getEvents(): import("axios").AxiosResponse<import("../interfaces/api").APISuccessResponseInterface, any> | PromiseLike<import("axios").AxiosResponse<import("../interfaces/api").APISuccessResponseInterface, any>> {
-  throw new Error('Function not implemented.');
-}

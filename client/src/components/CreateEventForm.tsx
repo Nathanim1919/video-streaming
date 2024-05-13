@@ -13,7 +13,7 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { createTheme, ThemeProvider } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import createEvent from "../api/event";
+import {createEvent} from "../api/event";
 
 const darkTheme = createTheme({
     palette: {
@@ -98,13 +98,12 @@ export const CreateEventForm = ({setCreateEvent}: CreateEventFormProps) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             await requestHandler(
+                // console.log(event)
                     async () => await createEvent(event),
                     null,
                     () => setCreateEvent(false),
                     (error) => console.log(error)
             );
-            console.log(event)
-            
     };
 
     const createInfo = () => {

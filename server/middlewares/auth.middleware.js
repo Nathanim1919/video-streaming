@@ -15,12 +15,10 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     }
 
 
-    console.log("token: ", token)
-
-
     try{
         const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
         const user = await UserModel.findById(decodedToken?._id);
+        
 
         if (!user){
             res.status(401).json({

@@ -128,6 +128,7 @@ const Container = styled.div`
             background: linear-gradient(45deg, #970505, #59033f);
             padding: 2rem;
             color: #fff;
+          
 
 
             img{
@@ -204,6 +205,7 @@ const Container = styled.div`
                 z-index: 12;
                 box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
                 gap: 1rem;
+                border-top: 10px solid #970505;
 
 
                 >*{
@@ -246,33 +248,46 @@ const Content = styled.div`
         /* place-self: start; */
         display: flex;
         flex-direction: column;
+        align-items: flex-start;
         /* background-color: red; */
         
         h1{
             font-size: 4rem;
             margin: 0;
+            font-weight: 900;
         }
 
         h3{
             font-size: 1.5rem;
             margin: 0;
+            color: #a19e9e;
         }
 
         p{
             font-size: 1rem;
-            margin: 30px 0;
+            margin: 10px 0;
+            text-align: left;
+            width: 90%;
         }
 
         button{
-            padding: 10px 20px;
+            padding: 10px 2rem;
             background: #7f2626;
             color: #fff;
             text-decoration: none;
-            place-self: center;
+            place-self: start;
             border-radius: 5px;
             margin-top: 2rem;
             transition: all 0.3s ease-in-out;
             border: none;
+            cursor: pointer;
+
+
+            &:hover{
+                opacity: .8;
+                color: red;
+                background-color: #fff;
+            }
         }
        }
 

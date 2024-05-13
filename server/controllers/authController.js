@@ -184,14 +184,10 @@ const handleSocialLogin = asyncHandler(async (req, res) => {
         status(200).
         cookie("refreshToken", refreshToken, options).
         cookie("accessToken", accessToken, options)
-        // redirect(
-        //     // redirect user to the frontend with access and refresh token in case user is not using cookies
-        //     `${process.env.CLIENT_SSO_REDIRECT_URL}`
-        // );
-        .redirect(
+        redirect(
             // redirect user to the frontend with access and refresh token in case user is not using cookies
-            `http://localhost:5173/me?accessToken=${accessToken}&refreshToken=${refreshToken}`
-          );
+            `${process.env.CLIENT_SSO_REDIRECT_URL}`
+        );
 });
 
 export {

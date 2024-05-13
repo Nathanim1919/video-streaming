@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import StreamImage from '/image/bg.jpg'
 import { Link } from 'react-router-dom';
-import { formatDate } from '../utils';
+import { formatDate, requestHandler } from '../utils';
+import { handleRSVP } from '../api/event';
+import { useAuth } from '../contexts/AuthContext';
 
 
 interface Stream {
@@ -10,6 +12,7 @@ interface Stream {
   title: string;
   streamer: string;
   scheduledDate: string;
+  attendees: string[];
 }
 
 interface StreamListItemProps {
@@ -17,12 +20,25 @@ interface StreamListItemProps {
 }
 
 const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
-    const [countdown, setCountdown] = React.useState<{days: number, hours: number, minutes: number, seconds: number}>({days: 0, hours: 0, minutes: 0, seconds: 0});  const handleRSVP = () => {
-    // Here you would typically handle the RSVP action, such as sending a request to your server
-    console.log(`RSVP for stream ${stream.id}`);
-  };
+    const [countdown, setCountdown] = React.useState<{days: number, hours: number, minutes: number, seconds: number}>({days: 0, hours: 0, minutes: 0, seconds: 0}); 
+    
 
-//   const [countdown, setCountdown] = useState<number>(0);
+
+
+const rvsp = async (e) => {
+    e.preventDefault();
+    await requestHandler(
+        async () => await handleRSVP(stream._id),
+        null,
+        (response) => {
+          console.log(response.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      )
+    
+  };
 
 
 useEffect(() => {
@@ -50,9 +66,11 @@ useEffect(() => {
   
     // Clear the interval when the component is unmounted
     return () => clearInterval(intervalId);
-  }, []);
+  }, [stream?.attendees, stream?.date, stream?._id]);
 
 
+
+  const { user } = useAuth();
 
   return (
     <Container>
@@ -77,7 +95,7 @@ useEffect(() => {
         </p>
 
         <div className='buttons'>
-            <Link to={'/'} className='rsvp' onClick={handleRSVP}>RSVP to Attend Online</Link>
+            <Link to={'/'} className='rsvp' onClick={rvsp}>{stream.attendees.includes(user?._id) ? 'RSVP Cancelled' : 'RSVP to Attend Online'}</Link>
             <Link to={'/streames/23'} className='details'>Details and Schedule</Link>
         </div>
       </div>
