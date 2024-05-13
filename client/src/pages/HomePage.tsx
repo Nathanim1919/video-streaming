@@ -84,15 +84,24 @@ const HomePage = () => {
         </div>
       </div>
     <div className='joinCommunity'> 
-    
-        <h2>Join Our Community</h2>
-        <p>Join our community of streamers and viewers. Follow your favorite streamers, interact with other viewers, and more.</p>
-        <Link to="/signup">Sign Up</Link>
+           <h2>Become a Member in Three Easy Steps</h2>
+        <div className="membership-steps">
+            <div>
+                <h2>Sign Up</h2> 
+                <p>Create your account and join our vibrant community.</p>
+            </div>
+            <div>
+                <h2>Schedule Your Event</h2> 
+                <p>Choose from hosting an online stream or an in-person event. Provide all the necessary details, including date, time, location, and event description.</p>
+            </div>
+            <div>
+                <h2>Start Earning</h2>
+                 <p>Once your event is live and tickets are sold, watch your revenue grow. We handle the transactions, so you can focus on delivering an unforgettable experience.</p>
+            </div> 
     </div>
-    <div className='footer'>
-        <p>DevSphere &copy; 2024</p>
-        <p>Made with ❤️ by Nathanim.T</p>
+
     </div>
+
     <UpcomingStreams/>
     <CreateStream/>
     <TopStreamers/>
@@ -105,6 +114,7 @@ const HomePage = () => {
 export default HomePage;
 
 const Container = styled.div`
+    background: linear-gradient(to bottom, #00000079, #1f1f1f);
     overflow: hidden;
 
     .features{
@@ -128,62 +138,85 @@ const Container = styled.div`
 
         >div:nth-child(1){
             grid-column: span 2;
-            /* grid-row: span 2; */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            >*{
+                margin: 0;
+            }
+
+            h1{
+                font-size: 3rem;
+                text-align: center;
+            }
+            
+
+            .btns{
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+               justify-self: end;
+                margin-top: 1rem;
+
+                a{
+                    background-color: #ffffff;
+                    padding: 10px 20px;
+                    text-decoration: none;
+                }
+            }
         }
     }
 
 
     .joinCommunity{
-        text-align: center;
-        padding:3rem 20px;
         color: #fff;
-        background:linear-gradient(to bottom, #000000ea, #00000079), url(${CommunityImage});
-        /* background-size: cover;
-        background-position: center; */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin: 2rem 0;
-        height: 50vh;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
 
-
-        >*{
-            margin: 0;
-        }
-
-        h2{
+        >h2{
             font-size: 3rem;
+            margin: 2rem 0;
         }
 
-        p{
-            font-size: 1rem;
-            margin: 10px 0;
-        }
 
-        a{
-            padding: 10px 20px;
-            background: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 2rem;
-            transition: all 0.3s ease-in-out;
-        }
-    
-    }
+        .membership-steps{
+            display: grid;
+            width: 70%;
+            margin: auto;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            position: relative;
 
-    .footer{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        color: #fff;
-        padding: 2rem;
 
-        >*{
-            margin: 0;
+            >*{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-color: #000000e4;
+                padding: 1rem;
+                color: #fff;
+                position: relative;
+                z-index: 12;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                gap: 1rem;
+
+
+                >*{
+                    margin: 0em;
+                
+                }
+
+                p{
+                    text-align: center;
+                    font-size: 0.9rem;
+                    color: #a49d9d;
+                }
+            }
         }
     }
 `
