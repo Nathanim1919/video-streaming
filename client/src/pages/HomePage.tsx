@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import BgImage from '/image/bg.jpg';
+import BgImage from '/home/bg.jpg';
 import StreamImage from '/image/stream.jpg';
 import JoinImage from '/image/join.jpg';
 import CommunityImage from '/image/community.jpg';
@@ -10,6 +10,13 @@ import { TopStreamers } from '../components/authenticatedPageComponents/topTream
 import { TopStreams } from '../components/authenticatedPageComponents/TopStreames';
 import Footer from '../components/authenticatedPageComponents/footer';
 import { CreateStream } from '../components/authenticatedPageComponents/createStreamCall';
+import Image1 from '/home/live.jpeg';
+import Image3 from '/home/live2.jpeg';
+import Image4 from '/home/live3.jpg';
+import Image2 from '/home/people.jpg';
+import Icon1 from '/icon/icon1.png';
+import Icon2 from '/icon/icon2.png';
+import Icon3 from '/icon/icon3.png';
 
 
 const HomePage = () => {
@@ -26,32 +33,58 @@ const HomePage = () => {
             </div>
         </div>
         <div className='header'>
-            <h1>DevSphere Virtual Streaming App</h1>
-            <p>Join the community and share your moments live with the world, or tune in to watch others.</p>
-            <div>
-                <input type="text" placeholder="Search streams" />
-                <button>Search</button>
+            <div className="hero-text-content">
+                <h1>Buy Tix or Host</h1>
+                <h3>Experience live events, both online and in person</h3>
+                <p>Whether you're a fan of a live event or a host, you can buy tickets or host your own, through DevSphere.</p>
+                <button>Get Started</button>
             </div>
+            <div className="images">
+                <img src={Image1} alt="Live Stream" />
+                <img src={Image3} alt="Live Stream" />
+                <img src={Image4} alt="Live Stream" />
+                <img src={Image2} alt="People" />
+            </div>
+
         </div>
     </Content>
       <div className='features'>
-        <div className='startStream'>
-            <h2>Start Your Own Stream</h2>
-            <p>Got something you want to share? Start your own stream and broadcast live to viewers all over the world.</p>
-            <Link to="/start-stream">Start Streaming</Link>
-        </div>  
-        <div className='joinStream'>
-            <h2>Join a Stream</h2>
-            <p>Want to see what others are up to? Join a stream and interact with the streamer and other viewers in real time.</p>
-            <Link to="/streames">View Streams</Link>
+        <div className="inspiration">
+            <h1>Give your attendee a great experiance</h1>
+            <p>With DevSphere, you can give your attendees a great experience.</p>
+
+            <div className="btns">
+                <Link to="/signup">Get Started</Link>
+                <Link to="/login">Contact Us</Link>
+            </div>
         </div>
-        <div className='streames'>
-            <h2>Create and Schedule Stream</h2>
-            <p>Streamers can create and schedule streams for their viewers to RSVP and join in at the scheduled time.</p>
-            <Link to="/create-stream">wanna see?</Link>
+
+        <div className="social-eng">
+            <img src={Icon1} alt="Social Engagement" />
+            <h2>Social Engagement</h2>
+            <p>Engage with your audience through our social engagement features.</p>
+        </div>
+
+        <div className="eventManagement">
+        <img src={Icon2} alt="Social Engagement" />
+            <h2>Event Management</h2>
+            <p>Manage your events with our easy to use event management tools.</p>
+        </div>
+
+        <div className="ticketScanning">
+        <img src={Icon3} alt="Social Engagement" />
+            <h2>Ticket Scanning</h2>
+            <p>Scan tickets with our easy to use ticket scanning tools.</p>
+        </div>
+
+        <div className="securePayment">
+        <img src={Icon1} alt="Social Engagement" />
+            <h2>Secure Payment</h2>
+            <p>Pay securely with our secure payment system.</p>
         </div>
       </div>
     <div className='joinCommunity'> 
+    
         <h2>Join Our Community</h2>
         <p>Join our community of streamers and viewers. Follow your favorite streamers, interact with other viewers, and more.</p>
         <Link to="/signup">Sign Up</Link>
@@ -75,67 +108,28 @@ const Container = styled.div`
     overflow: hidden;
 
     .features{
-        display: flex;
-        justify-content: space-around;
-        padding: 4rem;
-        gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        width: 70%;
+        margin: 5rem auto;
 
-        .startStream, .joinStream, .streames{
-            width: 30%;
-            padding:2rem;
-            border-radius: 5px;
+        >div{
+            background: linear-gradient(45deg, #970505, #59033f);
+            padding: 2rem;
             color: #fff;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
 
 
-            >*{
-                margin: 0;
-            }
-
-            h2{
-                font-size: 2rem;
-            }
-
-            p{
-                font-size: 1rem;
-                margin: 10px 0;
-            }
-
-            a{
-                padding: 10px 20px;
-                background: #007bff;
-                color: #fff;
-                text-decoration: none;
-                border-radius: 5px;
-                margin-top: 2rem;
-                transition: all 0.3s ease-in-out;
+            img{
+                width: 100px;
+                margin: 0 auto;
             }
         }
 
-        .startStream{
-            background:linear-gradient(to bottom, #0000008d, #00000079), url(${StreamImage});
-            background-size: cover;
-            background-position: center;
+        >div:nth-child(1){
+            grid-column: span 2;
+            /* grid-row: span 2; */
         }
-
-        .joinStream{
-            background:linear-gradient(to bottom, #0000008d, #00000079), url(${JoinImage});
-            background-size: cover;
-            background-position: center;
-        }
-
-        .streames{
-            background:linear-gradient(to bottom, #0000008d, #00000079), url(${ScheduleImage});
-            background-size: cover;
-            background-position: center;
-        }
-        
-    
     }
 
 
@@ -206,21 +200,76 @@ const Content = styled.div`
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
     .header{
-        transform: translateY(50%);
+       display: grid;
+       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+       /* min-height: 100vh; */
+       width: 80%;
+       gap: 2rem;
+       margin:5rem auto;
+       place-items: center;
+
+
+       .hero-text-content{
+        /* place-self: start; */
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 10px;
-
-       
-
+        /* background-color: red; */
+        
         h1{
             font-size: 4rem;
-            margin-bottom: 0;
-            /* font-family: "Poetsen One", sans-serif; */
+            margin: 0;
         }
+
+        h3{
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        p{
+            font-size: 1rem;
+            margin: 30px 0;
+        }
+
+        button{
+            padding: 10px 20px;
+            background: #7f2626;
+            color: #fff;
+            text-decoration: none;
+            place-self: center;
+            border-radius: 5px;
+            margin-top: 2rem;
+            transition: all 0.3s ease-in-out;
+            border: none;
+        }
+       }
+
+       img{
+        width: 100%;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+       }
+
+
+       .images{
+        position: relative;
+        img:nth-child(1), img:nth-child(2), img:nth-child(3){
+            position: absolute;
+            right: -10%;
+            width: 60%;
+            top: -15%;
+        }
+        img:nth-child(2){
+            left: -30%;
+            top: -20%;
+            width: 40%;
+        }
+        img:nth-child(3){
+            left: -5%;
+            top: 40%;
+            width: 40%;
+        }
+       }
+
     }
 
 
