@@ -6,6 +6,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { fetchStreamers } from "../api";
 import { requestHandler } from "../utils";
+import Loader from "../components/Loader";
 
 export interface Streamer {
     id: string;
@@ -18,13 +19,14 @@ export interface Streamer {
 
 const StreamerPage = () => {
     const [streamers, setStreamers] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     // fetch all streamers
     useEffect(() => {
         (async () => {await requestHandler(
             async () => await fetchStreamers(),
-            null,
+            setIsLoading,
             (response) => {
                 console.log(response.data);
                 setStreamers(response.data);
@@ -37,23 +39,23 @@ const StreamerPage = () => {
 
 
     return (
-        <Container>
-
-            <div className='topheader'>
-                <div className='back'>
-                    <Link to="/"><IoArrowBackOutline size={30} color='#fff' /></Link>
+        isLoading ? <Loader /> : (
+            <Container>
+                <div className='topheader'>
+                    <div className='back'>
+                        <Link to="/"><IoArrowBackOutline size={30} color='#fff' /></Link>
+                    </div>
+                    <p>Connect with your favorite streamers</p>
                 </div>
-                <p>Connect with your favorite streamers</p>
-            </div>
-            <div className="streamer-list">
-            {streamers.length === 0 ? <p>No streamers available</p> :
-                streamers.map((streamer: Streamer) => (
-                <StreamerList key={streamer.id} streamer={streamer} />
-            ))
-        }
-            </div>
-
-        </Container>
+                <div className="streamer-list">
+                    {streamers.length === 0 ? <p>No streamers available</p> :
+                        streamers.map((streamer: Streamer) => (
+                            <StreamerList key={streamer.id} streamer={streamer} />
+                        ))
+                    }
+                </div>
+            </Container>
+        )
     );
 };
 

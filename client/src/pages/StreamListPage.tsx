@@ -5,6 +5,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import { requestHandler } from '../utils';
 import { getEvents } from '../api/event';
+import Loader from '../components/Loader';
 
 
 interface Stream {
@@ -16,6 +17,7 @@ interface Stream {
 
 const StreamList: React.FC = () => {
   const [streams, setStreams] = React.useState<Stream[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
 
 
@@ -23,7 +25,7 @@ const StreamList: React.FC = () => {
     // Call the API to fetch all streams
     await requestHandler(
       async () => await getEvents(),
-      null,
+      setIsLoading,
       (response) => {
         console.log(response.data);
         setStreams(response.data);
@@ -40,6 +42,7 @@ const StreamList: React.FC = () => {
   }, []);
 
   return (
+    isLoading ? <Loader /> : (
     <Container>
       <div className='header'>
         <Link to={'/'}><IoArrowBackOutline/></Link>
@@ -52,6 +55,7 @@ const StreamList: React.FC = () => {
         <StreamListItem key={stream.id} stream={stream} />
       ))}
     </Container>
+    )
   );
 };
 

@@ -44,8 +44,6 @@ const LoginPage: React.FC = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const accessToken = urlParams.get('accessToken');
     const refreshToken = urlParams.get('refreshToken');
-
-    console.log(accessToken, refreshToken);
   
     if (accessToken && refreshToken) {
       localStorage.setItem('accessToken', accessToken);

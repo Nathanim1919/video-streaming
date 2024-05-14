@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { formatDate, requestHandler } from '../utils';
 import { handleRSVP, removeRsvp } from '../api/event';
 import { useAuth } from '../contexts/AuthContext';
+import { ImSpinner9 } from "react-icons/im";
+
 
 
 interface Stream {
@@ -23,6 +25,7 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
     const { user } = useAuth();
     const [countdown, setCountdown] = useState<{days: number, hours: number, minutes: number, seconds: number}>({days: 0, hours: 0, minutes: 0, seconds: 0}); 
     const [isRsvp, setIsRsvp] = useState(stream.attendees.includes(user?._id));
+    const [isLoading, setIsLoading] = useState(false);
 
 
 
@@ -30,7 +33,7 @@ const handleRvsp =useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
     await requestHandler(
         async () => await handleRSVP(stream._id),
-        null,
+        setIsLoading,
         (response) => {
           console.log(response.data);
           setIsRsvp(true);
@@ -47,7 +50,7 @@ const handleRemoveRsvp = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
     await requestHandler(
         async () => await removeRsvp(stream._id),
-        null,
+        setIsLoading,
         (response) => {
           console.log(response.data);
           setIsRsvp(false);
@@ -124,7 +127,7 @@ useEffect(() => {
 
         <div className='buttons'>
             <Link to={'/'} className={isRsvp? 'cancel' : 'rsvp'} 
-              onClick={handleRsvpClick}>{isRsvp? 'Cancel My Online RSVP' : 'RSVP to Attend Online'}
+              onClick={handleRsvpClick}>{isLoading && <ImSpinner9/>}{isRsvp? 'Cancel My Online RSVP' : 'RSVP to Attend Online'}
             </Link>
             <Link to={'/streames/23'} className='details'>Details and Schedule</Link>
         </div>
@@ -219,6 +222,21 @@ const Container = styled.div`
                 transition: all 0.3s ease-in-out;
                 border: none;
                 cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: .3rem;
+                transition: all 0.3s ease-in-out;
+            }
+
+            a:nth-child(1){
+              >*:nth-child(1){
+                animation: spin 2s linear infinite;
+              }
+
+              @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
             }
 
             a.cancel{
