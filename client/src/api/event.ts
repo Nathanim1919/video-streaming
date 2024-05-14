@@ -35,9 +35,15 @@ const handleRSVP =  (eventId: string) => {
 }
 
 
+const removeRsvp =  (eventId: string) => {
+    return apiClient.delete(`/events/${eventId}/rsvp`);
+}
+
+
 
 export  {
     createEvent,
     getEvents,
-    handleRSVP
+    handleRSVP,
+    removeRsvp
 }

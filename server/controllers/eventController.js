@@ -72,6 +72,49 @@ export const handleRSVP = asyncHandler(async (req, res) => {
   });
 
 
+export const removeRsvp = asyncHandler(async (req, res) => {
+    const { eventId } = req.params;
+    const { _id: userId } = req.user;
+  
+    const event = await EventModel.findOne({
+      _id: eventId,
+      attendees: userId
+    });
+  
+    if (!event) {
+      return res.status(404).json({
+        message: "Event not found or user already RSVP'd"
+      });
+    }
+  
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+  
+    const index = event.attendees.indexOf(userId);
+    if (index > -1) {
+      event.attendees.splice(index, 1);
+    }
+  
+    const indexRsvp = user.rvps.indexOf(eventId);
+    if (indexRsvp > -1) {
+      user.rvps.splice(indexRsvp, 1);
+    }
+  
+    await event.save();
+    await user.save();
+  
+    res.status(200).json({
+      success: true,
+      data: event,
+      message: "Rsvp removed successfully"
+    });
+  });
+
+
 
 export const isRsvped = asyncHandler(async (req, res) => {
     const { eventId } = req.body;

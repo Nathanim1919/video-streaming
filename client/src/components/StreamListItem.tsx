@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import StreamImage from '/image/bg.jpg'
 import { Link } from 'react-router-dom';
 import { formatDate, requestHandler } from '../utils';
-import { handleRSVP } from '../api/event';
+import { handleRSVP, removeRsvp } from '../api/event';
 import { useAuth } from '../contexts/AuthContext';
 
 
 interface Stream {
-  id: string;
+  id: string | undefined | null;
   title: string;
   streamer: string;
   scheduledDate: string;
@@ -20,31 +20,59 @@ interface StreamListItemProps {
 }
 
 const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
-    const [countdown, setCountdown] = React.useState<{days: number, hours: number, minutes: number, seconds: number}>({days: 0, hours: 0, minutes: 0, seconds: 0}); 
-    
+    const { user } = useAuth();
+    const [countdown, setCountdown] = useState<{days: number, hours: number, minutes: number, seconds: number}>({days: 0, hours: 0, minutes: 0, seconds: 0}); 
+    const [isRsvp, setIsRsvp] = useState(stream.attendees.includes(user?._id));
 
 
 
-const rvsp = async (e) => {
+const handleRvsp =useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
     await requestHandler(
         async () => await handleRSVP(stream._id),
         null,
         (response) => {
           console.log(response.data);
+          setIsRsvp(true);
         },
         (error) => {
           console.log(error);
         }
       )
     
-  };
+  }, [stream._id]);
+
+
+const handleRemoveRsvp = useCallback(async (e: React.MouseEvent) => {
+    e.preventDefault();
+    await requestHandler(
+        async () => await removeRsvp(stream._id),
+        null,
+        (response) => {
+          console.log(response.data);
+          setIsRsvp(false);
+        },
+        (error) => {
+          console.log(error);
+        }
+    )
+}, [stream._id]);
+
+
+
+const handleRsvpClick = useCallback(async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isRsvp) {
+      handleRemoveRsvp(e);
+  } else {
+    handleRvsp(e);
+  }
+}, [handleRemoveRsvp, handleRvsp, isRsvp]);
+
+const eventDate = useMemo(() => new Date(stream?.date), [stream?.date]);
 
 
 useEffect(() => {
-    // Parse the event date and time
-    const eventDate = new Date(stream?.date);
-  
     // Update the countdown every second
     const intervalId = setInterval(() => {
       const now = new Date();
@@ -66,11 +94,11 @@ useEffect(() => {
   
     // Clear the interval when the component is unmounted
     return () => clearInterval(intervalId);
-  }, [stream?.attendees, stream?.date, stream?._id]);
+  }, [eventDate]);
 
 
 
-  const { user } = useAuth();
+
 
   return (
     <Container>
@@ -95,7 +123,9 @@ useEffect(() => {
         </p>
 
         <div className='buttons'>
-            <Link to={'/'} className='rsvp' onClick={rvsp}>{stream.attendees.includes(user?._id) ? 'RSVP Cancelled' : 'RSVP to Attend Online'}</Link>
+            <Link to={'/'} className={isRsvp? 'cancel' : 'rsvp'} 
+              onClick={handleRsvpClick}>{isRsvp? 'Cancel My Online RSVP' : 'RSVP to Attend Online'}
+            </Link>
             <Link to={'/streames/23'} className='details'>Details and Schedule</Link>
         </div>
       </div>
@@ -189,6 +219,11 @@ const Container = styled.div`
                 transition: all 0.3s ease-in-out;
                 border: none;
                 cursor: pointer;
+            }
+
+            a.cancel{
+              color: #fff;
+              background: #dc3545;
             }
 
             .details{
