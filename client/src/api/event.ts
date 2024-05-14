@@ -29,6 +29,10 @@ const getEvents = () => {
     return apiClient.get("/events/all");
 }
 
+const getEvent = (eventId: string) => {
+    return apiClient.get(`/events/${eventId}`);
+}
+
 
 const handleRSVP =  (eventId: string) => {
     return apiClient.post(`/events/${eventId}/rsvp`);
@@ -45,5 +49,6 @@ export  {
     createEvent,
     getEvents,
     handleRSVP,
-    removeRsvp
+    removeRsvp,
+    getEvent
 }

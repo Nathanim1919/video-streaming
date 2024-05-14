@@ -78,7 +78,7 @@ const App = () => {
       <Route path='/streamers/:id' element={<UserProfilePage/>}/>
       {/* <Route path="/viewer" element={<Viewer/>}/> */}
       <Route path="/streames" element={<StreamList/>}/>
-      <Route path='/streames/:id' element={<EventDetailPage/>}/>
+      <Route path='/streames/:eventId' element={<EventDetailPage/>}/>
       <Route path="*" element={<p>404 Not found</p>} />
     </Routes>
   );

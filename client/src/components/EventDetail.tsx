@@ -1,11 +1,52 @@
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import ProImage from '/image/bg.jpg';
 import styled from 'styled-components';
+import { requestHandler } from '../utils';
+import { getEvent } from '../api/event';
+import Loader from './Loader';
+import { useAuth } from '../contexts/AuthContext';
+import useRsvp from '../customeHook/useRsvp';
+import { ImSpinner9 } from "react-icons/im";
+import { EVENT } from '../interfaces/event';
 
 
+  
+
+interface EventDetailProps {
+    eventId: string;
+}
 
 const EventDetail = () => {
+    const {user} = useAuth();
+    const [isLoading, setIsLoading] = React.useState(false);
+    const {eventId} = useParams();
+    const [eventDetail, setEventDetail] = useState<EVENT>({});
+    const [isRsvp, setIsRsvp] = useState(eventDetail.data?.attendees?.includes(user?._id));
+    const [error, setError] = React.useState({});
+
+
+  
+
+    const getEventDetail = async (props: EventDetailProps) => {
+        if (!props.eventId) return;
+        await requestHandler(
+            async () => await getEvent(props.eventId),
+            setIsLoading,
+            setEventDetail,
+            setError
+        );
+    };
+
+
+    const handleRsvpClick = useRsvp(eventDetail.data._id, isRsvp, setIsRsvp, setIsLoading);
+
+    useEffect(() => {
+        getEventDetail(eventId);
+    }, [eventId]);
+
     return (
+        isLoading ? <Loader /> :
         <Container>
             <div className="header">
                 <div className="image">
@@ -13,14 +54,14 @@ const EventDetail = () => {
                 </div>
                 <div className="info">
                     <p>May 22 to 23, 2024 - 9:30am to 5:30pm Central Daylight Time </p>
-                    <h3>Complete Intro to Containers</h3>
+                    <h3>{eventDetail.data?.title}</h3>
                     <div className="streamer">
                         <div className="profilePic">
                             <img src={ProImage} alt="Streamer" />
                         </div>
                         <div className="streamerInfo">
-                            <h4>Nathanim Tadele</h4>
-                            <p>Full-Stack Engineer</p>
+                            <h4>{eventDetail.data?.owner?.fullName}</h4>
+                            <p>{eventDetail.data?.owner?.profession}</p>
                         </div>
                     </div>
                 </div>
@@ -31,41 +72,41 @@ const EventDetail = () => {
                     <div>
                         <div>
                             <h4>What?</h4>
-                            <p>Complete Intro to Containers</p>
+                            <p>{eventDetail.data?.title}</p>
                         </div>
                         <div>
                             <h4>When?</h4>
-                            <p>May 22 to 23, 2024 - 9:30am to 5:30pm Central Daylight Time</p>
+                            <p>{eventDetail.data?.date}</p>
                         </div>
                         <div>
                             <h4>Where?</h4>
-                            <p>Online</p>
+                            <p>{eventDetail.data?.location}</p>
                         </div>
                     </div>
-                    <Link to={'/'} className='rsvp'>RSVP to Attend Online</Link>
+                    <Link to={'/'} className={isRsvp? 'cancel' : 'rsvp'} 
+                onClick={handleRsvpClick}>{isLoading && <ImSpinner9/>}{isRsvp? 'Cancel My Online RSVP' : 'RSVP to Attend Online'}
+              </Link>
                 </div>
                 <div className="description">
                     <h2>What you need to know?</h2>
                     <div>
-                        <div>
-                            <h4>Description</h4>
-                            <p>In this workshop, you'll learn the basics of Docker and Kubernetes through a series of lectures and hands-on labs.</p>
-                        </div>
-                        <div>
-                            <h4>What to bring</h4>
-                            <p>Bring your laptop and an open mind. No prior knowledge of containers or Kubernetes is required.</p>
-                        </div>
-                        <div>
-                            <h4>How to prepare</h4>
-                            <p>Install Docker Desktop and kubectl on your laptop before attending the workshop. Instructions will be sent via email before the event.</p>
-                        </div>
+                        {
+                            eventDetail.data?.eventInformations?.map((info, index) => (
+                                <div key={index}>
+                                    <h4>{info.title}</h4>
+                                    <p>{info.description}</p>
+                                </div>
+                            ))
+                        }
                     </div>
                 </div>   
             </div>
             <div className="callToAction">
                 <h2>Ready to Attend?</h2>
                 <p>RSVP now to attend the workshop online.</p>
-                <Link to={'/'} className='rsvp'>RSVP to Attend Online</Link>
+                <Link to={'/'} className={isRsvp? 'cancel' : 'rsvp'} 
+                onClick={handleRsvpClick}>{isLoading && <ImSpinner9/>}{isRsvp? 'Cancel My Online RSVP' : 'RSVP to Attend Online'}
+              </Link>
             </div>
             <div className="upcoming">
                 <h2>Upcoming Events</h2>
@@ -94,7 +135,7 @@ const Container = styled.div`
         display: grid;
         grid-template-columns: .3fr .7fr;
         background-color: #000;
-        position: sticky;
+        /* position: sticky; */
         top: 0;
 
 
@@ -271,6 +312,11 @@ p{
     color: #7a7575;
     font-size: 1rem;
 }
+
+a.cancel{
+                color: #fff;
+                background: #dc3545;
+              }
 
 .rsvp{
     padding: .5rem 1rem;

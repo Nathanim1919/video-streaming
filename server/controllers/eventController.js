@@ -136,3 +136,16 @@ export const isRsvped = asyncHandler(async (req, res) => {
       data: event
     });
 })
+
+
+
+export const getEvent = asyncHandler(async (req, res) => {
+    const { eventId } = req.params;
+
+    const event = await EventModel.findById(eventId).populate("owner");
+
+    res.status(200).json({
+        success: true,
+        data: event
+    })
+});

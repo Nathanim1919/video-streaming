@@ -1,5 +1,5 @@
 import express from 'express';
-import { createEvent, getAllEvents,handleRSVP, removeRsvp } from '../controllers/eventController.js';
+import { createEvent, getAllEvents,handleRSVP, removeRsvp, getEvent } from '../controllers/eventController.js';
 import { verifyJWT } from '../middlewares/auth.middleware.js';
 
 
@@ -10,6 +10,7 @@ router.post('/create',verifyJWT, createEvent);
 router.get('/all', verifyJWT,getAllEvents)
 router.post('/:eventId/rsvp', verifyJWT, handleRSVP)
 router.delete('/:eventId/rsvp', verifyJWT, removeRsvp)
+router.get('/:eventId', verifyJWT, getEvent)
 
 
 

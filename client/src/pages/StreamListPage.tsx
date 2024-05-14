@@ -27,7 +27,6 @@ const StreamList: React.FC = () => {
       async () => await getEvents(),
       setIsLoading,
       (response) => {
-        console.log(response.data);
         setStreams(response.data);
       },
       (error) => {
