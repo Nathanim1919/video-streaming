@@ -8,10 +8,29 @@ import Loader from './Loader';
 import { useAuth } from '../contexts/AuthContext';
 import useRsvp from '../customeHook/useRsvp';
 import { ImSpinner9 } from "react-icons/im";
-import { EVENT } from '../interfaces/event';
 
 
-  
+interface EventDetailData {
+    data: {
+        attendees: string[];
+        title: string;
+        description: string;
+        date: string;
+        time: string;
+        location: string;
+        eventType: string;
+        rsvp: string;
+        eventInformations: [
+            {
+                title: string,
+                description: string,
+                saved: boolean,
+                error: string,
+            }
+        ]
+    }
+}
+
 
 interface EventDetailProps {
     eventId: string;
@@ -21,12 +40,8 @@ const EventDetail = () => {
     const {user} = useAuth();
     const [isLoading, setIsLoading] = React.useState(false);
     const {eventId} = useParams();
-    const [eventDetail, setEventDetail] = useState<EVENT>({});
+    const [eventDetail, setEventDetail] = useState<any>({});
     const [isRsvp, setIsRsvp] = useState(eventDetail.data?.attendees?.includes(user?._id));
-    const [error, setError] = React.useState({});
-
-
-  
 
     const getEventDetail = async (props: EventDetailProps) => {
         if (!props.eventId) return;
@@ -38,8 +53,7 @@ const EventDetail = () => {
         );
     };
 
-
-    const handleRsvpClick = useRsvp(eventDetail.data._id, isRsvp, setIsRsvp, setIsLoading);
+    const handleRsvpClick = useRsvp(eventDetail.data?._id, isRsvp, setIsRsvp, setIsLoading);
 
     useEffect(() => {
         getEventDetail(eventId);

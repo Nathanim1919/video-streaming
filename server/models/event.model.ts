@@ -1,8 +1,8 @@
+import Event from "../interfaces/event.interface";
+import mongoose, { Schema, Document } from "mongoose";
 
-import mongoose, { Schema } from "mongoose";
 
-
-const EventSchema = new Schema({
+const EventSchema = new Schema<Event>({
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -32,7 +32,7 @@ const EventSchema = new Schema({
         ref: 'User'
     }],
     rsvp: {
-        type: String,
+        type: Boolean,
         default: false
     },
     status: {

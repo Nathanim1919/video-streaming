@@ -190,7 +190,7 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
 
               a:nth-child(1){
                 >*:nth-child(1){
-                  animation: spin 2s linear infinite;
+                  animation: spin 1s linear infinite;
                 }
 
                 @keyframes spin {

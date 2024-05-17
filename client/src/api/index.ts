@@ -26,6 +26,16 @@ const fetchStreamers = () => {
 }
 
 
+const handleFollow = (streamerId: string) => {
+    return apiClient.post(`/auth/streamers/${streamerId}/follow`);
+
+}
+
+
+const handleUnFollow = (streamerId: string) => {
+    return apiClient.post(`/auth/streamers/${streamerId}/unfollow`);
+
+}
 
 
 
@@ -36,4 +46,6 @@ export {
     logoutUser,
     registerUser,
     fetchStreamers,
+    handleFollow,
+    handleUnFollow
 }

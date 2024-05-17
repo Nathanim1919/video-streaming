@@ -75,7 +75,7 @@ const App = () => {
         element={<StreamerPage/>}
       />
 
-      <Route path='/streamers/:id' element={<UserProfilePage/>}/>
+      <Route path='/streamers/:userId' element={<UserProfilePage/>}/>
       {/* <Route path="/viewer" element={<Viewer/>}/> */}
       <Route path="/streames" element={<StreamList/>}/>
       <Route path='/streames/:eventId' element={<EventDetailPage/>}/>

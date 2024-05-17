@@ -1,5 +1,5 @@
-import EventModel from "../models/EventModel.js";
-import UserModel from "../models/UserModel.js";
+import EventModel from "../models/event.model.js";
+import UserModel from "../models/user.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 

@@ -5,6 +5,10 @@ import { MdEmojiEvents } from "react-icons/md";
 import { RiUserFollowLine } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { ImSpinner9 } from "react-icons/im";
+import useFollow from "../customeHook/useFollow";
 
 
 
@@ -16,6 +20,13 @@ type StreamerListProps = {
 }
 
 const StreamerList: React.FC<StreamerListProps> = ({streamer}) => {
+    const {user} = useAuth();
+    const [isLoading, setIsLoading] = useState(false);
+    const [isFollow, setIsFollow] = useState(() => streamer.followers.includes(user?._id));
+
+    const handleFollowClick = useFollow(streamer._id, isFollow, setIsFollow, setIsLoading);
+
+
     return (
         <Card>
             <div className="header">
@@ -28,12 +39,13 @@ const StreamerList: React.FC<StreamerListProps> = ({streamer}) => {
                 </div>
             </div>
             <div className="info">
-                <p><RiUserFollowLine/>100 followers</p>
+                <p><RiUserFollowLine/>{streamer.followers.length} followers</p>
                 <p><MdEmojiEvents/>Rating: 4.5</p>
             </div>
-
             <div className="buttons">
-                <Link to={'/follow'} className="rsvp"><RiUserFollowLine/>Follow</Link>
+                <Link 
+                    onClick={handleFollowClick}
+                    to={'/follow'} className="rsvp">{isLoading? <span className="spinner"><ImSpinner9/></span>:<RiUserFollowLine/>}{!isFollow?"Follow":"following"}</Link>
                 <Link to={'/streamers/23'}className="details"><CgProfile/>View Profile</Link>
             </div>
         </Card>
@@ -136,6 +148,17 @@ const Card = styled.div`
             }
             
         }
+
+        a > .spinner{
+                >*:nth-child(1){
+                  animation: spin 1s linear infinite;
+                }
+
+                @keyframes spin {
+                  0% { transform: rotate(0deg); }
+                  100% { transform: rotate(360deg); }
+                }
+              }
 
         .rsvp{
             background: #007bff;

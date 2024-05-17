@@ -4,62 +4,33 @@ import { Link } from "react-router-dom"
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa"
 import { RiUserFollowLine } from "react-icons/ri";
 import { useAuth } from "../../contexts/AuthContext";
+import { useEffect, useState } from "react";
+import { requestHandler } from "../../utils";
+import { fetchStreamers } from "../../api";
+import Loader from "../Loader";
 
 export const TopStreamers = () => {
-    const streamers = [
-        {
-            name: "Streamer 2",
-            followers: 2000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Streamer 3",
-            followers: 3000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Streamer 1",
-            followers: 1000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Streamer 2",
-            followers: 2000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Streamer 3",
-            followers: 3000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Streamer 2",
-            followers: 2000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Streamer 3",
-            followers: 3000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Streamer 1",
-            followers: 1000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Streamer 2",
-            followers: 2000,
-            profession: "Software Engineer"
-        },
-        {
-            name: "Streamer 3",
-            followers: 3000,
-            profession: "Software Engineer"
-        },
-    ]
+    const [streamers, setStreamers] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    
+
+    // fetch all streamers
+    useEffect(() => {
+        (async () => {await requestHandler(
+            async () => await fetchStreamers(),
+            setIsLoading,
+            (response) => {
+                setStreamers(response.data);
+            },
+            (error) => {
+                console.log(error);
+            }
+        )})();
+    }, []);
+
     const {isAuthenticated} = useAuth();
     return (
+        isLoading ? <Loader /> :
         <Container>
             <div className="header">
             <h1>Get to know The Top Streamers around the globe</h1>
@@ -75,7 +46,7 @@ export const TopStreamers = () => {
                                         <img src={coverImage} alt="profile" />
                                     </div>
                                     <div className="info">
-                                       <h3>{(streamer.name)}</h3>
+                                       <h3>{(streamer.fullName)}</h3>
                                         <p>{(streamer.profession)}</p>
                                     </div>
                                 </div>
@@ -90,7 +61,7 @@ export const TopStreamers = () => {
                                 </div>
                                 <div className="btn">
                                     <button><RiUserFollowLine/>follow</button>
-                                    <p>200 followers</p>
+                                    <p>{streamer.followers.length} followers</p>
                                 </div>
                             </div>
                         )

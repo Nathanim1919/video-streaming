@@ -8,8 +8,7 @@ export default function useRsvp(streamId: string, isRsvp: boolean, setIsRsvp: (v
     await requestHandler(
         async () => await handleRSVP(streamId),
         setIsLoading,
-        (response) => {
-          console.log(response.data);
+        () => {
           setIsRsvp(true);
         },
         (error) => {
@@ -23,8 +22,7 @@ export default function useRsvp(streamId: string, isRsvp: boolean, setIsRsvp: (v
     await requestHandler(
         async () => await removeRsvp(streamId),
         setIsLoading,
-        (response) => {
-          console.log(response.data);
+        () => {
           setIsRsvp(false);
         },
         (error) => {

@@ -1,9 +1,10 @@
 import UserModel from "../models/UserModel.js";
 import jwt from 'jsonwebtoken';
-import {asyncHandler} from "../utils/asyncHandler.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { NextFunction } from "express";
 
 
-export const verifyJWT = asyncHandler(async (req, res, next) => {
+export const verifyJWT = asyncHandler(async (req: Request, res:Response, next: NextFunction) => {
     const token =
         req.cookies?.accessToken ||
         req.header("Authorization")?.replace("Bearer ", "");

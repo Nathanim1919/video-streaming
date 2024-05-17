@@ -1,15 +1,17 @@
 import express from 'express'
-import { verifyJWT } from '../middlewares/auth.middleware.js';
+import { verifyJWT } from '../../middlewares/auth.middleware.js';
 import passport from "passport";
 
 
 const router = express.Router();
-import { loginUser, registerUser, getAllUsers, getCurrentUser, logoutUser, handleSocialLogin } from '../controllers/authController.js';
+import { loginUser, registerUser, getAllUsers, getCurrentUser, logoutUser, handleSocialLogin, unfollowUser, followUser } from '../controllers/auth.controller.js';
 
 
 router.post('/register', registerUser);
 router.post('/login', loginUser)
 router.get('/streamers',verifyJWT, getAllUsers)
+router.post('/streamers/:userId/follow',verifyJWT, followUser)
+router.post('/streamers/:userId/unfollow',verifyJWT, unfollowUser)
 router.get('/me',verifyJWT, getCurrentUser)
 router.post('/logout',verifyJWT, logoutUser)
 

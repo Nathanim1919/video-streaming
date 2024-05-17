@@ -3,7 +3,7 @@ import { Strategy as GitHubStrategy } from "passport-github2";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as LinkedInStrategy } from "passport-linkedin-oauth2";
 import { userLoginTypes } from "../constants.js";
-import UserModel from "../models/UserModel.js";
+import UserModel from "../models/user.model.js";
 
 try {
     // Serialize user which is used to store user in session

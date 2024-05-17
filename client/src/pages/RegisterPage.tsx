@@ -7,6 +7,8 @@ import { FaGithub } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useAuth } from '../contexts/AuthContext';
+import { GrRadialSelected } from "react-icons/gr";
+import OrgRegistration from '../components/OrgRegistration';
 
 
 // Component for user registration
@@ -20,6 +22,7 @@ const RegisterPage: React.FC = () => {
     password: "",
     profession: "",
   });
+  const [isPersonal, setIsPersonal] = useState(true);
 
 // Access the register function from the authentication context
   const {register} = useAuth();
@@ -48,10 +51,17 @@ const RegisterPage: React.FC = () => {
         <Link to="/"><IoArrowBackOutline size={30} color='#fff' /></Link>
       </div>
       <div className='header'>
-        <h1>Dev-Sphere</h1> 
+        <h1>Dev-Sphere</h1>
         <p>Virtual Streaming App</p>
       </div>
-      <div className='form'>
+      <div className="per-org">
+        {/* <p>Register as a</p> */}
+        <div className="btns">
+          <button className={isPersonal?'active':""} onClick={()=>setIsPersonal(true)}><GrRadialSelected/>Personal</button>
+          <button className={!isPersonal?'active':""} onClick={() => setIsPersonal(false)}><GrRadialSelected/>Organisation</button>
+        </div>
+      </div>
+     {isPersonal? <div className='form'>
         <input type='text' value={data.fullName} onChange={handleDataChange('fullName')} placeholder='Full Name'/>
         <input type='text' value={data.username} onChange={handleDataChange('username')} placeholder='Username'/>
         <input type="email" value={data.email} onChange={handleDataChange('email')} placeholder="Email" />
@@ -63,7 +73,7 @@ const RegisterPage: React.FC = () => {
         <button onClick={() => handleSocialRegister('google')} className='google'><FaGoogle/>Sign up with Google Account</button>        
         <button onClick={() => handleSocialRegister('linkedin')} className='linkedin'><FaLinkedin/>Sign up with LinkedIn Account</button>
         <button onClick={() => handleSocialRegister('github')} className='github'><FaGithub/>Sign up with GitHub Account</button>
-      </div>
+      </div>:<OrgRegistration/>}
       <p>Already have an account? <Link to="/login">Login</Link></p>
     </Container>
   );
@@ -82,12 +92,54 @@ const Container = styled.div`
   height: 100vh;
   overflow: hidden;
   color: #fff;
-  gap: 2rem;
+  gap: 1rem;
 
   .back{
     position: absolute;
     top: 2rem;
     left: 2rem;
+  }
+
+  .per-org{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0;
+    font-family: inherit;
+
+    >*{
+      margin: 0;
+    }
+
+    .btns{
+      display: flex;
+      gap: 1rem;
+
+      button{
+        color:#b3adad;
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        border: none;
+        font-family: inherit;
+        cursor: pointer;
+        transition: 0.3s;
+
+        &:hover{
+          opacity: 0.8;
+        }
+      }
+
+      button.active{
+        color: #ffdd00;
+        position: relative;
+        font-size: 1.03rem;
+        font-weight: 600;
+      }
+    }
   }
 
 
@@ -112,6 +164,20 @@ const Container = styled.div`
     flex-direction: column;
     width: 30%;
     gap: .7rem;
+    animation: slideup 2s ease;
+    
+
+    @keyframes slideup {
+        from{
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to{
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
 
 
     @media screen and (max-width:800px){
@@ -124,7 +190,7 @@ const Container = styled.div`
       padding: 1rem;
       background-color: transparent;
       color: #fff;
-      border: 1px solid #757373;
+      border: 1px solid #eeff021c;
       font-family: inherit;
     }
 

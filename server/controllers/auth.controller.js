@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import jwt from 'jsonwebtoken'
-import UserModel from "../models/UserModel.js";
+import UserModel from "../models/user.model.js";
 import {ApiResponse} from '../utils/ApiResponse.js';
 import {asyncHandler} from '../utils/asyncHandler.js';
 
@@ -190,11 +190,80 @@ const handleSocialLogin = asyncHandler(async (req, res) => {
         );
 });
 
+
+
+const followUser = asyncHandler(async (req, res) => {
+    const { userId } = req.params;
+    const { _id: followerId } = req.user;
+
+    const user = await UserModel.findById(userId).select("+followers");
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    await UserModel.findByIdAndUpdate(
+        userId,
+        { $addToSet: { followers: followerId } },
+        { new: true }
+    );
+    const updatedUser = await UserModel.findByIdAndUpdate(
+        followerId,
+        { $addToSet: { following: userId } },
+        { new: true }
+    );
+    res.status(200).json({ user:updatedUser,message: "User followed successfully" });
+});
+
+const unfollowUser = asyncHandler(async (req, res) => {
+    const { userId } = req.params;
+    const { _id: followerId } = req.user;
+
+    const user = await UserModel.findById(userId).select("+followers");
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    await UserModel.findByIdAndUpdate(
+        userId,
+        { $pull: { followers: followerId } },
+        { new: true }
+    );
+    const updatedUser = await UserModel.findByIdAndUpdate(
+        followerId,
+        { $pull: { following: userId } },
+        { new: true }
+    );
+    res.status(200).json({ message: "User unfollowed successfully" });
+});
+
+// const handleFollowUnfollowUser = asyncHandler(async (req, res) => {
+//     const { userId } = req.params;
+
+//     if (req.user._id === userId) {
+//         return res.status(400).json({ message: "You cannot follow yourself" });
+//     }
+
+//     const user = await UserModel.findById(userId);
+//     if (!user) {
+//         return res.status(404).json({ message: "User not found" });
+//     }
+
+//     const isFollowing = user.followers.includes(req.user._id);
+
+//     if (isFollowing) {
+//         return unfollowUser(req, res);
+//     }
+//     return followUser(req, res);
+// });
+
+
 export {
     registerUser,
     loginUser,
     logoutUser,
     getCurrentUser,
     getAllUsers,
-    handleSocialLogin
+    handleSocialLogin,
+    unfollowUser,
+    followUser
 };
