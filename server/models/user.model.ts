@@ -90,4 +90,5 @@ const UserSchema = new Schema<User>({
 // }
 
 // Generate the refresh token
-const UserModel = mongoose.model('User', UserSchema);
+export const User = mongoose.model('User', UserSchema);
+

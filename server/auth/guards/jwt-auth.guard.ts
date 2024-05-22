@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../config';
 
+
 export const jwtAuthGuard = (req: Request, res: Response, next: NextFunction) => {
   // Extract the JWT token from the request headers
   const token = req.headers.authorization?.split(' ')[1];

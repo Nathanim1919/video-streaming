@@ -1,9 +1,12 @@
-// auth.controller.ts
+import { AuthService } from './auth.service';
+import IUser from '../interfaces/user.interface';
+import { Request as ExpressRequest, Response } from 'express';
 
-import { Request, Response } from 'express';
-import { AuthService } from './/auth.service';
-// import User  from '../models/user.model';
-import User from '../interfaces/user.interface';
+interface Request extends ExpressRequest {
+  locals: {
+    token: string;
+  };
+}
 
 export class AuthController {
   private authService: AuthService;
@@ -13,24 +16,33 @@ export class AuthController {
   }
 
   // Register a new user
-  async register(req: Request, res: Response): Promise<void> {
+  register = async (req: Request, res: Response): Promise<void> => {
     try {
-      const registrationMessage = await this.authService.register(req.body as Partial<User>);
+      const registrationMessage = await this.authService.register(req.body as Partial<IUser>);
       res.status(201).json({ message: registrationMessage });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
-  }
+  };
 
   // Login user
-  async login(req: Request, res: Response): Promise<void> {
+  login = async (req: Request, res: Response): Promise<void> => {
     try {
-      const token = await this.authService.login(req.body as User);
+      const token = await this.authService.login(req.body as IUser);
       res.json({ token });
     } catch (error) {
       res.status(401).json({ error: error.message });
     }
-  }
+  };
 
-  // Example: Implement additional authentication endpoints as needed
+  // Logout user
+  logout = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const token = req.locals.token;
+      await this.authService.logout(token);
+      res.json({ message: 'Logged out successfully' });
+    } catch (error) {
+      res.status(401).json({ error: error.message });
+    }
+  };
 }

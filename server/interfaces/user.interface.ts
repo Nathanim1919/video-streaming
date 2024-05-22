@@ -1,5 +1,5 @@
 // Define the structure of the User model
-interface User {
+interface IUser {
     _id: string;
     email: string;
     password: string;
@@ -17,5 +17,5 @@ interface User {
   }
   
   // Export the User interface
-  export default User;
+  export default IUser;
   

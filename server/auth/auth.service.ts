@@ -3,57 +3,74 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Request } from 'express';
-import User from '../interfaces/user.interface';
+import IUser from '../interfaces/user.interface';
+import { UserService } from '../services/user.service';
 
 // Define a secret key for JWT token generation
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
+/**
+ * Service responsible for user authentication and authorization.
+ */
 export class AuthService {
-  // Example: Inject user service or repository here for database interactions
+  /**
+   * Inject user service or repository here for database interactions.
+   */
+  private userService: UserService;
 
-  // Register a new user
-  async register(userData: Partial<User>): Promise<string> {
+  /**
+   * Register a new user.
+   * @param userData - The user data to register.
+   * @returns A promise that resolves to a success message or user ID.
+   * @throws If registration fails.
+   */
+  async register(userData: Partial<IUser>): Promise<string> {
     try {
       // Example: Check if user already exists in the database
-      // const existingUser = await this.userService.findByEmail(userData.email);
-      // if (existingUser) {
-      //   throw new Error('User already exists');
-      // }
+      const existingUser = await this.userService.userFindByEmail(userData.email as string);
+      if (existingUser) {
+        throw new Error('User already exists');
+      }
 
       // Hash the password before saving it
-      const hashedPassword = await bcrypt.hash(userData.password, 10);
+      const hashedPassword = await bcrypt.hash(userData.password as string, 10);
 
       // Example: Create a new user in the database
-      // const newUser = await this.userService.create({
-      //   ...userData,
-      //   password: hashedPassword,
-      // });
+      const newUser = await this.userService.userCreate({
+        ...userData,
+        password: hashedPassword,
+      });
 
       // Return a success message or user ID
-      return 'User registered successfully';
+      return `User registered successfully: ${newUser?._id}`;
     } catch (error) {
       // Handle registration errors
       throw new Error(`Registration failed: ${error.message}`);
     }
   }
 
-  // Login user and generate JWT token
-  async login(user: User): Promise<string> {
+  /**
+   * Login user and generate JWT token.
+   * @param user - The user to login.
+   * @returns A promise that resolves to a JWT token.
+   * @throws If login fails.
+   */
+  async login(user: IUser): Promise<string> {
     try {
       // Verify user credentials (Example: fetch user from the database)
-      // const existingUser = await this.userService.findByEmail(user.email);
-      // if (!existingUser) {
-      //   throw new Error('Invalid email or password');
-      // }
+      const existingUser = await this.userService.userFindByEmail(user.email);
+      if (!existingUser) {
+        throw new Error('Invalid email or password');
+      }
 
       // Compare passwords (Example: use bcrypt)
-      // const isPasswordValid = await bcrypt.compare(user.password, existingUser.password);
-      // if (!isPasswordValid) {
-      //   throw new Error('Invalid email or password');
-      // }
+      const isPasswordValid = await bcrypt.compare(user.password, existingUser.password);
+      if (!isPasswordValid) {
+        throw new Error('Invalid email or password');
+      }
 
       // Generate JWT token
-      const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
 
       // Return the JWT token
       return token;
@@ -63,9 +80,12 @@ export class AuthService {
     }
   }
 
-  // Example: Implement additional authentication methods such as OAuth, Google Sign-In, etc.
-   // Validate user based on JWT payload
-   static async validateUser(req: Request): Promise<string | null> {
+  /**
+   * Validate user based on JWT payload.
+   * @param req - The request object.
+   * @returns A promise that resolves to the user ID extracted from the JWT token, or null if validation fails.
+   */
+  static async validateUser(req: Request): Promise<string | null> {
     try {
       const token = req.headers.authorization?.split(' ')[1];
       if (!token) {
@@ -86,7 +106,12 @@ export class AuthService {
     }
   }
 
-  // Extract user ID from JWT token in the request
+  /**
+   * Extract user ID from JWT token in the request.
+   * @param req - The request object.
+   * @returns The user ID extracted from the JWT token.
+   * @throws If the token is missing or fails to decode.
+   */
   extractUserIdFromToken(req: Request): string {
     // Extract the token from the Authorization header
     const token = req.headers.authorization?.split(' ')[1];
@@ -101,5 +126,17 @@ export class AuthService {
     } catch (error) {
       throw new Error(`Failed to extract user ID from token: ${error.message}`);
     }
+  }
+
+  /**
+   * Logout user by invalidating the JWT token.
+   * @param token - The JWT token to invalidate.
+   * @returns A promise that resolves when the token is invalidated.
+   * @throws If logout fails.
+   */
+  async logout(token: string): Promise<void> {
+    // Example: You can add the token to a blacklist or perform other invalidation logic
+    // For simplicity, this example just logs the token
+    console.log('Logging out user with token:', token);
   }
 }

@@ -2,8 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import http from 'http';
 import db from './config/db.js';
-import authRoter from './routes/authRote.js'
-import eventRouter from './routes/eventRoute.js';
+import authRoter from './routes/auth.route.ts';
+import eventRouter from './routes/event.route.ts';
 import bodyParser from 'body-parser';
 import passport from 'passport';
 import session from "express-session";
