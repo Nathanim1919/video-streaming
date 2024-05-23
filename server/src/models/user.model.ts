@@ -2,7 +2,7 @@
 import mongoose, {Schema, Document} from 'mongoose'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { AvailableSocialLogins, userLoginTypes } from '../constants.js';
+import { AvailableSocialLogins, userLoginTypes } from '../../constants';
 import User from '../interfaces/user.interface.js';
 
 // Define the schema

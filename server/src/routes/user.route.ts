@@ -1,5 +1,5 @@
 import express from 'express'
-import { verifyJWT } from '../../middlewares/auth.middleware.js';
+import { verifyJWT } from '../middlewares/auth.middleware.js';
 import passport from "passport";
 
 

@@ -14,9 +14,10 @@ const AuthContext = createContext<{
     login: (data: {email: string; password: string}) => Promise<void>;
     register: (data: {
         email:string;
-        fullname: string;
+        fullName: string;
         profession: string;
         password: string;
+        username: string;
     }) => Promise<void>;
     logout: () => Promise<void>;
     isAuthenticated: () => boolean;
@@ -55,11 +56,10 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({
             async () => await loginUser(data),
             setIsLoading,
             (res) => {
-                const { data } = res;
-                setUser(data.user);
-                setToken(data.accessToken);
-                LocalStorage.set('user', data.user);
-                LocalStorage.set("token", data.accessToken)
+                setUser(res.existingUser);
+                setToken(res.token);
+                LocalStorage.set('user', res.existingUser);
+                LocalStorage.set("token", res.token)
                 navigate("/me")
             },
             alert
@@ -71,6 +71,7 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({
     // Function to handle user registration
     const register = async (data: {
         fullname: string;
+        username: string;
         email: string;
         password: string;
         profession: string;

@@ -10,6 +10,7 @@ const loginUser = (data: {email: string; password: string}) => {
 
 const registerUser = (data: {
     email: string;
+    username: string;
     password: string;
     profession: string;
     fullname: string;

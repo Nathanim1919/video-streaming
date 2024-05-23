@@ -3,7 +3,8 @@ import { Strategy as GitHubStrategy } from "passport-github2";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as LinkedInStrategy } from "passport-linkedin-oauth2";
 import { userLoginTypes } from "../constants.js";
-import UserModel from "../models/user.model.js";
+import { User } from "../src/models/user.model.ts";
+import IUser from "../src/interfaces/user.interface.js";
 
 try {
     // Serialize user which is used to store user in session
@@ -14,7 +15,7 @@ try {
     // Deserialize user which is used to get user from the database
     passport.deserializeUser(async (id, next) => {
         try{
-            const user = await UserModel.findById(id);
+            const user = await User.findById(id);
             if (user) next(null, user); // return user of exist
             else next(new Error("User not found"), null); // return error if user not found
         } catch(error) {

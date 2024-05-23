@@ -9,6 +9,11 @@ import { UserService } from '../services/user.service';
 // Define a secret key for JWT token generation
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
+
+// interface token {
+//   value: string
+// }
+
 /**
  * Service responsible for user authentication and authorization.
  */
@@ -18,6 +23,11 @@ export class AuthService {
    */
   private userService: UserService;
 
+  constructor() {
+    this.userService = new UserService();
+  }
+  
+
   /**
    * Register a new user.
    * @param userData - The user data to register.
@@ -25,9 +35,12 @@ export class AuthService {
    * @throws If registration fails.
    */
   async register(userData: Partial<IUser>): Promise<string> {
+    console.log("user data is: ",userData)
     try {
       // Example: Check if user already exists in the database
       const existingUser = await this.userService.userFindByEmail(userData.email as string);
+      
+
       if (existingUser) {
         throw new Error('User already exists');
       }
@@ -41,11 +54,14 @@ export class AuthService {
         password: hashedPassword,
       });
 
+      console.log("new user is: ",newUser)
+
       // Return a success message or user ID
       return `User registered successfully: ${newUser?._id}`;
     } catch (error) {
       // Handle registration errors
       throw new Error(`Registration failed: ${error.message}`);
+      console.log("error is: ",error)
     }
   }
 
@@ -55,7 +71,7 @@ export class AuthService {
    * @returns A promise that resolves to a JWT token.
    * @throws If login fails.
    */
-  async login(user: IUser): Promise<string> {
+  async login(user: IUser): Promise<{token: string, existingUser: IUser, success: boolean}> {
     try {
       // Verify user credentials (Example: fetch user from the database)
       const existingUser = await this.userService.userFindByEmail(user.email);
@@ -73,7 +89,8 @@ export class AuthService {
       const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
 
       // Return the JWT token
-      return token;
+      const success  =true
+      return {token, existingUser, success};
     } catch (error) {
       // Handle login errors
       throw new Error(`Login failed: ${error.message}`);
@@ -98,7 +115,6 @@ export class AuthService {
       }
 
       // Here you can perform additional validation, such as checking if the user exists in the database
-      // For simplicity, this example just returns the user ID extracted from the token
       return decodedToken.userId;
     } catch (error) {
       console.error('Error validating user:', error.message);
