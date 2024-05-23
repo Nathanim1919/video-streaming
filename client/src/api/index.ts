@@ -1,8 +1,6 @@
 import apiClient from "./config";
 
 
-
-
 // API functions for different actions
 const loginUser = (data: {email: string; password: string}) => {
     return apiClient.post('/auth/login', data);
@@ -24,12 +22,12 @@ const logoutUser = () => {
 };
 
 const fetchStreamers = () => {
-    return apiClient.get("/user/");
+    return apiClient.get("/users/");
 }
 
 
-const handleFollow = (streamerId: string) => {
-    return apiClient.post(`/user/${streamerId}/follow`);
+const handleFollow = (id: string) => {
+    return apiClient.post(`/user/${id}/follow`);
 
 }
 

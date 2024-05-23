@@ -41,16 +41,16 @@ export class UserService {
     }
 
     // this is a function that is responsible for following a user
-    async userFollow(id: string, followId: string): Promise<IUser | null>{
+    async userFollow(id: string, followerId: string): Promise<IUser | null>{
         const user = await User.findById(id);
-        const followUser = await User.findById(followId);
+        const followerUser = await User.findById(followerId);
 
-        if(user && followUser){
-            user.following.push(followUser._id);
-            followUser.followers.push(user._id);
+        if(user && followerUser){
+            followerUser.following.push(user._id);
+            user.followers.push(followerUser._id);
 
             await user.save();
-            await followUser.save();
+            await followerUser.save();
         }
 
         return user;

@@ -1,10 +1,10 @@
-import UserModel from "../models/UserModel.js";
+import { User } from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { NextFunction } from "express";
 
 
-export const verifyJWT = asyncHandler(async (req: Request, res:Response, next: NextFunction) => {
+export const verifyJWT = asyncHandler(async (req, res, next: NextFunction) => {
     const token =
         req.cookies?.accessToken ||
         req.header("Authorization")?.replace("Bearer ", "");
@@ -17,8 +17,10 @@ export const verifyJWT = asyncHandler(async (req: Request, res:Response, next: N
 
 
     try{
-        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-        const user = await UserModel.findById(decodedToken?._id);
+        const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+
+        const decodedToken = jwt.verify(token, JWT_SECRET)
+        const user = await User.findById(decodedToken?._id);
         
 
         if (!user){
@@ -49,7 +51,7 @@ export const getLoggedInUserOrIgnore = asyncHandler(async (req, res, next) => {
 
   try {
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    const user = await UserModel.findById(decodedToken?._id)
+    const user = await User.findById(decodedToken?._id)
     req.user = user;
     next();
   } catch (error) {

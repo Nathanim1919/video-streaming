@@ -38,18 +38,21 @@ export class UserController{
         return deletedUser;
     }
 
-    async userFollow(id: string, followId: string): Promise<IUser | null>{
-        const user = await this.userService.userFollow(id, followId);
-        return user;
-    }
+    userFollow = asyncHandler(async(req, res): Promise<void> => {
+        const {id} = req.params;
+        const followerId = req.user?._id;
+        const user = await this.userService.userFollow(id, followerId);
+        res.json(new ApiResponse(200, null, "User followed successfully"));
+    })
 
-    async userUnfollow(id: string, followId: string): Promise<IUser | null>{
-        const user = await this.userService.userUnfollow(id, followId);
-        return user;
-    }
+    // userUnfollow = async (id: string, followId: string): Promise<IUser | null>{
+    //     const user = await this.userService.userUnfollow(id, followId);
+    //     return user;
+    // }
 
-    userFindAll = asyncHandler(async (): Promise<ApiResponse> => {
+    userFindAll = asyncHandler(async (req, res): Promise<void> => {
         const users = await this.userService.userFindAll();
-        return new ApiResponse(200, users, "Users found successfully");
+        console.log("Users: ",users)
+        res.json(new ApiResponse(200, users, "Users found successfully"));
     })
 }

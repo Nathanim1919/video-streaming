@@ -30,13 +30,14 @@ const StreamerPage = () => {
             (response) => {
                 console.log(response);
                 const {data} = response;
-                setStreamers(data?.users);
+                setStreamers(data);
             },
             (error) => {
                 console.log(error);
             }
         )})();
     }, []);
+    console.log(streamers)
 
 
     return (

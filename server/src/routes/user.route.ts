@@ -1,6 +1,6 @@
 import express from 'express'
 import { UserController } from '../controllers/user.controller'
-
+import { verifyJWT } from '../middlewares/authMiddleware';
 
 const router = express.Router();
 const userController = new UserController();
@@ -8,10 +8,10 @@ const userController = new UserController();
 
 
 // User routes
-router.get('', [userController.userFindAll.bind(userController)]);
+router.get('/', [userController.userFindAll.bind(userController)]);
 router.get('/:id', [userController.userFindById.bind(userController)]);
-router.post('/:id/follow', [userController.userFollow.bind(userController)]);
-router.post('/:id/unfollow', [userController.userUnfollow.bind(userController)]);
+router.post('/:id/follow', verifyJWT, [userController.userFollow.bind(userController)]);
+// router.post('/allUsers/:id/unfollow', [userController.userUnfollow.bind(userController)]);
 
 
 export default router;
