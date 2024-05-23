@@ -2,6 +2,7 @@ import apiClient from "./config";
 
 
 
+
 // API functions for different actions
 const loginUser = (data: {email: string; password: string}) => {
     return apiClient.post('/auth/login', data);
@@ -23,18 +24,18 @@ const logoutUser = () => {
 };
 
 const fetchStreamers = () => {
-    return apiClient.get("/auth/streamers");
+    return apiClient.get("/user/");
 }
 
 
 const handleFollow = (streamerId: string) => {
-    return apiClient.post(`/auth/streamers/${streamerId}/follow`);
+    return apiClient.post(`/user/${streamerId}/follow`);
 
 }
 
 
 const handleUnFollow = (streamerId: string) => {
-    return apiClient.post(`/auth/streamers/${streamerId}/unfollow`);
+    return apiClient.post(`/user/${streamerId}/unfollow`);
 
 }
 

@@ -2,13 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import http from 'http';
 import db from './config/db';
-import authRouter from './routes/auth.route'
+import authRouter from './routes/auth.route';
+import userRouter from './routes/user.route';
 import bodyParser from 'body-parser';
 import passport from 'passport';
 import session from "express-session";
 // import '../passport/index.js';
 import cookieParser from 'cookie-parser';
-
 
 
 const app = express();
@@ -50,6 +50,7 @@ db.once('open', function() {
 
 // // routes
 app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/user', userRouter)
 
 
 // With this line

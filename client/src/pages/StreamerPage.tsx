@@ -28,8 +28,9 @@ const StreamerPage = () => {
             async () => await fetchStreamers(),
             setIsLoading,
             (response) => {
-                console.log(response.data);
-                setStreamers(response.data);
+                console.log(response);
+                const {data} = response;
+                setStreamers(data?.users);
             },
             (error) => {
                 console.log(error);

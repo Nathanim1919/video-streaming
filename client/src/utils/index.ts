@@ -15,12 +15,11 @@ export const requestHandler = async (
     try {
         // Make the API request
         const response = await api();
-        console.log("API Response: ",response.data)
         const {data} = response;
-        console.log(data)
         if (data?.success){
-            // Call the onSuccess callback with the response data
+            // Call the onSuccess callback with thresponsee response data
             onSuccess(data)
+            console.log(data)
         }
     } catch (error: any) {
         // Handle error cases, including unauthorized and forbidded case

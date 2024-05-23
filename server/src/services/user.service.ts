@@ -4,6 +4,12 @@ import { User } from "../models/user.model";
 
 export class UserService {
 
+    // this is a function that is responsible for finding all users
+    async userFindAll(): Promise<IUser[] | null>{
+        const users = await User.find();
+        return users;
+    }
+
     // this is a function that is responsible for finding a user by email
     async userFindByEmail(email: string): Promise<IUser | null>{
         const user = await User.findOne({email});

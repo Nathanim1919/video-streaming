@@ -52,18 +52,21 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({
         email: string;
         password: string
     }) => {
+        console.log("hey", data)
         await requestHandler(
             async () => await loginUser(data),
             setIsLoading,
             (res) => {
-                setUser(res.existingUser);
-                setToken(res.token);
-                LocalStorage.set('user', res.existingUser);
-                LocalStorage.set("token", res.token)
+                const {data} = res;
+                setUser(data?.user);
+                setToken(data?.token);
+                LocalStorage.set('user', data?.user);
+                LocalStorage.set("token", data?.token)
                 navigate("/me")
             },
             alert
         );
+
        
     };
 

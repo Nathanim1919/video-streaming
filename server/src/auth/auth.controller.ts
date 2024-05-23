@@ -35,7 +35,7 @@ export class AuthController {
       new ApiResponse(
         200,
         {
-          user: existingUser,
+          user:existingUser,
           token,
         },
         "User logged in successfully"
