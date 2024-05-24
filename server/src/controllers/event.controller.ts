@@ -115,10 +115,17 @@ export class EventController {
     // check if a user has RSVP'd to an event
     checkRsvp = asyncHandler(async (req: Request, res: Response): Promise<void> => {
         const rsvp = await this.eventService.checkRsvp(req.params.id, req.user as IUser);
+        console.log(rsvp);  
         res.json(new ApiResponse(200, rsvp, "RSVP status fetched successfully"));
     });
 
 
-    // 
+    // Check if a user has created an event
+    // checkOwner = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    //     const isOwner = await this.eventService.checkOwner(req.params.id, req.user as IUser);
+    //     res.json(new ApiResponse(200, isOwner, "Ownership status fetched successfully"));
+    // });
+
+    
 
 }

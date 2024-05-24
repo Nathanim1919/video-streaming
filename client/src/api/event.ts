@@ -4,7 +4,6 @@ const createEvent = (data: {
     title: string;
     description: string;
     date: string;
-    time: string;
     duration: number;
     price: number;
     capacity: number;
@@ -34,13 +33,18 @@ const getEvent = (eventId: string) => {
 }
 
 
-const handleRSVP =  (eventId: string) => {
-    return apiClient.post(`/events/${eventId}/rsvp`);
+const handleRSVP =  (id: string) => {
+    return apiClient.post(`/events/${id}/rsvp`);
 }
 
 
-const removeRsvp =  (eventId: string) => {
-    return apiClient.delete(`/events/${eventId}/rsvp`);
+const removeRsvp =  (id: string) => {
+    return apiClient.delete(`/events/${id}/remove-rsvp`);
+}
+
+
+const checkRsvp = (id: string) => {
+    return apiClient.post(`/events/${id}/check-rsvp`)
 }
 
 
@@ -50,5 +54,6 @@ export  {
     getEvents,
     handleRSVP,
     removeRsvp,
-    getEvent
+    getEvent,
+    checkRsvp
 }

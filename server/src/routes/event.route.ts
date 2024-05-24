@@ -1,5 +1,6 @@
 import express from 'express';
 import { EventController } from '../controllers/event.controller';
+import { verifyJWT } from '../middlewares/authMiddleware';
 
 
 const router = express.Router();
@@ -7,13 +8,46 @@ const eventController = new EventController();
 
 
 // Event routes
-router.post('/create', [eventController.createEvent.bind(eventController)]);
-router.get('/all', [eventController.getAllEvents.bind(eventController)]);
-router.get('/:id', [eventController.getEvent.bind(eventController)]);
-router.post('/:id/rsvp', [eventController.rsvp.bind(eventController)]);
-router.post('/:id/remove-rsvp', [eventController.removeRsvp.bind(eventController)]);
-router.get('/my-events', [eventController.getMyEvents.bind(eventController)]);
-router.get('/my-created-events', [eventController.getMyCreatedEvents.bind(eventController)]);
+router.post(
+        '/create',
+        verifyJWT, 
+        [eventController.createEvent.bind(eventController)]
+);
+router.get(
+        '/all',
+        verifyJWT, 
+        [eventController.getAllEvents.bind(eventController)]
+);
+router.get(
+        '/:id',
+        verifyJWT, 
+        [eventController.getEvent.bind(eventController)]
+);
+router.post(
+        '/:id/rsvp',
+        verifyJWT, 
+        [eventController.rsvp.bind(eventController)]
+);
+router.delete(
+        '/:id/remove-rsvp',
+        verifyJWT, 
+        [eventController.removeRsvp.bind(eventController)]
+);
+router.get(
+        '/my-events',
+        verifyJWT, 
+        [eventController.getMyEvents.bind(eventController)]
+);
+router.get(
+        '/my-created-events',
+        verifyJWT, 
+        [eventController.getMyCreatedEvents.bind(eventController)]
+);
+router.post(
+        '/:id/check-rsvp',
+        verifyJWT, 
+        [eventController.checkRsvp.bind(eventController)]
+);
 
 
 

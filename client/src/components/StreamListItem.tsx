@@ -24,13 +24,18 @@ interface StreamListItemProps {
 const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
   const { user } = useAuth();
   const [countdown, setCountdown] = useState<{days: number, hours: number, minutes: number, seconds: number}>({days: 0, hours: 0, minutes: 0, seconds: 0}); 
-  const [isRsvp, setIsRsvp] = useState(stream.attendees.includes(user?._id));
+  const [isRsvp, setIsRsvp] = useState((user?.rvps).includes(user?._id));
   const [isLoading, setIsLoading] = useState(false);
   const eventDate = useMemo(() => new Date(stream?.date), [stream?.date]);
 
 
-  const handleRsvpClick = useRsvp(stream._id, isRsvp, setIsRsvp, setIsLoading);
+  const {handleRemoveRsvp, handleRsvp, checkRsvpStatus} = useRsvp(stream._id, setIsRsvp, setIsLoading);
+  // console.log(isRsvp)
 
+  useEffect(() => {
+    // Call checkRsvpStatus when the component mounts
+    checkRsvpStatus();
+  }, [checkRsvpStatus]);
 
   // Countdown timer 
   useEffect(() => {
@@ -75,17 +80,17 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
                   <img src={StreamImage} alt='Streamer' />
               </div>
               <div className='streamerInfo'>
-                  <h4>{stream.owner?.fullName}</h4>
-                  <p>Full-Stack Engineer</p>
+                  <h4>{stream.owner?.username}</h4>
+                  <p>{stream.owner?.profession}</p>
               </div>
           </div>
           <p className='introduction'>
-              In this workshop, you'll learn the basics of Docker and Kubernetes through a series of lectures and hands-on labs.
+            {stream.description}
           </p>
 
           <div className='buttons'>
               <Link to={'/'} className={isRsvp? 'cancel' : 'rsvp'} 
-                onClick={handleRsvpClick}>{isLoading && <ImSpinner9/>}{isRsvp? 'Cancel My Online RSVP' : 'RSVP to Attend Online'}
+                onClick={isRsvp?handleRemoveRsvp:handleRsvp}>{isLoading && <ImSpinner9/>}{isRsvp? 'Cancel My Online RSVP' : 'RSVP to Attend Online'}
               </Link>
               <Link to={`/streames/${stream._id}`} className='details'>Details and Schedule</Link>
           </div>

@@ -1,7 +1,7 @@
 // Event service class
 import IEvent from '../interfaces/event.interface';
 import EventModel from '../models/event.model';
-
+import { User } from '../models/user.model';
 
 
 export class EventService {
@@ -29,12 +29,26 @@ export class EventService {
         if (!event) {
             throw new Error('Event not found');
         }
+        if (event.attendees.length >= event.capacity) {
+            event.status = 'full';
+            return event;
+        }
 
         if (event.attendees.includes(user._id)) {
             throw new Error('You have already RSVP\'d to this event');
         }
 
         event.attendees.push(user._id);
+
+        const person = await User.findById(user._id);
+        if (!person) {
+            throw new Error('User not found');
+        }
+
+        person.rvps.push(event._id);
+
+
+        await person.save();
         await event.save();
         return event;
     }
@@ -42,8 +56,16 @@ export class EventService {
     // Remove RSVP to an event
     async removeRsvp(eventId: string, user: any): Promise<IEvent> {
         const event = await EventModel.findById(eventId);
+        const person = await User.findById(user._id);
+        if (!person) {
+            throw new Error('User not found');
+        }
         if (!event) {
             throw new Error('Event not found');
+        }
+
+        if (!person.rvps.includes(event._id)) {
+            throw new Error('You have not RSVP\'d to this event');
         }
 
         if (!event.attendees.includes(user._id)) {
@@ -51,6 +73,9 @@ export class EventService {
         }
 
         event.attendees = event.attendees.filter((attendee) => attendee.toString() !== user._id.toString());
+        person.rvps = person.rvps.filter((rsvp) => rsvp.toString() !== event._id.toString());
+
+        await person.save();
         await event.save();
         return event;
     }
