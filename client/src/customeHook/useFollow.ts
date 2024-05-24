@@ -3,7 +3,7 @@ import { requestHandler } from "../utils";
 import { handleFollow, handleUnFollow } from "../api";
 
 
-export default function useFollow(userId: string, isFollow: boolean, setIsFollow: (value: boolean) => void, setIsLoading: (value: boolean) => void) {
+export default function useFollow(userId: string, isFollow: boolean, setIsFollow: (value: boolean) => void, setIsLoading: (value: boolean) => void, setUserFollowers: (value: number) => void){
     const handleFollowClick = useCallback(async (e:React.MouseEvent) => {
         e.preventDefault()
         await requestHandler(
@@ -11,6 +11,7 @@ export default function useFollow(userId: string, isFollow: boolean, setIsFollow
             setIsLoading,
             () => {
                 setIsFollow(true);
+                setUserFollowers((prev) => prev + 1);
             },
             (error) => {
                 console.log(error);
@@ -25,6 +26,7 @@ export default function useFollow(userId: string, isFollow: boolean, setIsFollow
             setIsLoading,
             () => {
                 setIsFollow(false);
+                setUserFollowers((prev) => prev - 1);
             },
             (error) => {
                 console.log(error);

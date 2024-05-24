@@ -3,6 +3,7 @@ import ProfilePic from '/image/join.jpg';
 import styled from "styled-components";
 import { MdEmojiEvents } from "react-icons/md";
 import { RiUserFollowLine } from "react-icons/ri";
+import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -23,8 +24,13 @@ const StreamerList: React.FC<StreamerListProps> = ({streamer}) => {
     const {user} = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [isFollow, setIsFollow] = useState(() => streamer.followers.includes(user?._id));
+    const handleFollowClick = useFollow(streamer._id, isFollow, setIsFollow, setIsLoading, setUserFollowers);
+    const [userFollowers, setUserFollowers] = useState<number>(0);
 
-    const handleFollowClick = useFollow(streamer._id, isFollow, setIsFollow, setIsLoading);
+
+    useEffect(() => {
+        setUserFollowers((streamer.followers).length)
+    }, [isFollow])
 
 
     return (
@@ -39,13 +45,16 @@ const StreamerList: React.FC<StreamerListProps> = ({streamer}) => {
                 </div>
             </div>
             <div className="info">
-                <p><RiUserFollowLine/>{streamer.followers.length} followers</p>
+                <p><RiUserFollowLine/>{userFollowers} followers</p>
                 <p><MdEmojiEvents/>Rating: 4.5</p>
             </div>
             <div className="buttons">
                 <Link 
                     onClick={handleFollowClick}
-                    to={'/follow'} className="rsvp">{isLoading? <span className="spinner"><ImSpinner9/></span>:<RiUserFollowLine/>}{!isFollow?"Follow":"following"}</Link>
+                    to={'/follow'} className={isFollow?"active":"follow"}>
+                        {isLoading? 
+                        <span className="spinner"><ImSpinner9/></span>:isFollow?<IoCheckmarkDoneCircleSharp/>:<RiUserFollowLine/>}{!isFollow?"Follow":"following"}</Link>
+                        {/* <RiUserFollowLine/>}{!isFollow?"Follow":"following"}</Link> */}
                 <Link to={'/streamers/23'}className="details"><CgProfile/>View Profile</Link>
             </div>
         </Card>
@@ -127,6 +136,7 @@ const Card = styled.div`
         gap: 1rem;
         padding: 1rem;
         position: relative;
+        width: 100%;
 
         a{
             font-family: inherit;
@@ -139,7 +149,8 @@ const Card = styled.div`
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: .5rem;
+            gap: .3rem;
+            flex: 1;
 
             transition: all 0.3s ease-in-out;
 
@@ -147,6 +158,12 @@ const Card = styled.div`
                 opacity:.8;
             }
             
+        }
+
+
+        a.active{
+            background: #ffcc00;
+            color: #fff;
         }
 
         a > .spinner{
@@ -160,7 +177,7 @@ const Card = styled.div`
                 }
               }
 
-        .rsvp{
+        .follow{
             background: #007bff;
             color: #fff;
         }

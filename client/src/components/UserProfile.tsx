@@ -16,12 +16,9 @@ import profilePic from '/image/profile.jpg'
 import { CreateEventForm } from './CreateEventForm';
 
 
-
-
-
-
 const UserProfile = () => {
   const [createEvent, setCreateEvent] = React.useState(false);
+  
   return (
     <Container>
      {createEvent && <CreateEventForm setCreateEvent={setCreateEvent}/>}
