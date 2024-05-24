@@ -63,8 +63,8 @@ export class UserController{
         res.json(new ApiResponse(200, user, "User unfollowed successfully"));
     })
 
-    userFindAll = asyncHandler(async (req, res): Promise<void> => {
-        const users = await this.userService.userFindAll();
+    userFindAll = asyncHandler(async (req: RequestWithUser, res): Promise<void> => {
+        const users = await this.userService.userFindAll(req, res);
         console.log("Users: ",users)
         res.json(new ApiResponse(200, users, "Users found successfully"));
     })

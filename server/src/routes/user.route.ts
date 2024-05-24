@@ -6,10 +6,9 @@ const router = express.Router();
 const userController = new UserController();
 
 
-
 // User routes
-router.get('/', [userController.userFindAll.bind(userController)]);
-router.get('/:id', [userController.userFindById.bind(userController)]);
+router.get('/',verifyJWT, [userController.userFindAll.bind(userController)]);
+router.get('/:id',verifyJWT, [userController.userFindById.bind(userController)]);
 router.post('/:id/follow', verifyJWT, [userController.userFollow.bind(userController)]);
 router.post('/:id/unfollow',verifyJWT, [userController.userUnfollow.bind(userController)]);
 

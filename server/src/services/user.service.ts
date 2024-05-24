@@ -1,12 +1,19 @@
+import { use } from "passport";
 import IUser from "../interfaces/user.interface";
 import { User } from "../models/user.model";
+import { Request, Response } from 'express';
 
+interface RequestWithUser extends Request {
+  user: IUser;
+}
 
 export class UserService {
 
     // this is a function that is responsible for finding all users
-    async userFindAll(): Promise<IUser[] | null>{
-        const users = await User.find();
+    async userFindAll(req: RequestWithUser, res:Response): Promise<IUser[] | null>{
+        const currentUserId = req.user?._id
+        // filter all users other than the logged in user
+        const users = await User.find({_id: {$ne: currentUserId}});
         return users;
     }
 
@@ -57,14 +64,17 @@ export class UserService {
     }
 
     // this is a function that is responsible for unfollowing a user
+   // this is a function that is responsible for unfollowing a user
     async userUnfollow(id: string, followId: string): Promise<IUser | null>{
         const user = await User.findById(id);
         const followUser = await User.findById(followId);
 
         if(user && followUser){
-            user.followers = user.followers.filter((id) => id.toString() !== followId);
-            followUser.following = followUser.following.filter((id) => id.toString() !== id);
-
+            user.followers = user.followers.filter((id) => id.toString() !== followUser._id.toString());
+            followUser.following = followUser.following.filter((id) => id.toString() !== user._id.toString());
+        
+            console.log("after unfollowing, users followers are: ", user.followers)
+        
             await user.save();
             await followUser.save();
         }
