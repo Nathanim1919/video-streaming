@@ -1,11 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import http from 'http';
 import db from './config/db';
 import authRouter from './routes/auth.route';
 import userRouter from './routes/user.route';
 import bodyParser from 'body-parser';
-import passport from 'passport';
+// import passport from 'passport';
 import session from "express-session";
 // import '../passport/index.js';
 import cookieParser from 'cookie-parser';
@@ -33,12 +32,12 @@ app.use(
   })
 ); // session secret
 
-// // Passport middleware
+// Passport middleware
 // app.use(passport.initialize());
 // app.use(passport.session()); // persistent login sessions
 
 
-// // database connection
+// database connection
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', function() {
   console.log("MongoDB database connection established successfully");
@@ -48,7 +47,7 @@ db.once('open', function() {
 // const server = http.createServer(app); // Remove the second argument
 
 
-// // routes
+// routes 
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/users', userRouter)
 

@@ -27,13 +27,13 @@ const fetchStreamers = () => {
 
 
 const handleFollow = (id: string) => {
-    return apiClient.post(`/user/${id}/follow`);
+    return apiClient.post(`/users/${id}/follow`);
 
 }
 
 
-const handleUnFollow = (streamerId: string) => {
-    return apiClient.post(`/user/${streamerId}/unfollow`);
+const handleUnFollow = (id: string) => {
+    return apiClient.post(`/users/${id}/unfollow`);
 
 }
 

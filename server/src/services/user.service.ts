@@ -62,8 +62,8 @@ export class UserService {
         const followUser = await User.findById(followId);
 
         if(user && followUser){
-            user.following = user.following.filter((id) => id.toString() !== followId);
-            followUser.followers = followUser.followers.filter((id) => id.toString() !== id);
+            user.followers = user.followers.filter((id) => id.toString() !== followId);
+            followUser.following = followUser.following.filter((id) => id.toString() !== id);
 
             await user.save();
             await followUser.save();

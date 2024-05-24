@@ -1,5 +1,6 @@
 // Define the structure of the User model
-interface IUser {
+import { Document } from 'mongoose';
+interface IUser extends Document{
     _id: string;
     email: string;
     password: string;
@@ -18,4 +19,3 @@ interface IUser {
   
   // Export the User interface
   export default IUser;
-  

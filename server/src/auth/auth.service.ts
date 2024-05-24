@@ -86,10 +86,9 @@ export class AuthService {
       }
 
       // Generate JWT token
-      const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
-
+      const token = jwt.sign({ _id: existingUser._id }, JWT_SECRET, { expiresIn: '1h' });
       // Return the JWT token
-      const success  =true
+      const success  = true
       return {token, existingUser, success};
     } catch (error) {
       // Handle login errors

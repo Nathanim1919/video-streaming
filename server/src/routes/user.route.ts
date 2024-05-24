@@ -11,7 +11,7 @@ const userController = new UserController();
 router.get('/', [userController.userFindAll.bind(userController)]);
 router.get('/:id', [userController.userFindById.bind(userController)]);
 router.post('/:id/follow', verifyJWT, [userController.userFollow.bind(userController)]);
-// router.post('/allUsers/:id/unfollow', [userController.userUnfollow.bind(userController)]);
+router.post('/:id/unfollow',verifyJWT, [userController.userUnfollow.bind(userController)]);
 
 
 export default router;

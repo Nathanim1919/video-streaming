@@ -4,9 +4,20 @@ import IUser from "../interfaces/user.interface";
 import { asyncHandler } from "../utils/asyncHandler";
 import { ApiResponse } from "../utils/ApiResponse";
 
+import { Request } from 'express';
+
+interface RequestWithUser extends Request {
+  user: IUser;
+}
+
+
+/*
+* Controller responsible for user related operations.
+*/
 export class UserController{
     private userService: UserService;
-
+    
+    // Inject user service or repository here for database interactions.
     constructor(){
         this.userService = new UserService();
     }
@@ -38,17 +49,19 @@ export class UserController{
         return deletedUser;
     }
 
-    userFollow = asyncHandler(async(req, res): Promise<void> => {
+    userFollow = asyncHandler(async(req: RequestWithUser, res): Promise<void> => {
         const {id} = req.params;
-        const followerId = req.user?._id;
+        const followerId = req.user._id;
         const user = await this.userService.userFollow(id, followerId);
-        res.json(new ApiResponse(200, null, "User followed successfully"));
+        res.json(new ApiResponse(200, user, "User followed successfully"));
     })
 
-    // userUnfollow = async (id: string, followId: string): Promise<IUser | null>{
-    //     const user = await this.userService.userUnfollow(id, followId);
-    //     return user;
-    // }
+    userUnfollow = asyncHandler(async(req: RequestWithUser, res): Promise<void> =>{
+        const {id} = req.params;
+        const followId = req.user._id;
+        const user = await this.userService.userUnfollow(id, followId);
+        res.json(new ApiResponse(200, user, "User unfollowed successfully"));
+    })
 
     userFindAll = asyncHandler(async (req, res): Promise<void> => {
         const users = await this.userService.userFindAll();
