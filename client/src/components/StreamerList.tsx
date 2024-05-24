@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Streamer } from "../pages/StreamerPage";
 import ProfilePic from '/image/join.jpg';
 import styled from "styled-components";
@@ -6,7 +7,6 @@ import { RiUserFollowLine } from "react-icons/ri";
 import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { ImSpinner9 } from "react-icons/im";
 import useFollow from "../customeHook/useFollow";
@@ -24,13 +24,8 @@ const StreamerList: React.FC<StreamerListProps> = ({streamer}) => {
     const {user} = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [isFollow, setIsFollow] = useState(() => streamer.followers.includes(user?._id));
+    const [userFollowers, setUserFollowers] = useState<number>(streamer.followers.length);
     const handleFollowClick = useFollow(streamer._id, isFollow, setIsFollow, setIsLoading, setUserFollowers);
-    const [userFollowers, setUserFollowers] = useState<number>(0);
-
-
-    useEffect(() => {
-        setUserFollowers((streamer.followers).length)
-    }, [isFollow])
 
 
     return (

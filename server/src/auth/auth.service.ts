@@ -150,8 +150,8 @@ export class AuthService {
    * @throws If logout fails.
    */
   async logout(token: string): Promise<void> {
-    // Example: You can add the token to a blacklist or perform other invalidation logic
-    // For simplicity, this example just logs the token
-    console.log('Logging out user with token:', token);
+      
+
+      
   }
 }

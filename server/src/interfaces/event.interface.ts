@@ -1,5 +1,5 @@
 // Define the structure of the Event model
-interface Event {
+interface IEvent {
     _id: string;
     owner: import('mongoose').Types.ObjectId; // Reference to the User who owns the event
     title: string;
@@ -21,5 +21,5 @@ interface Event {
   }
   
   // Export the Event interface
-  export default Event;
+  export default IEvent;
   
