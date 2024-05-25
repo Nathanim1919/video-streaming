@@ -2,6 +2,7 @@ import { User } from '../models/user.model';
 import jwt from 'jsonwebtoken';
 import { asyncHandler } from "../utils/asyncHandler";
 import { NextFunction } from "express";
+import mongoose from 'mongoose';
 
 
 export const verifyJWT = asyncHandler(async (req, res, next: NextFunction) => {
@@ -18,7 +19,7 @@ export const verifyJWT = asyncHandler(async (req, res, next: NextFunction) => {
     try{
         const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
         const decodedToken = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
-        const user = await User.findById(decodedToken._id);
+        const user = await User.findById(decodedToken._id).select('-password');
         
 
         if (!user){
@@ -57,3 +58,12 @@ export const verifyJWT = asyncHandler(async (req, res, next: NextFunction) => {
 //     next();
 //   }
 // });
+
+
+// Middleware to validate ObjectId
+// export function validateObjectId(req: Request, res: Response, next: NextFunction) {
+//     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+//       return res.status(400).send({ error: 'Invalid ID format' });
+//     }
+//     next();
+//   }

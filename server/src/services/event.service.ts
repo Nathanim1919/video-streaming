@@ -1,19 +1,36 @@
 // Event service class
+import mongoose from 'mongoose';
 import IEvent from '../interfaces/event.interface';
+import IUser from '../interfaces/user.interface';
 import EventModel from '../models/event.model';
 import { User } from '../models/user.model';
 
 
 export class EventService {
     // Create a new event
-    async createEvent(eventData: IEvent): Promise<IEvent> {
+    async createEvent(eventData: IEvent, user: IUser): Promise<IEvent> {
         const newEvent = await EventModel.create(eventData);
+        // Add the event to the user's events
+        const person = await User.findById(user._id);
+        if (!person) {
+            throw new Error('User not found');
+        }
+
+        person.events.push(newEvent._id);
+        await person.save();
+
+
+        // Add the user as the owner of the event
+        // newEvent.owner = user._id;
+        newEvent.owner = user._id as unknown as mongoose.Types.ObjectId;    
+        await newEvent.save();    
         return newEvent;
     }
 
     // Get all events
     async getAllEvents(): Promise<IEvent[]> {
         const events = await EventModel.find().populate('owner').populate('attendees');
+        console.log(events);
         return events;
     }
 
@@ -233,6 +250,15 @@ export class EventService {
         return events;
     }
 
+
+    // get 4 upcoming events
+    async getUpcomingEvents(): Promise<IEvent[]> {
+        const events = await EventModel.find({ date: { $gte: new Date().toISOString() } }).limit(4).populate('owner').populate('attendees');
+        return events;
+    }
+
+
+    
 
 
 

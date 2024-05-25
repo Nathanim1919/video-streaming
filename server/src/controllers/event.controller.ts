@@ -23,7 +23,7 @@ export class EventController {
 
     // create a new event
     createEvent = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-        const event = await this.eventService.createEvent(req.body as IEvent);
+        const event = await this.eventService.createEvent(req.body as IEvent, req.user as IUser);
         res.json(new ApiResponse(201, event, "Event created successfully"));
     });
 
@@ -120,12 +120,19 @@ export class EventController {
     });
 
 
+    // fetch 4 upcoming events
+    getUpcomingEvents = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const events = await this.eventService.getUpcomingEvents();
+        res.json(new ApiResponse(200, events, "Upcoming events fetched successfully"));
+    }); 
+
+
     // Check if a user has created an event
     // checkOwner = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     //     const isOwner = await this.eventService.checkOwner(req.params.id, req.user as IUser);
     //     res.json(new ApiResponse(200, isOwner, "Ownership status fetched successfully"));
     // });
 
-    
+
 
 }

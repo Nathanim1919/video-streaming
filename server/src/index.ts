@@ -6,6 +6,9 @@ import bodyParser from 'body-parser';
 import session from "express-session";
 // import '../passport/index.js';
 import cookieParser from 'cookie-parser';
+import {createRouteHandler} from 'uploadthing/express';
+import {uploadRouter} from './uploadthing';
+
 
 
 // Import routes
@@ -54,6 +57,13 @@ db.once('open', function() {
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/events', eventRouter)
+// app.use(
+//   "/api/uploadthing",
+//   createRouteHandler({
+//     router: uploadRouter,
+//     config: { ... },
+//   }),
+// )
 
 
 // With this line

@@ -5,7 +5,8 @@ import mongoose, { Schema, Document } from "mongoose";
 const EventSchema = new Schema<IEvent>({
     owner: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        // required: true
     },
     title: {
         type: String,

@@ -29,10 +29,18 @@ export class UserController{
     }
 
 
-    async userFindById(id: string): Promise<IUser | null>{
+    userFindById = asyncHandler(async(req: RequestWithUser, res):Promise<void> =>{
+        const { id } = req.params;
+        const isOwnProfile = id === req.user._id;
+      
         const user = await this.userService.userFindById(id);
-        return user;
-    }
+      
+        const actions = isOwnProfile
+          ? ['create', 'edit', 'delete', 'other'] // Actions for the owner
+          : ['follow', 'unfollow', 'RSVP', 'unRSVP']; // Actions for others
+      
+        res.json(new ApiResponse(200, user, "User found successfully", actions));
+    })
 
     async userCreate(userData: Partial<IUser>): Promise<IUser | null>{
         const newUser = await this.userService.userCreate(userData);
