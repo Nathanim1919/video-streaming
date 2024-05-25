@@ -14,6 +14,7 @@ import PublicRoute from './components/PublicRoute';
 import AuthenticatedPage from './pages/authenticatedPage';
 import { Account } from './pages/AccountPage';
 import PricingPage from './pages/pricingPage';
+import PrivateRouteWithHeader from './components/PrivateRouteWithHeader';
 
 
 const App = () => {
@@ -49,36 +50,57 @@ const App = () => {
         <Route 
         path="/me" 
         element={
-          <PrivateRoute>
+          <PrivateRouteWithHeader >
             <AuthenticatedPage/>
-          </PrivateRoute>
+          </PrivateRouteWithHeader>
         }
       />
        <Route 
         path="/subscription" 
         element={
-          <PrivateRoute>
+          <PrivateRouteWithHeader>
             <PricingPage/>
-          </PrivateRoute>
+          </PrivateRouteWithHeader>
         }
       />
         <Route 
         path="/account" 
         element={
-          <PrivateRoute>
+          <PrivateRouteWithHeader>
             <Account/>
-          </PrivateRoute>
+          </PrivateRouteWithHeader>
         }
       />
       <Route 
         path="/streamers"
-        element={<StreamerPage/>}
-      />
+        element={
+          <PrivateRouteWithHeader>
+            <StreamerPage/>
+        </PrivateRouteWithHeader>
+        }/>
 
-      <Route path='/streamers/:userId' element={<UserProfilePage/>}/>
-      {/* <Route path="/viewer" element={<Viewer/>}/> */}
-      <Route path="/streames" element={<StreamList/>}/>
-      <Route path='/streames/:eventId' element={<EventDetailPage/>}/>
+      <Route 
+        path='/streamers/:id' 
+        element={
+          <PrivateRouteWithHeader>
+           <UserProfilePage/>
+          </PrivateRouteWithHeader>
+      }/>
+
+      <Route 
+        path="/streames" 
+        element={
+        <PrivateRouteWithHeader>
+          <StreamList/>
+        </PrivateRouteWithHeader>
+      }/>
+      <Route 
+        path='/streames/:eventId' 
+        element={
+        <PrivateRouteWithHeader>
+          <EventDetailPage/>
+        </PrivateRouteWithHeader>
+      }/>
       <Route path="*" element={<p>404 Not found</p>} />
     </Routes>
   );

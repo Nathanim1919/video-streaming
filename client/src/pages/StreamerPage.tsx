@@ -8,11 +8,15 @@ import { requestHandler } from "../utils";
 import Loader from "../components/Loader";
 
 export interface Streamer {
-    id: string;
-    name: string;
+    _id: string;
+    fullName: string;
+    username: string;
     email: string;
     profession: string;
     followers: string[];
+    following: string[];
+    events: string[];
+    rating: number;
 }
 
 

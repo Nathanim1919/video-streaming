@@ -26,6 +26,11 @@ const fetchStreamers = () => {
 }
 
 
+const fetchStreamer = (id: string) => {
+    return apiClient.get(`/users/${id}`);
+}
+
+
 const handleFollow = (id: string) => {
     return apiClient.post(`/users/${id}/follow`);
 
@@ -47,5 +52,6 @@ export {
     registerUser,
     fetchStreamers,
     handleFollow,
-    handleUnFollow
+    handleUnFollow,
+    fetchStreamer
 }

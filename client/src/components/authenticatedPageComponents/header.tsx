@@ -2,10 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../../contexts/AuthContext';
+import { FaSearch } from "react-icons/fa";
+import { MdAccountCircle } from "react-icons/md";
+
 
 
 export const Header = () => {
     const {logout} = useAuth()
+    const [showOptions, setShowOptions] = React.useState(false);
     const handleLogout = async () => {
         try {
             await logout();
@@ -17,47 +21,121 @@ export const Header = () => {
     return (
         <Conatiner className="header">
             <h1>DevSphere</h1>
-            <ul>
-                <li><Link to="/streames">Streames</Link></li>
+            <div>
+              <ul>
+                <li><Link to="/streames">Home</Link></li>
+                <li><Link to="/streamers">Events</Link></li>
+                <li><Link to="/account">Streams</Link></li>
                 <li><Link to="/streamers">Streamers</Link></li>
-                <li><Link to="/account">Account</Link></li>
-                <li><Link to={'/login'} onClick={handleLogout}>Logout</Link></li>
+                <li><Link to="/account">Organizations</Link></li>
             </ul>
+                <li><FaSearch/></li>
+                <div className="account">
+                    <li onClick={()=>setShowOptions(!showOptions)}><MdAccountCircle/></li>
+                   {showOptions && <div className="options">
+                        <li><Link to="/me">Profile</Link></li>
+                        <li><Link to="/account">Account</Link></li>
+                        <li><Link to="/subscription">Subscription</Link></li>
+                        <li><Link to="/login">My Rvsps</Link></li>
+                        <li onClick={handleLogout}>Logout</li>
+                    </div>}
+                </div>
+        </div>
         </Conatiner>
     );
 }
 
 const Conatiner = styled.div`
-    background-color: #000000d1;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 0rem 2rem;
+    /* padding: 1rem 2rem; */
+    background-color: #212020;
+    color: #958f8f;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
-    z-index: 1000;
-
-    h1{
-        color: #fff;
-    }
-
-    ul{
-        display: flex;
-        gap: 1rem;
-    }
+    z-index: 100;
+    border-bottom: 5px solid rgb(111, 31, 31);
 
     li{
-        list-style: none;
+        cursor: pointer;
+    }
+
+    >div{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
         
-        a{
+
+        >li{
             text-decoration: none;
-            color: #fff;
+            color: #9c9595;
+            list-style: none;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
+        >div{
+            li{
+                font-size: 2rem;
+                list-style: none;
+            }
+
+
+            .options{
+                /* display: none; */
+                position: absolute;
+                background-color: #212020;
+                color: #9c9595;
+                border: 3px solid #7c1818;
+                /* border-radius: 5px; */
+                top: 4rem;
+                right: 3rem;
+                z-index: 100;
+                animation: flipUp .5s;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+                @keyframes flipUp {
+                    from {
+                        transform: translateY(10px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateY(0);
+                        opacity: 1;
+                    } 
+                }
+                li{
+                    padding:.4rem 1rem;
+                    width: 10rem;
+                    text-align: center;
+                    font-size: 1rem;
+                    cursor: pointer;
+                    text-align: left;
+                    &:hover{
+                        background-color: #111010;
+                    }
+
+                    a{
+                        text-decoration: none;
+                        color: #9c9595;
+                    }
+                }
+            }
+        }
+    
     }
-    li:nth-child(3) a, li:nth-child(4) a{
-        background-color: #ff0000;
-        padding: .5rem 1rem;
-        border-radius: 5px;
+    ul {
+        display: flex;
+        list-style: none;
+        li {
+            margin-right: 1rem;
+            list-style: none;
+            a {
+                text-decoration: none;
+                color: #9c9595;
+            }
+        }
     }
 `

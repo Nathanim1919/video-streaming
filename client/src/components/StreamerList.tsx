@@ -27,7 +27,6 @@ const StreamerList: React.FC<StreamerListProps> = ({streamer}) => {
     const [userFollowers, setUserFollowers] = useState<number>(streamer.followers.length);
     const handleFollowClick = useFollow(streamer._id, isFollow, setIsFollow, setIsLoading, setUserFollowers);
 
-
     return (
         <Card>
             <div className="header">
@@ -50,7 +49,7 @@ const StreamerList: React.FC<StreamerListProps> = ({streamer}) => {
                         {isLoading? 
                         <span className="spinner"><ImSpinner9/></span>:isFollow?<IoCheckmarkDoneCircleSharp/>:<RiUserFollowLine/>}{!isFollow?"Follow":"following"}</Link>
                         {/* <RiUserFollowLine/>}{!isFollow?"Follow":"following"}</Link> */}
-                <Link to={'/streamers/23'}className="details"><CgProfile/>View Profile</Link>
+                <Link to={`/streamers/${streamer._id}`}className="details"><CgProfile/>View Profile</Link>
             </div>
         </Card>
     );

@@ -36,6 +36,8 @@ const StreamList: React.FC = () => {
 
   }
 
+  console.log(streams);
+
   useEffect(() => {
     getAllStreams();
   }, []);
@@ -43,13 +45,6 @@ const StreamList: React.FC = () => {
   return (
     isLoading ? <Loader /> : (
     <Container>
-      <div className='header'>
-        <Link to={'/'}><IoArrowBackOutline/></Link>
-      <h1>Streams</h1>
-      <div>
-        filter and search
-      </div>
-      </div>
       {streams.map(stream => (
         <StreamListItem key={stream.id} stream={stream} />
       ))}
@@ -62,7 +57,8 @@ export default StreamList;
 
 
 const Container = styled.div`
-    
+     background-color: #030303;
+     padding: 1rem 0;
     .header{
       width: 100vw;
       margin: auto;
@@ -74,6 +70,13 @@ const Container = styled.div`
       top: 0;
       z-index: 10;
       background-color: black;
+
+      .searchesAndFilters{
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+
+      }
 
       a{
         font-size: 1.5rem;

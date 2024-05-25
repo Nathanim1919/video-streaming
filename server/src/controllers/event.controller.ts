@@ -38,7 +38,7 @@ export class EventController {
 
     // Get a single event
     getEvent = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-        const event = await this.eventService.getEvent(req.params.id);
+        const event = await this.eventService.getEvent(req.params.eventId);
         res.json(new ApiResponse(200, event, "Event fetched successfully"));
     });
 

@@ -34,30 +34,33 @@ interface EventDetailData {
 
 interface EventDetailProps {
     eventId: string;
+    event: EventDetailData;
 }
 
-const EventDetail = () => {
+const EventDetail = ({event}) => {
     const {user} = useAuth();
     const [isLoading, setIsLoading] = React.useState(false);
     const {eventId} = useParams();
     const [eventDetail, setEventDetail] = useState<any>({});
     const [isRsvp, setIsRsvp] = useState(eventDetail.data?.attendees?.includes(user?._id));
 
-    const getEventDetail = async (props: EventDetailProps) => {
-        if (!props.eventId) return;
-        await requestHandler(
-            async () => await getEvent(props.eventId),
-            setIsLoading,
-            setEventDetail,
-            setError
-        );
-    };
+    // const getEventDetail = async (props: EventDetailProps) => {
+    //     if (!props.eventId) return;
+    //     await requestHandler(
+    //         async () => await getEvent(props.eventId),
+    //         setIsLoading,
+    //         setEventDetail,
+    //         setError
+    //     );
+    // };
 
     const handleRsvpClick = useRsvp(eventDetail.data?._id, isRsvp, setIsRsvp, setIsLoading);
 
-    useEffect(() => {
-        getEventDetail(eventId);
-    }, [eventId]);
+    // useEffect(() => {
+    //     getEventDetail(eventId);
+    // }, [eventId]);
+
+    console.log(event);
 
     return (
         isLoading ? <Loader /> :
@@ -68,14 +71,14 @@ const EventDetail = () => {
                 </div>
                 <div className="info">
                     <p>May 22 to 23, 2024 - 9:30am to 5:30pm Central Daylight Time </p>
-                    <h3>{eventDetail.data?.title}</h3>
+                    <h3>{event?.title}</h3>
                     <div className="streamer">
                         <div className="profilePic">
                             <img src={ProImage} alt="Streamer" />
                         </div>
                         <div className="streamerInfo">
-                            <h4>{eventDetail.data?.owner?.fullName}</h4>
-                            <p>{eventDetail.data?.owner?.profession}</p>
+                            <h4>{event?.owner?.fullName}</h4>
+                            <p>{event?.owner?.profession}</p>
                         </div>
                     </div>
                 </div>
@@ -86,15 +89,15 @@ const EventDetail = () => {
                     <div>
                         <div>
                             <h4>What?</h4>
-                            <p>{eventDetail.data?.title}</p>
+                            <p>{event?.title}</p>
                         </div>
                         <div>
                             <h4>When?</h4>
-                            <p>{eventDetail.data?.date}</p>
+                            <p>{event?.date}</p>
                         </div>
                         <div>
                             <h4>Where?</h4>
-                            <p>{eventDetail.data?.location}</p>
+                            <p>{event?.location}</p>
                         </div>
                     </div>
                     <Link to={'/'} className={isRsvp? 'cancel' : 'rsvp'} 
@@ -105,7 +108,7 @@ const EventDetail = () => {
                     <h2>What you need to know?</h2>
                     <div>
                         {
-                            eventDetail.data?.eventInformations?.map((info, index) => (
+                            event?.eventInformations?.map((info, index) => (
                                 <div key={index}>
                                     <h4>{info.title}</h4>
                                     <p>{info.description}</p>
