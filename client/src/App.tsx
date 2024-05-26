@@ -1,5 +1,3 @@
-import Streamer from './streamer';
-import Viewer from './viewer';
 import { Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import StreamList from './pages/StreamListPage';
@@ -9,18 +7,16 @@ import './App.css';
 import StreamerPage from './pages/StreamerPage';
 import UserProfilePage from './pages/UserProfilePage';
 import EventDetailPage from './pages/EventDetailPage';
-import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import AuthenticatedPage from './pages/authenticatedPage';
 import { Account } from './pages/AccountPage';
 import PricingPage from './pages/pricingPage';
 import PrivateRouteWithHeader from './components/PrivateRouteWithHeader';
+import { EventsPage } from './pages/EventsPage';
+import { OrganizationsList } from './pages/OrgsPage';
 
 
 const App = () => {
-  // You would set isStreamer based on your app's logic
-  // For example, you could check the URL or a user's role
-
   return (
     <Routes>
       <Route 
@@ -63,6 +59,14 @@ const App = () => {
           </PrivateRouteWithHeader>
         }
       />
+      <Route 
+        path="/events" 
+        element={
+          <PrivateRouteWithHeader>
+            <EventsPage/>
+          </PrivateRouteWithHeader>
+        }
+      />
         <Route 
         path="/account" 
         element={
@@ -92,6 +96,13 @@ const App = () => {
         element={
         <PrivateRouteWithHeader>
           <StreamList/>
+        </PrivateRouteWithHeader>
+      }/>
+      <Route 
+        path="/orgs" 
+        element={
+        <PrivateRouteWithHeader>
+          <OrganizationsList/>
         </PrivateRouteWithHeader>
       }/>
       <Route 

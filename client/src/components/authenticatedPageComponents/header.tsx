@@ -20,14 +20,14 @@ export const Header = () => {
     }
     return (
         <Conatiner className="header">
-            <h1>DevSphere</h1>
+            <Link to={'/me'}>DevSphere</Link>
             <div>
               <ul>
-                <li><Link to="/streames">Home</Link></li>
-                <li><Link to="/streamers">Events</Link></li>
-                <li><Link to="/account">Streams</Link></li>
+                <li><Link to="/me">Home</Link></li>
+                <li><Link to="/events">Events</Link></li>
+                <li><Link to="/streames">Streams</Link></li>
                 <li><Link to="/streamers">Streamers</Link></li>
-                <li><Link to="/account">Organizations</Link></li>
+                <li><Link to="/orgs">Organizations</Link></li>
             </ul>
                 <li><FaSearch/></li>
                 <div className="account">
@@ -57,6 +57,15 @@ const Conatiner = styled.div`
     top: 0;
     z-index: 100;
     border-bottom: 5px solid rgb(111, 31, 31);
+    padding: .5rem 0;
+
+
+    >a{
+        text-decoration: none;
+        color: #9c9595;
+        font-size: 2rem;
+        font-weight: bold;
+    }
 
     li{
         cursor: pointer;
@@ -88,13 +97,14 @@ const Conatiner = styled.div`
                 position: absolute;
                 background-color: #212020;
                 color: #9c9595;
-                border: 3px solid #7c1818;
+                border-bottom: 3px solid #7c1818;
+                border-top: 3px solid #7c1818;
                 /* border-radius: 5px; */
                 top: 4rem;
                 right: 3rem;
                 z-index: 100;
                 animation: flipUp .5s;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                box-shadow: 0 20px 30px rgba(0,0,0,0.4);
 
                 @keyframes flipUp {
                     from {
