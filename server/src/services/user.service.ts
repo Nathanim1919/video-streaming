@@ -14,6 +14,7 @@ export class UserService {
         const currentUserId = req.user?._id
         // filter all users other than the logged in user
         const users = await User.find({_id: {$ne: currentUserId}});
+        console.log(users)
         return users;
     }
 
@@ -25,7 +26,7 @@ export class UserService {
 
     // this is a function that is responsible for finding a user by id
     async userFindById(id: string): Promise<IUser | null>{
-        const user = await User.findById(id);
+        const user = await User.findById(id).populate('events');
         return user;
     }
 

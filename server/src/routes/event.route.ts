@@ -1,16 +1,53 @@
 import express from 'express';
-import { createEvent, getAllEvents,handleRSVP, removeRsvp, getEvent } from '../controllers/eventController.js';
-import { verifyJWT } from '../middlewares/auth.middleware.js';
+import { EventController } from '../controllers/event.controller';
+import { verifyJWT } from '../middlewares/authMiddleware';
 
 
 const router = express.Router();
+const eventController = new EventController();
 
 
-router.post('/create',verifyJWT, createEvent);
-router.get('/all', verifyJWT,getAllEvents)
-router.post('/:eventId/rsvp', verifyJWT, handleRSVP)
-router.delete('/:eventId/rsvp', verifyJWT, removeRsvp)
-router.get('/:eventId', verifyJWT, getEvent)
+// Event routes
+router.post(
+        '/create',
+        verifyJWT, 
+        [eventController.createEvent.bind(eventController)]
+);
+router.get(
+        '/all',
+        verifyJWT, 
+        [eventController.getAllEvents.bind(eventController)]
+);
+router.get(
+        '/:id',
+        verifyJWT, 
+        [eventController.getEvent.bind(eventController)]
+);
+router.post(
+        '/:id/rsvp',
+        verifyJWT, 
+        [eventController.rsvp.bind(eventController)]
+);
+router.delete(
+        '/:id/remove-rsvp',
+        verifyJWT, 
+        [eventController.removeRsvp.bind(eventController)]
+);
+router.get(
+        '/my-events',
+        verifyJWT, 
+        [eventController.getMyEvents.bind(eventController)]
+);
+router.get(
+        '/my-created-events',
+        verifyJWT, 
+        [eventController.getMyCreatedEvents.bind(eventController)]
+);
+router.post(
+        '/:id/check-rsvp',
+        verifyJWT, 
+        [eventController.checkRsvp.bind(eventController)]
+);
 
 
 

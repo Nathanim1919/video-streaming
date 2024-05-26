@@ -1,21 +1,38 @@
 import { useCallback } from 'react';
 import { requestHandler } from '../utils';
-import { handleRSVP, removeRsvp } from '../api/event';
+import { handleRSVP, removeRsvp, checkRsvp } from '../api/event';
 
-export default function useRsvp(streamId: string, isRsvp: boolean, setIsRsvp: (value: boolean) => void, setIsLoading: (value: boolean) => void) {
+export default function useRsvp(streamId: string, setIsRsvp: (value: boolean) => void, setIsLoading: (value: boolean) => void) {
+
+  const checkRsvpStatus = useCallback(async () => {
+    // e.preventDefault();
+    await requestHandler(
+        async () => await checkRsvp(streamId),
+        setIsLoading,
+        (res) => {
+          const { data } = res;
+          setIsRsvp(data);
+          console.log("This is the checked data: ", data);
+        },
+        (error) => {
+          console.log(error);
+        }
+    )
+  },[setIsLoading, setIsRsvp, streamId])
+
   const handleRsvp = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
     await requestHandler(
         async () => await handleRSVP(streamId),
         setIsLoading,
         () => {
-          setIsRsvp(true);
+          checkRsvpStatus();
         },
         (error) => {
           console.log(error);
         }
     )
-  }, [streamId, setIsRsvp, setIsLoading]);
+  }, [setIsLoading, streamId, checkRsvpStatus]);
 
   const handleRemoveRsvp = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -23,21 +40,13 @@ export default function useRsvp(streamId: string, isRsvp: boolean, setIsRsvp: (v
         async () => await removeRsvp(streamId),
         setIsLoading,
         () => {
-          setIsRsvp(false);
+          checkRsvpStatus();
         },
         (error) => {
           console.log(error);
         }
     )
-  }, [streamId, setIsRsvp, setIsLoading]);
+  }, [setIsLoading, streamId, checkRsvpStatus]);
 
-  const handleRsvpClick = useCallback((e: React.MouseEvent) => {
-    if (isRsvp) {
-      handleRemoveRsvp(e);
-    } else {
-      handleRsvp(e);
-    }
-  }, [isRsvp, handleRemoveRsvp, handleRsvp]);
-
-  return handleRsvpClick;
+  return { handleRsvp, handleRemoveRsvp, checkRsvpStatus };
 }

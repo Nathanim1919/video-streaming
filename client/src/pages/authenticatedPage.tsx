@@ -9,7 +9,6 @@ import Footer from "../components/authenticatedPageComponents/footer";
 const AuthenticatedPage = () => {
     return (
         <Conatiner>
-            <Header/>
             <Hero/>
             <UpcomingStreams/>
             <CreateStream/>

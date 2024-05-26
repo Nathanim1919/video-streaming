@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
@@ -14,10 +14,47 @@ import TechImage from '/image/bg.jpg';
 import { IoMdClose } from "react-icons/io";
 import profilePic from '/image/profile.jpg'
 import { CreateEventForm } from './CreateEventForm';
+import { requestHandler } from '../utils';
+import {fetchStreamer} from '../api';
+import { useParams } from 'react-router-dom';
+import { ImSpinner9 } from "react-icons/im";
+import { Streamer } from '../pages/StreamerPage';
+import useFollow from '../customeHook/useFollow';
+import { useAuth } from '../contexts/AuthContext';
+import Loader from './Loader';
 
 
 const UserProfile = () => {
+  const {user} = useAuth();
   const [createEvent, setCreateEvent] = React.useState(false);
+  const [streamer, setStreamer] = React.useState<Streamer>({} as Streamer);
+  const [actions, setActions] = React.useState<any>({}); // [follow, unfollow]
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isFollow, setIsFollow] = React.useState(streamer.followers?.includes(user._id));
+  const [userFollowers, setUserFollowers] = React.useState<number>(streamer.followers?.length);
+  const {id} = useParams();
+  const handleClick = useFollow(streamer?._id, isFollow,setIsFollow, setIsLoading, setUserFollowers);
+  
+
+  useEffect(() => {
+    async function fetchData() {
+      await requestHandler(
+        async () => await fetchStreamer(id),
+        setIsLoading,
+        (response) => {
+          console.log(response);
+          const {data, actions} = response.data;
+          setStreamer(data);
+          setActions(actions);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    fetchData();
+  }, [id]);
+
   
   return (
     <Container>
@@ -29,9 +66,9 @@ const UserProfile = () => {
               <img src={profilePic} alt="profile-pic" />
             </div>
             <div className='profile-info'>
-              <h4>John Doe</h4>
-              <p>software engineer</p>
-              <button><RiUserFollowLine/>Follow</button>
+              <h4>{streamer.fullName}</h4>
+              <p>{streamer.profession}</p>
+              <button onClick={handleClick}>{isLoading?<span className='spinner'><ImSpinner9/></span>:<RiUserFollowLine/>}{isFollow?"Following":"Follow"}</button>
             </div>
           </div>
           <div className="social">
@@ -49,21 +86,30 @@ const UserProfile = () => {
             <div className="user-infos">
               <div>
                 <RiUserFollowLine />
-                <p>100 followers</p>
+                <p>{userFollowers} followers</p>
               </div>
               <div>
                 <MdOutlineStarRate />
-                <p>Rating: 4.5</p>
+                <p>Rating: {streamer.rating}</p>
               </div>
               <div>
                 <LuGhost />
-                <p>100 events hosted </p>
+                <p>{(streamer.events)?.length} events hosted </p>
               </div>
               <div>
                 <MdOutlineWatchLater/>
                 <p>100 Upcoming events</p>
               </div>
             </div>
+            {/* <div>
+            {actions?.includes('create') && <button>Create</button>}
+            {actions?.includes('edit') && <button>Edit</button>}
+            {actions?.includes('delete') && <button>Delete</button>}
+            {actions?.includes('follow') && <button>Follow</button>}
+            {actions?.includes('unfollow') && <button>Unfollow</button>}
+            {actions?.includes('RSVP') && <button>RSVP</button>}
+            {actions?.includes('unRSVP') && <button>UnRSVP</button>}
+          </div> */}
           </div>
         </div>
       </div>
@@ -73,112 +119,24 @@ const UserProfile = () => {
             <h3>Scheduled Events</h3>
             <button onClick={() => setCreateEvent(true)}>Schedule new Event</button>
           </div>
-          <div className="events-list">
-            <div className="event">
-              <div className="event-info">
-                <img src={TechImage} alt="profile-pic" />
-              </div>
-              <div className='info'>
-                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
-                <h4>Complete Intro to Containers</h4>
-              </div>
-              <div className="event-buttons">
-                <Link to={'/'}>RSVP</Link>
-                <Link to={'/streames/23'}>Details</Link>
-              </div>
-            </div>
-            <div className="event">
-              <div className="event-info">
-                <img src={TechImage} alt="profile-pic" />
-              </div>
-              <div className='info'>
-                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
-                <h4>Complete Intro to Containers</h4>
-              </div>
-              <div className="event-buttons">
-                <Link to={'/'}>RSVP</Link>
-                <Link to={'/streames/23'}>Details</Link>
-              </div>
-            </div>
-            <div className="event">
-              <div className="event-info">
-                <img src={TechImage} alt="profile-pic" />
-              </div>
-              <div className='info'>
-                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
-                <h4>Complete Intro to Containers</h4>
-              </div>
-              <div className="event-buttons">
-                <Link to={'/'}>RSVP</Link>
-                <Link to={'/streames/23'}>Details</Link>
-              </div>
-            </div>
-            <div className="event">
-              <div className="event-info">
-                <img src={TechImage} alt="profile-pic" />
-              </div>
-              <div className='info'>
-                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
-                <h4>Complete Intro to Containers</h4>
-              </div>
-              <div className="event-buttons">
-                <Link to={'/'}>RSVP</Link>
-                <Link to={'/streames/23'}>Details</Link>
-              </div>
-            </div>
-            <div className="event">
-              <div className="event-info">
-                <img src={TechImage} alt="profile-pic" />
-              </div>
-              <div className='info'>
-                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
-                <h4>Complete Intro to Containers</h4>
-              </div>
-              <div className="event-buttons">
-                <Link to={'/'}>RSVP</Link>
-                <Link to={'/streames/23'}>Details</Link>
-              </div>
-            </div>
-            <div className="event">
-              <div className="event-info">
-                <img src={TechImage} alt="profile-pic" />
-              </div>
-              <div className='info'>
-                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
-                <h4>Complete Intro to Containers</h4>
-              </div>
-              <div className="event-buttons">
-                <Link to={'/'}>RSVP</Link>
-                <Link to={'/streames/23'}>Details</Link>
-              </div>
-            </div>
-            <div className="event">
-              <div className="event-info">
-                <img src={TechImage} alt="profile-pic" />
-              </div>
-              <div className='info'>
-                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
-                <h4>Complete Intro to Containers</h4>
-              </div>
-              <div className="event-buttons">
-                <Link to={'/'}>RSVP</Link>
-                <Link to={'/streames/23'}>Details</Link>
-              </div>
-            </div>
-            <div className="event">
-              <div className="event-info">
-                <img src={TechImage} alt="profile-pic" />
-              </div>
-              <div className='info'>
-                <p>May 22 to 23, 2024 - 9:30am to 5:30pm ELT</p>
-                <h4>Complete Intro to Containers</h4>
-              </div>
-              <div className="event-buttons">
-                <Link to={'/'}>RSVP</Link>
-                <Link to={'/streames/23'}>Details</Link>
-              </div>
-            </div>
-          </div>
+          {streamer.events?<div className="events-list">
+            {streamer.events?.length === 0 ? <p>No events available</p> :
+              streamer.events?.map((event: any) => (
+                <div key={event._id}>
+                  <div className="event-info">
+                    <img src={TechImage} alt="profile-pic" />
+                  </div>
+                  <div className='info'>
+                    <p>{event.date} - {event.time}</p>
+                    <h4>{event.title}</h4>
+                  </div>
+                  <div className="event-buttons">
+                    <Link to={'/'}>RSVP</Link>
+                    <Link to={`/events/${event._id}`}>Details</Link>
+                  </div>
+                </div>
+              ))}
+        </div>:<Loader/>}
         </div>
       </div>
     </Container>
@@ -236,7 +194,7 @@ const Container = styled.div`
 
             button{
               margin-top: .5rem;
-              padding: .3rem 1rem;
+              padding: .4rem 1rem;
               border: none;
               display: flex;
               justify-content: center;
@@ -248,6 +206,22 @@ const Container = styled.div`
               border-radius: 5px;
               cursor: pointer;
               font-family: inherit;
+              position: relative;
+              overflow: hidden;
+              display: flex;
+              align-items: center;
+              transition: all .3s ease-in-out;
+
+              .spinner{
+                >*:nth-child(1){
+                  animation: spin 1s linear infinite;
+                }
+
+                @keyframes spin {
+                  0% { transform: rotate(0deg); }
+                  100% { transform: rotate(360deg); }
+                }
+              }
             }
 
             >*{

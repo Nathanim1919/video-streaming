@@ -79,7 +79,6 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({
         password: string;
         profession: string;
     }) => {
-        console.log("hey2")
         await requestHandler(
             async () => await registerUser(data),
             setIsLoading,

@@ -29,7 +29,7 @@ const Loader = () => {
 
 
     >*:nth-child(1){
-          animation: spin 2s linear infinite;
+          animation: spin 1s linear infinite;
           font-size: 3rem;
       }
 

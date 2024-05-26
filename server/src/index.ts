@@ -1,14 +1,20 @@
 import express from 'express';
 import cors from 'cors';
 import db from './config/db';
-import authRouter from './routes/auth.route';
-import userRouter from './routes/user.route';
 import bodyParser from 'body-parser';
 // import passport from 'passport';
 import session from "express-session";
 // import '../passport/index.js';
 import cookieParser from 'cookie-parser';
+import {createRouteHandler} from 'uploadthing/express';
+import {uploadRouter} from './uploadthing';
 
+
+
+// Import routes
+import eventRouter from './routes/event.route';
+import authRouter from './routes/auth.route';
+import userRouter from './routes/user.route';
 
 const app = express();
 app.use(express.json());
@@ -50,6 +56,14 @@ db.once('open', function() {
 // routes 
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/users', userRouter)
+app.use('/api/v1/events', eventRouter)
+// app.use(
+//   "/api/uploadthing",
+//   createRouteHandler({
+//     router: uploadRouter,
+//     config: { ... },
+//   }),
+// )
 
 
 // With this line

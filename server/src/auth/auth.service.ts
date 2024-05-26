@@ -86,7 +86,7 @@ export class AuthService {
       }
 
       // Generate JWT token
-      const token = jwt.sign({ _id: existingUser._id }, JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ _id: existingUser._id }, JWT_SECRET, { expiresIn: '1d' });
       // Return the JWT token
       const success  = true
       return {token, existingUser, success};
@@ -150,8 +150,8 @@ export class AuthService {
    * @throws If logout fails.
    */
   async logout(token: string): Promise<void> {
-    // Example: You can add the token to a blacklist or perform other invalidation logic
-    // For simplicity, this example just logs the token
-    console.log('Logging out user with token:', token);
+      
+
+      
   }
 }

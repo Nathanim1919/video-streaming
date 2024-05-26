@@ -1,11 +1,12 @@
-import Event from "../interfaces/event.interface";
+import IEvent from "../interfaces/event.interface";
 import mongoose, { Schema, Document } from "mongoose";
 
 
-const EventSchema = new Schema<Event>({
+const EventSchema = new Schema<IEvent>({
     owner: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        // required: true
     },
     title: {
         type: String,
@@ -32,13 +33,13 @@ const EventSchema = new Schema<Event>({
         ref: 'User'
     }],
     rsvp: {
-        type: Boolean,
+        type: String,
         default: false
     },
     status: {
         type: String,
         default: 'scheduled',
-        enum: ['scheduled', 'live', 'completed', 'cancelled']
+        enum: ['scheduled', 'live', 'completed', 'cancelled', 'postponed', 'full']
     },
     eventType: {
         type: String,
