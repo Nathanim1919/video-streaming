@@ -60,8 +60,8 @@ export class EventController {
 
     // RSVP to an event
     rsvp = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-        const event = await this.eventService.rsvp(req.params.id, req.user as IUser);
-        res.json(new ApiResponse(200, event, "RSVP successful"));
+        const rsvp = await this.eventService.rsvp(req.params.id, req.user as IUser);
+        res.json(new ApiResponse(200, rsvp, "RSVP successful"));
     });
 
 
@@ -74,8 +74,8 @@ export class EventController {
 
     // Get all events a user has RSVP'd to
     getMyEvents = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-        const events = await this.eventService.getMyEvents(req.user as IUser);
-        res.json(new ApiResponse(200, events, "Events fetched successfully"));
+        const rsvps = await this.eventService.getMyEvents(req.user as IUser);
+        res.json(new ApiResponse(200, rsvps, "Events fetched successfully"));
     });
 
     // Get all events a user has created

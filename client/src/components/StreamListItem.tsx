@@ -8,6 +8,7 @@ import { ImSpinner9 } from "react-icons/im";
 import useRsvp from '../customeHook/useRsvp';
 import { FaRegEdit } from "react-icons/fa";
 import { BiEditAlt } from 'react-icons/bi';
+import { EventTicket } from './EventTicket';
 
 
 
@@ -46,8 +47,9 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
   const [isRsvp, setIsRsvp] = useState((user?.rvps).includes(user?._id));
   const [isLoading, setIsLoading] = useState(false);
   const eventDate = useMemo(() => new Date(stream?.date), [stream?.date]);
+  const [qrCodeUrl, setQrCodeUrl] = useState('');
 
-  const {handleRemoveRsvp, handleRsvp, checkRsvpStatus} = useRsvp(stream._id, setIsRsvp, setIsLoading);
+  const {handleRemoveRsvp, handleRsvp, checkRsvpStatus} = useRsvp(stream._id, setIsRsvp, setIsLoading, setQrCodeUrl);
   // console.log(isRsvp)
 
   useEffect(() => {
@@ -103,6 +105,7 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
   // Render the component
     return (
       <Container>
+        {qrCodeUrl && <EventTicket qrCodeUrl={qrCodeUrl}/>}
         <div className='image'>
           <img src={StreamImage} alt='Stream' />
           <div className="editImage">

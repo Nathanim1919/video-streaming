@@ -8,6 +8,7 @@ import Loader from "./Loader";
 import profilePic from '/image/profile.jpg'
 import coverImage from '/home/live.jpeg'
 import { GrFormNextLink } from "react-icons/gr";
+import QRCode from "qrcode.react";
 
 export const RvspList: React.FC = () => {
     const [rsvpEvents, setRsvpEvents] = useState([]);
@@ -39,27 +40,16 @@ export const RvspList: React.FC = () => {
                     rsvpEvents?.map((event) => {
                         return (
                             <div key={event._id}>
-                                <div className='header'>
-                                    <div className="profile">
-                                        <div className='profilePic'>
-                                        <img src={profilePic} alt="profile" />
-                                        </div>
-                                        <div className='profileInfo'>
-                                            <h3>{event.owner?.fullName}</h3>
-                                            <p>{event.owner?.profession}</p>
-                                        </div>
-                                    </div>
-                                    <div className="streamCoverImage" style={{backgroundImage:`linear-gradient(to left, #00000098, #000001),URL(${coverImage})`}}>
-                                        {/* <img src={coverImage} alt="stream" /> */}
-                                    </div>
+                               <div className="header">
+                                <h2>your ticket</h2>
+                                <button className="download">download</button>
+                               </div>
+                                <div className="qrcode">
+                                    <QRCode value={event?.qrCodeUrl} />
                                 </div>
-                                <div className="streamInfo">
-                                    <div>
-                                        <h2>{(event.title).slice(0,20)}..</h2>
-                                        <p>Saturday {event.date} Local time</p>
-                                    </div>
-                                    
-                                    <Link  className="seemore" to={`/streames/${event._id}`}>See More<GrFormNextLink/></Link>
+                                <div className="info">
+                                    <h2>{event?.eventId?.title}</h2>
+                                    <h2>{event?.eventId?.description}</h2>
                                 </div>
                             </div>
                         )

@@ -20,6 +20,7 @@
     "dayjs": "^1.11.11",
     "dayjs-timezone-iana-plugin": "^0.1.0",
     "jwt-decode": "^4.0.0",
+    "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.0",

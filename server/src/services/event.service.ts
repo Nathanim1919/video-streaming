@@ -5,6 +5,10 @@ import IUser from '../interfaces/user.interface';
 import EventModel from '../models/event.model';
 import { User } from '../models/user.model';
 import logger from '../logger';
+import { v4 as uuidv4 } from 'uuid';
+import QRCode from 'qrcode';
+import IRsvp from '../interfaces/rsvp.interface';
+import RSVP from '../models/rsvp.model';
 
 
 export class EventService {
@@ -44,19 +48,36 @@ export class EventService {
     }
 
     // RSVP to an event
-    async rsvp(eventId: string, user: any): Promise<IEvent> {
+    async rsvp(eventId: string, user: any): Promise<IRsvp | IEvent> {
+        // Check if the event exists
         const event = await EventModel.findById(eventId);
-        if (!event) {
-            throw new Error('Event not found');
-        }
-        if (event.attendees.length >= event.capacity) {
-            event.status = 'full';
-            return event;
-        }
 
         if (event.attendees.includes(user._id)) {
             throw new Error('You have already RSVP\'d to this event');
         }
+
+        const rsvp = new RSVP({
+            userId: user._id,
+            eventId: event._id,
+            rsvpId:uuidv4(),
+            expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        });
+
+        await rsvp.save();
+
+        const qrData = `rsvpId:${rsvp._id}`; // Only encoding the RSVP ID
+
+
+        // const qrData = JSON.stringify({
+        //     rsvpId: rsvp.rsvpId,
+        //     eventId:eventId,
+        //     userId: user._id,
+        // });
+
+        const qrCodeImage = await QRCode.toDataURL(qrData);
+        rsvp.qrCodeUrl = qrCodeImage;
+
+        await rsvp.save();
 
         event.attendees.push(user._id);
 
@@ -70,7 +91,7 @@ export class EventService {
 
         await person.save();
         await event.save();
-        return event;
+        return rsvp;
     }
 
     // Remove RSVP to an event
@@ -101,9 +122,9 @@ export class EventService {
     }
 
     // Get all events a user has RSVP'd to
-    async getMyEvents(user: any): Promise<IEvent[]> {
-        const events = await EventModel.find({ attendees: user._id }).populate('owner').populate('attendees');
-        return events;
+    async getMyEvents(user: any): Promise<IRsvp[]> {
+        const rsvps = await RSVP.find({ userId: user._id }).populate('eventId').populate('userId');
+        return rsvps;
     }
 
 
