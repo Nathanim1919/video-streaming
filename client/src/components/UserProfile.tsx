@@ -29,6 +29,7 @@ const UserProfile = () => {
   const [createEvent, setCreateEvent] = React.useState(false);
   const [streamer, setStreamer] = React.useState<Streamer>({} as Streamer);
   const [actions, setActions] = React.useState<any>({}); // [follow, unfollow]
+  const [isOwner, setIsOwner] = React.useState(true);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isFollow, setIsFollow] = React.useState(streamer.followers?.includes(user._id));
   const [userFollowers, setUserFollowers] = React.useState<number>(streamer.followers?.length);
@@ -43,9 +44,10 @@ const UserProfile = () => {
         setIsLoading,
         (response) => {
           console.log(response);
-          const {data, actions} = response.data;
+          const {data, actions, isOwner} = response.data;
           setStreamer(data);
           setActions(actions);
+          setIsOwner(isOwner);
         },
         (error) => {
           console.log(error);
@@ -68,11 +70,10 @@ const UserProfile = () => {
             <div className='profile-info'>
               <h4>{streamer.fullName}</h4>
               <p>{streamer.profession}</p>
-              <button onClick={handleClick}>{isLoading?<span className='spinner'><ImSpinner9/></span>:<RiUserFollowLine/>}{isFollow?"Following":"Follow"}</button>
-            </div>
+{ !isOwner &&<button onClick={handleClick}>{isLoading?<span className='spinner'><ImSpinner9/></span>:<RiUserFollowLine/>}{isFollow?"Following":"Follow"}</button>
+}            </div>
           </div>
           <div className="social">
-            <Link to={'/streamers'}><IoMdClose/></Link>
             <div className='social-links'>
               <Link to="/"><FaFacebook size={20} color='#eee' /></Link>
               <Link to="/"><FaLinkedin size={20} color='#eee' /></Link>
@@ -117,7 +118,7 @@ const UserProfile = () => {
         <div>
           <div className='header'>
             <h3>Scheduled Events</h3>
-            <button onClick={() => setCreateEvent(true)}>Schedule new Event</button>
+            {isOwner && <button onClick={() => setCreateEvent(true)}>Schedule new Event</button>}
           </div>
           {streamer.events?<div className="events-list">
             {streamer.events?.length === 0 ? <p>No events available</p> :
@@ -130,10 +131,17 @@ const UserProfile = () => {
                     <p>{event.date} - {event.time}</p>
                     <h4>{event.title}</h4>
                   </div>
-                  <div className="event-buttons">
-                    <Link to={'/'}>RSVP</Link>
-                    <Link to={`/events/${event._id}`}>Details</Link>
-                  </div>
+                  {isOwner?
+                    <div className="event-buttons">
+                      <Link to={'/'}>Delete</Link>
+                      <Link to={`/events/${event._id}`}>Edit</Link>
+                      <Link to={`/events/${event._id}`}>Details</Link>
+                    </div>:
+                    <div className="event-buttons">
+                      <Link to={'/'}>RSVP</Link>
+                      <Link to={`/events/${event._id}`}>Details</Link>
+                    </div>
+                  }
                 </div>
               ))}
         </div>:<Loader/>}

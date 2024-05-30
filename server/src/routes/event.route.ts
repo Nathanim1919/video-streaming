@@ -19,6 +19,21 @@ router.get(
         [eventController.getAllEvents.bind(eventController)]
 );
 router.get(
+        '/upcoming',
+        verifyJWT,
+        [eventController.getUpcomingEvent.bind(eventController)]
+);
+router.get(
+        '/my-events',
+        verifyJWT, 
+        [eventController.getMyEvents.bind(eventController)]
+);
+router.get(
+        '/my-created-events',
+        verifyJWT, 
+        [eventController.getMyCreatedEvents.bind(eventController)]
+);
+router.get(
         '/:id',
         verifyJWT, 
         [eventController.getEvent.bind(eventController)]
@@ -33,16 +48,7 @@ router.delete(
         verifyJWT, 
         [eventController.removeRsvp.bind(eventController)]
 );
-router.get(
-        '/my-events',
-        verifyJWT, 
-        [eventController.getMyEvents.bind(eventController)]
-);
-router.get(
-        '/my-created-events',
-        verifyJWT, 
-        [eventController.getMyCreatedEvents.bind(eventController)]
-);
+
 router.post(
         '/:id/check-rsvp',
         verifyJWT, 

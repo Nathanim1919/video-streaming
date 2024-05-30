@@ -4,6 +4,7 @@ import IEvent from '../interfaces/event.interface';
 import IUser from '../interfaces/user.interface';
 import EventModel from '../models/event.model';
 import { User } from '../models/user.model';
+import logger from '../logger';
 
 
 export class EventService {
@@ -28,9 +29,11 @@ export class EventService {
     }
 
     // Get all events
-    async getAllEvents(): Promise<IEvent[]> {
-        const events = await EventModel.find().populate('owner').populate('attendees');
-        console.log(events);
+    async getAllEvents(page: number, limit: number): Promise<IEvent[]> {
+        console.log(`Page: ${page}, Limit: ${limit}`);
+        const skip = (page - 1) * limit;
+        const events = await EventModel.find().skip(skip).limit(limit).populate('owner').populate('attendees');
+        // console.log(events);
         return events;
     }
 
@@ -251,15 +254,20 @@ export class EventService {
     }
 
 
-    // get 4 upcoming events
-    async getUpcomingEvents(): Promise<IEvent[]> {
-        const events = await EventModel.find({ date: { $gte: new Date().toISOString() } }).limit(4).populate('owner').populate('attendees');
+    async getUpcomingEvents(user: any): Promise<IEvent[]> {
+        logger.info("Getting upcoming events");
+        const today = new Date();
+    
+        // Get the IDs of the users that the current user is following
+        const followingUserIds = user.followers;
+    
+        const events = await EventModel.find({
+            date: { $gte: today.toISOString().split('T')[0] },
+            owner: { $in: followingUserIds },
+            attendees: { $ne: user._id },
+            status: { $ne: 'full' },
+        }).sort('date').limit(4).populate('owner').populate('attendees');
+    
         return events;
     }
-
-
-    
-
-
-
 }

@@ -141,11 +141,21 @@ const Container = styled.div`
         justify-content: space-around;
         gap: 2rem;
 
+        @media screen and (max-width: 768px){
+            flex-direction: column;
+            height: auto;
+        }
+
         .heroText{
             display: flex;
             flex-direction: column;
             gap: 1rem;
             max-width: 30%;
+
+            @media screen and (max-width: 768px){
+                max-width: 100%;
+                text-align: center;
+            }
             h1{
                 font-size: 2rem;
                 margin: 0;
@@ -244,9 +254,18 @@ const Container = styled.div`
     padding-bottom: 2rem;
 
 
+    @media screen and (max-width: 800px){
+        flex-direction: column;
+    }
+
+
     .desc{
        
         max-width: 60%;
+
+        @media screen and (max-width: 800px){
+            max-width: 100%;
+        }
         h2{
             font-size: 1.5rem;
            

@@ -31,7 +31,10 @@ export class EventController {
 
     // Get all events
     getAllEvents = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-        const events = await this.eventService.getAllEvents();
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 2;
+        console.log(`Page: ${page}, Limit: ${limit}`);
+        const events = await this.eventService.getAllEvents(page, limit);
         res.json(new ApiResponse(200, events, "Events fetched successfully"));
     });
 
@@ -39,7 +42,19 @@ export class EventController {
     // Get a single event
     getEvent = asyncHandler(async (req: Request, res: Response): Promise<void> => {
         const event = await this.eventService.getEvent(req.params.eventId);
-        res.json(new ApiResponse(200, event, "Event fetched successfully"));
+
+        // is the user the owner of the event
+        const isOwner = true;
+
+        const actions = isOwner? ['edit', 'delete']: ['RSVP', 'unRSVP'];
+
+        res.json(new ApiResponse(200, event, "Event fetched successfully", actions));
+    });
+
+
+    getUpcomingEvent = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const events = await this.eventService.getUpcomingEvents(req.user as IUser);
+        res.json(new ApiResponse(200, events, "Upcoming events fetched successfully"));
     });
 
 
@@ -104,7 +119,7 @@ export class EventController {
         res.json(new ApiResponse(200, events, "Events fetched successfully"));
     });
 
-    
+
     // Get all events happening this month
     getEventsThisMonth = asyncHandler(async (req: Request, res: Response): Promise<void> => {
         const events = await this.eventService.getEventsThisMonth();
@@ -115,16 +130,8 @@ export class EventController {
     // check if a user has RSVP'd to an event
     checkRsvp = asyncHandler(async (req: Request, res: Response): Promise<void> => {
         const rsvp = await this.eventService.checkRsvp(req.params.id, req.user as IUser);
-        console.log(rsvp);  
         res.json(new ApiResponse(200, rsvp, "RSVP status fetched successfully"));
     });
-
-
-    // fetch 4 upcoming events
-    getUpcomingEvents = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-        const events = await this.eventService.getUpcomingEvents();
-        res.json(new ApiResponse(200, events, "Upcoming events fetched successfully"));
-    }); 
 
 
     // Check if a user has created an event

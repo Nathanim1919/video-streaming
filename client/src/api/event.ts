@@ -1,5 +1,11 @@
 import apiClient from "./config";
 
+
+interface PageinationParams {
+    page: number;
+    limit: number;
+}
+
 const createEvent = (data: {
     title: string;
     description: string;
@@ -24,8 +30,17 @@ const createEvent = (data: {
 }
 
 
-const getEvents = () => {
-    return apiClient.get("/events/all");
+const getEvents = ({page, limit}: PageinationParams) => {
+    return apiClient.get("/events/all", {
+        params: {
+            page,
+            limit
+        }
+    });
+}
+
+const getUpcomingEvents = () => {
+    return apiClient.get("/events/upcoming");
 }
 
 const getEvent = (eventId: string) => {
@@ -49,11 +64,19 @@ const checkRsvp = (id: string) => {
 
 
 
+const getRsvpEvents = () => {
+    return apiClient.get("/events/my-events");
+}
+
+
+
 export  {
     createEvent,
     getEvents,
+    getUpcomingEvents,
     handleRSVP,
     removeRsvp,
     getEvent,
-    checkRsvp
+    checkRsvp,
+    getRsvpEvents
 }

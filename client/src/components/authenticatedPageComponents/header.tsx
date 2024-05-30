@@ -8,7 +8,7 @@ import { MdAccountCircle } from "react-icons/md";
 
 
 export const Header = () => {
-    const {logout} = useAuth()
+    const {logout, user} = useAuth()
     const [showOptions, setShowOptions] = React.useState(false);
     const handleLogout = async () => {
         try {
@@ -20,7 +20,7 @@ export const Header = () => {
     }
     return (
         <Conatiner className="header">
-            <Link to={'/me'}>DevSphere</Link>
+            <Link to={'/me'}>Eventify.</Link>
             <div>
               <ul>
                 <li><Link to="/me">Home</Link></li>
@@ -33,10 +33,10 @@ export const Header = () => {
                 <div className="account">
                     <li onClick={()=>setShowOptions(!showOptions)}><MdAccountCircle/></li>
                    {showOptions && <div className="options">
-                        <li><Link to="/me">Profile</Link></li>
-                        <li><Link to="/account">Account</Link></li>
-                        <li><Link to="/subscription">Subscription</Link></li>
-                        <li><Link to="/login">My Rvsps</Link></li>
+                        <li><Link onClick={() => setShowOptions(false)} to={`/streamers/${user?._id}`}>Profile</Link></li>
+                        <li><Link onClick={() => setShowOptions(false)} to="/account">Account</Link></li>
+                        <li><Link onClick={() => setShowOptions(false)} to="/subscription">Subscription</Link></li>
+                        <li><Link onClick={() => setShowOptions(false)} to="/my-rvsps">My Rvsps</Link></li>
                         <li onClick={handleLogout}>Logout</li>
                     </div>}
                 </div>

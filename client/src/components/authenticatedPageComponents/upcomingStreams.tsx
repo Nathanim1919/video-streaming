@@ -1,93 +1,72 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import coverImage from '/image/stream.jpg'
+import coverImage from '/home/live.jpeg'
 import profilePic from '/image/profile.jpg'
 import { useAuth } from '../../contexts/AuthContext';
+import { GrFormNextLink } from "react-icons/gr";
+import { requestHandler } from '../../utils';
+import { getUpcomingEvents } from '../../api/event';
+import Loader from '../Loader';
 
-export const UpcomingStreams = () => {
-    const navigate = useNavigate()
-    const streams = [
-        {
-            title: "Web Development Fundamentals",
-            date: "2022-01-15",
-            time: "14:00",
-            streamer: "John Doe",
-            profession: "Full Stack Developer",
-            pic:'/image/bg.jpg'
-        },
-        {
-            title: "Data Science and Machine Learning",
-            date: "2022-01-20",
-            time: "16:30",
-            streamer: "Jane Smith",
-            profession: "Data Scientist",
-            pic:'/image/join.jpg'
-        },
-        {
-            title: "Mobile App Development with React Native",
-            date: "2022-01-25",
-            time: "18:00",
-            streamer: "Alex Johnson",
-            profession: "Mobile App Developer",
-            pic:'/image/stream.jpg'
-        },
-        {
-            title: "Cloud Computing and AWS",
-            date: "2022-01-30",
-            time: "20:30",
-            streamer: "Sarah Thompson",
-            profession: "Cloud Architect",
-            pic:'/image/schedule.jpg'
-        },
-    ]
+
+export const UpcomingStreams: React.FC = () => {
+    const [upcomingEvents, setUpcomingEvents] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        async function getUpcomingEvent() {
+            await requestHandler(
+                async () => getUpcomingEvents(),
+                setIsLoading,
+                (data) => setUpcomingEvents(data.data),
+                (error) => console.log(error)
+            )
+        }
+        getUpcomingEvent();
+    }, [])
 
     const {isAuthenticated} = useAuth();
+    console.log(upcomingEvents);
 
     return (
         <Container>
             <div className="header">
-        <h1>Upcoming Streams</h1>
+        <h1>Upcoming Events</h1>
         <Link to={isAuthenticated() ? '/streames' : "/login"}>Browse all</Link>
             </div>
-            <StreamList>
+            {isLoading? <Loader/>:<StreamList>
                 {
-                    streams.map((stream, index) => {
+                    upcomingEvents?.map((event) => {
                         return (
-                            <div key={index}>
+                            <div key={event._id}>
                                 <div className='header'>
                                     <div className="profile">
                                         <div className='profilePic'>
                                         <img src={profilePic} alt="profile" />
                                         </div>
                                         <div className='profileInfo'>
-                                            <h3>{stream.streamer}</h3>
-                                            <p>{stream.profession}</p>
+                                            <h3>{event.owner?.fullName}</h3>
+                                            <p>{event.owner?.profession}</p>
                                         </div>
                                     </div>
-                                    <div className="streamCoverImage" style={{backgroundImage:`linear-gradient(to bottom, #00000098, #000001),URL(${stream.pic})`}}>
+                                    <div className="streamCoverImage" style={{backgroundImage:`linear-gradient(to left, #00000098, #000001),URL(${coverImage})`}}>
                                         {/* <img src={coverImage} alt="stream" /> */}
                                     </div>
                                 </div>
                                 <div className="streamInfo">
                                     <div>
-                                        <h2>{(stream.title).slice(0,20)}..</h2>
-                                        <p>{stream.date} {stream.time}</p>
+                                        <h2>{(event.title).slice(0,20)}..</h2>
+                                        <p>Saturday {event.date} Local time</p>
                                     </div>
-                                    <div className="timeCountDown">
-                                        <h1>{stream.time}</h1>
-                                        <p>Time Left</p>
-                                    </div>
-                                    <div className='btns'>
-                                        <Link to="/stream">Join Stream</Link>
-                                        <Link to="/stream">Remind Me</Link>
-                                    </div>
+                                    
+                                    <Link  className="seemore" to={`/streames/${event._id}`}>See More<GrFormNextLink/></Link>
                                 </div>
                             </div>
                         )
                     })
                 }
-            </StreamList>
+            </StreamList>}
         </Container>
     );
 }
@@ -102,7 +81,7 @@ const Container = styled.div`
     color: #fff;
     padding-bottom: 4rem;
     margin-bottom: 2rem;
-    background: linear-gradient(45deg, #2a2929, #1a1919);
+    background: linear-gradient(45deg, #141313, #1a1919);
     overflow: hidden;
     
 
@@ -110,22 +89,27 @@ const Container = styled.div`
         display: flex;
         justify-content: space-around;
         align-items: center;
+        >a{
+            text-decoration: none;
+            color: #000;
+            padding: .5rem 1rem;
+            background-color: #fff;
+            width: fit-content;
+            align-self: center;
+
+            &:hover{
+                background-color: #000;
+                color: #fff;
+                box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+            }
+        }
     }
 
-    a{
-        text-decoration: none;
-        color: #fff;
-        padding: .5rem 1rem;
-        border-radius: 5px;
-        background: linear-gradient(45deg, red, orange);
-        width: fit-content;
-        align-self: center;
-    }
 `
 
 const StreamList = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 1rem;
     width: 90%;
@@ -135,6 +119,9 @@ const StreamList = styled.div`
         color: #fff;
         flex: 1;
         display: grid;
+        gap: 3rem;
+        max-width: 450px;
+        min-width: 300px;
         grid-template-rows: 1fr 1fr;
         background-color: #000000;
 
@@ -160,8 +147,6 @@ const StreamList = styled.div`
             .streamCoverImage{
                 overflow: hidden;
                 max-height: 300px;
-                background-image:linear-gradient(to bottom, #00000098, #000000ca), url(${coverImage});
-
                 background-position: center;
                 background-size: cover;
 
@@ -174,15 +159,17 @@ const StreamList = styled.div`
             }
 
             .profile{
-                display: flex;
-                gap: 1rem;
-                position: absolute;
-                top: -10%;
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-                align-items: center;
-                z-index: 1;
+               color: #fff;
+               /* background-color: red; */
+               position: absolute;
+               z-index: 5;
+               bottom: 0;
+               display: flex;
+               align-items: center;
+               gap: 1rem;
+               padding: 0 1rem;
+               /* justify-content: center; */
+               width: 100%;
 
                 >*{
                     margin: 0;
@@ -208,16 +195,13 @@ const StreamList = styled.div`
                 }
 
                 .profilePic img{
-                    width: 80px;
-                    height: 80px;
+                    width: 50px;
+                    height: 50px;
                     border-radius: 50%;
                     object-fit: cover;
-    
-                    border: 5px solid #1a1919;
-                    
+                    /* border: 5px solid #8b0909; */
                 }
             }
-          \
         }
 
         .streamInfo{
@@ -259,17 +243,23 @@ const StreamList = styled.div`
                 }
             }
 
-            .btns{
-                display: flex;
-                gap: 1rem;
-                padding: 1rem;
-
-                a{
-                    text-decoration: none;
+            a.seemore{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    gap: .5rem;
+                    padding: 1rem 0;
+                    background-color:transparent;
                     color: #fff;
-                    padding: .5rem 1rem;
-                    border-radius: 5px;
-                    background-color: #ff0000;
+                    width: 100%;
+                    font-size: 1rem;
+                    /* font-weight: bold; */
+                    text-decoration: none;
+                    transition: all .5s;
+                    border-top: 1px solid #333;
+                    &:hover{
+                        background-color:#8d1b1b;
+                    }
                 }
             }
         }
