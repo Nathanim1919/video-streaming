@@ -3,9 +3,14 @@ import jwt from 'jsonwebtoken';
 import { asyncHandler } from "../utils/asyncHandler";
 import { NextFunction } from "express";
 import mongoose from 'mongoose';
+import { Request } from 'express';
+
+interface CustomRequest extends Request {
+    locals?: string;
+}
 
 
-export const verifyJWT = asyncHandler(async (req, res, next: NextFunction) => {
+export const verifyJWT = asyncHandler(async (req:CustomRequest, res, next: NextFunction) => {
     const token =
         req.cookies?.token ||
         req.header("Authorization")?.replace("Bearer ", "");
@@ -28,6 +33,7 @@ export const verifyJWT = asyncHandler(async (req, res, next: NextFunction) => {
             })
         }
         req.user = user;
+        req.locals = token;
         next();
     } catch(error) {
         res.status(401).json({

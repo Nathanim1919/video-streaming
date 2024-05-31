@@ -24,7 +24,7 @@ export const requestHandler = async (
     } catch (error: any) {
         // Handle error cases, including unauthorized and forbidded case
         if ([401, 403].includes(error?.response.data?.statusCode)) {
-            localStorage.clear(); // Clear local storage on authentication issues
+            LocalStorage.clear(); // Clear local storage on authentication issues
             if (isBrowser) window.location.href = '/login'; // Redirect to login page
         }
 
@@ -76,8 +76,8 @@ export class LocalStorage {
 
     // Clear all items from local storage
     static clear() {
-        if (!isBrowser) return;
-        localStorage.clear()
+        // if (!isBrowser) return;
+        localStorage.clear();
     }
 }
 
@@ -85,7 +85,7 @@ export class LocalStorage {
 // A utility function to format date strings
 export function formatDate(dateString: string): string {
     const date = new Date(dateString);
-  
+
     const options: Intl.DateTimeFormatOptions = {
       month: 'long',
       day: 'numeric',
@@ -94,6 +94,6 @@ export function formatDate(dateString: string): string {
       minute: '2-digit',
       hour12: true,
     };
-  
+
     return date.toLocaleString('en-US', options);
   }

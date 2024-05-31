@@ -1,15 +1,18 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import { JWT_SECRET } from '../config';
+import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../config";
 
-
-export const jwtAuthGuard = (req: Request, res: Response, next: NextFunction) => {
+export const jwtAuthGuard = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   // Extract the JWT token from the request headers
-  const token = req.headers.authorization?.split(' ')[1];
+  const token = req.headers.authorization?.split(" ")[1];
 
   // Check if token exists
   if (!token) {
-    return res.status(401).json({ message: 'Authentication token missing' });
+    return res.status(401).json({ message: "Authentication token missing" });
   }
 
   try {
@@ -23,6 +26,6 @@ export const jwtAuthGuard = (req: Request, res: Response, next: NextFunction) =>
     next();
   } catch (error) {
     // Handle token verification errors
-    return res.status(401).json({ message: 'Invalid authentication token' });
+    return res.status(401).json({ message: "Invalid authentication token" });
   }
 };

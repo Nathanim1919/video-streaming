@@ -3,6 +3,7 @@ import IUser from '../interfaces/user.interface';
 import { Request as ExpressRequest, Response } from 'express';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';
+import logger from '../logger';
 
 interface Request extends ExpressRequest {
   locals: {
@@ -44,13 +45,16 @@ export class AuthController {
   });
 
   // Logout user
-  logout = async (req: Request, res: Response): Promise<void> => {
+  logout = asyncHandler(async (req: Request, res: Response): Promise<ApiResponse> => {
     try {
       const token = req.locals.token;
+      logger.info(`Logging out user with token: ${token}`);
+      logger.info(`Logging out user ${req.user}`)
       await this.authService.logout(token);
-      res.json({ message: 'Logged out successfully' });
+      return new ApiResponse(200, null, "User logged out successfully");
     } catch (error) {
+      logger.error(error.message);
       res.status(401).json({ error: error.message });
     }
-  };
+  });
 }

@@ -102,7 +102,7 @@ const HomePage = () => {
 
     </div>
 
-    <UpcomingStreams/>
+    {/* <UpcomingStreams/> */}
     <CreateStream/>
     <TopStreamers/>
     <TopStreams/>
@@ -210,7 +210,6 @@ const Container = styled.div`
 
                 >*{
                     margin: 0em;
-                
                 }
 
                 p{

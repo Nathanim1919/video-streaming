@@ -29,8 +29,7 @@ router.get(
         [eventController.getMyEvents.bind(eventController)]
 );
 router.get(
-        '/top-events',
-        verifyJWT, 
+        '/top-events', 
         [eventController.getTopEventsOfTheWeek.bind(eventController)]
 );
 router.get(

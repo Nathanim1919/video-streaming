@@ -67,7 +67,7 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({
             alert
         );
 
-       
+
     };
 
 
@@ -95,17 +95,25 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({
 
     // Function to handle user logout
     const logout = async () => {
-        await requestHandler(
-            async () => await logoutUser(),
-            setIsLoading,
-            () => {
-                setUser(null);
-                setToken(null);
-                LocalStorage.clear(); // Clear local storage on logout
-                navigate("/login"); // Redirect to the login page after successful logout
-            },
-            alert // Display error alerts on request failur
-        );
+        // try {
+        //     await requestHandler(
+        //         async () => await logoutUser(),
+        //         null,
+        //         () => {
+        //             setUser(null);
+        //             setToken(null);
+        //             LocalStorage.clear(); // Clear local storage on logout
+        //             navigate("/login"); // Redirect to the login page after successful logout
+        //         },
+        //         alert // Display error alerts on request failure
+        //     );
+        // } catch (error) {
+        //     console.error('Error during logout:', error);
+        // }
+        setUser(null);
+        setToken(null);
+        LocalStorage.clear(); // Clear local storage on logout
+        navigate("/login"); 
     };
 
 
