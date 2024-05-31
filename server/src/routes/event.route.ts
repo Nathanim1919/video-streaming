@@ -29,10 +29,16 @@ router.get(
         [eventController.getMyEvents.bind(eventController)]
 );
 router.get(
+        '/top-events',
+        verifyJWT, 
+        [eventController.getTopEventsOfTheWeek.bind(eventController)]
+);
+router.get(
         '/my-created-events',
         verifyJWT, 
         [eventController.getMyCreatedEvents.bind(eventController)]
 );
+
 router.get(
         '/:id',
         verifyJWT, 
@@ -43,6 +49,13 @@ router.post(
         verifyJWT, 
         [eventController.rsvp.bind(eventController)]
 );
+
+router.get(
+        'verify-rsvp/:rsvpId',
+        verifyJWT,
+        [eventController.verifyRsvp.bind(eventController)]
+);
+
 router.delete(
         '/:id/remove-rsvp',
         verifyJWT, 

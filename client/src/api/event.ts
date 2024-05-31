@@ -69,6 +69,11 @@ const getRsvpEvents = () => {
 }
 
 
+const getTopEvents = () => {
+    return apiClient.get("/events/top-events");
+}
+
+
 
 export  {
     createEvent,
@@ -78,5 +83,6 @@ export  {
     removeRsvp,
     getEvent,
     checkRsvp,
-    getRsvpEvents
+    getRsvpEvents,
+    getTopEvents
 }

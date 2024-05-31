@@ -1,85 +1,62 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Image from '/image/bg.jpg';
-import Image2 from '/image/join.jpg';
-import Image3 from '/image/stream.jpg';
 import Image4 from '/image/profile.jpg';
+import { useState, useEffect } from 'react';
+import { requestHandler } from '../../utils';
+import Loader from '../Loader';
+import { getTopEvents } from '../../api/event';
 
 export const TopStreams = () => {
+    const [streams, setStreams] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        (async () => {await requestHandler(
+            async () => await getTopEvents(),
+            setIsLoading,
+            (response) => {
+                setStreams(response.data);
+            },
+            (error) => {
+                console.log(error);
+            }
+        )})();
+    }, []);
     return (
+        isLoading ? <Loader /> :
         <Container>
             <div className="header">
             <h1>Top <span>3</span> Streams of the Week</h1>
             </div>
             <StreamContainer>
-            <div className='streams'>
-            <Stream>
-                    <div className="container">
-                        <div className='streamer-info'>
-                            <img src={Image} alt='streamer' />
-                            <div className="proInfo">
-                                <div>
-                                    <img src={Image4}/>
+                <div className='streams'>
+            { streams.map((stream, index) => {
+                return (
+                        <Stream>
+                            <div className="container">
+                                <div className='streamer-info'>
+                                    <img src={Image} alt='streamer' />
+                                    <div className="proInfo">
+                                        <div>
+                                            <img src={Image4}/>
+                                        </div>
+                                        <div>
+                                            <h3>PikachuPro</h3>
+                                            <p>500 Followers</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3>PikachuPro</h3>
-                                    <p>500 Followers</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='more-info'>
-                            <p>Playing Overwatch - Season 8 - Competitive Play</p>
-                            <p>Currently streaming live for 1 hour and 40 minutes</p>
-                            <p>Audience: 1,000 Viewers</p>
-                            <p>Stream started at 10:00 PM</p>
-                        </div>
-                    </div>
-                </Stream>
-                <Stream>
-                    <div className="container">
-                        <div className='streamer-info'>
-                            <img src={Image3} alt='streamer' />
-                            <div className="proInfo">
-                                <div>
-                                    <img src={Image4}/>
-                                </div>
-                                <div>
-                                    <h3>PikachuPro</h3>
-                                    <p>500 Followers</p>
+                                <div className='more-info'>
+                                    <p>Playing Overwatch - Season 8 - Competitive Play</p>
+                                    <p>Currently streaming live for 1 hour and 40 minutes</p>
+                                    <p>Audience: {(stream.attendees).length} Viewers</p>
+                                    <p>Stream started at 10:00 PM</p>
                                 </div>
                             </div>
-                        </div>
-                        <div className='more-info'>
-                            <p>Playing Overwatch - Season 8 - Competitive Play</p>
-                            <p>Currently streaming live for 1 hour and 40 minutes</p>
-                            <p>Audience: 1,000 Viewers</p>
-                            <p>Stream started at 10:00 PM</p>
-                        </div>
-                    </div>
-                </Stream>
-                <Stream>
-                    <div className="container">
-                        <div className='streamer-info'>
-                            <img src={Image2} alt='streamer' />
-                            <div className="proInfo">
-                                <div>
-                                    <img src={Image4}/>
-                                </div>
-                                <div>
-                                    <h3>PikachuPro</h3>
-                                    <p>500 Followers</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='more-info'>
-                            <p>Playing Overwatch - Season 8 - Competitive Play</p>
-                            <p>Currently streaming live for 1 hour and 40 minutes</p>
-                            <p>Audience: 1,000 Viewers</p>
-                            <p>Stream started at 10:00 PM</p>
-                        </div>
-                    </div>
-                </Stream>
-
+                        </Stream>
+                );
+            })}
             </div>
             </StreamContainer>
             <div className='call-to-action'>

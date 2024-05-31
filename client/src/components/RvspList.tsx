@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { requestHandler } from "../utils";
+import { formatDate, requestHandler } from "../utils";
 import { useEffect, useState } from "react";
 import { getRsvpEvents } from "../api/event";
 import { useAuth } from "../contexts/AuthContext";
 import Loader from "./Loader";
-import profilePic from '/image/profile.jpg'
-import coverImage from '/home/live.jpeg'
-import { GrFormNextLink } from "react-icons/gr";
+import { IoMdDownload } from "react-icons/io";
 import QRCode from "qrcode.react";
+import { toPng } from "html-to-image";
+import { saveAs } from "file-saver";
 
 export const RvspList: React.FC = () => {
     const [rsvpEvents, setRsvpEvents] = useState([]);
@@ -26,30 +26,53 @@ export const RvspList: React.FC = () => {
         getRsvpEvent();
     }, [])
 
-    const {isAuthenticated} = useAuth();
-    console.log(rsvpEvents);
 
+    const downloadTicketAsImage = async () => {
+        const ticketElement = document.getElementById('ticket');
+        try {
+          const dataUrl = await toPng(ticketElement);
+          saveAs(dataUrl, 'ticket.png');
+        } catch (error) {
+          console.error('Error generating image:', error);
+        }
+      };
+
+    const {isAuthenticated} = useAuth();
+
+    if (rsvpEvents.length === 0) {
+        return <div>No RSVPs found.</div>;
+      }
     return (
         <Container>
             <div className="header">
         <h1>RSVP Events</h1>
         <Link to={isAuthenticated() ? '/streames' : "/login"}>Browse all</Link>
             </div>
+            
             {isLoading? <Loader/>:<StreamList>
                 {
                     rsvpEvents?.map((event) => {
                         return (
-                            <div key={event._id}>
-                               <div className="header">
-                                <h2>your ticket</h2>
-                                <button className="download">download</button>
+                            <div className="ticket" id="ticket" key={event._id}>
+                               <div className="header" onClick={downloadTicketAsImage}>
+                                Download
+                                <div className="download">
+                                    <IoMdDownload/>
+                                </div>
+                               </div>
+                               <div className="upperInfo">
+                               <p><strong>Date:</strong> {formatDate(event.eventId.date)}</p>
+                                <p><strong>Location:</strong> {event.eventId.location}</p>
+                                <p><strong>Attendee:</strong> {event.userId.fullName}</p>
+                                <p><strong>Ticket ID:</strong> {event._id}</p>
+                                {/* <p><strong>Ticket Type:</strong> {event.eventId.ticketType}</p> */}
                                </div>
                                 <div className="qrcode">
                                     <QRCode value={event?.qrCodeUrl} />
                                 </div>
                                 <div className="info">
-                                    <h2>{event?.eventId?.title}</h2>
-                                    <h2>{event?.eventId?.description}</h2>
+                                    <h4>{event?.eventId?.title}</h4>
+                                    <p>{event?.eventId?.description}</p>
                                 </div>
                             </div>
                         )
@@ -74,6 +97,7 @@ const Container = styled.div`
         position: sticky;
         top: 0;
        
+       
         h1{
             font-size: 1.5rem;
             color: #fff;
@@ -91,78 +115,57 @@ const StreamList = styled.div`
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1rem;
 
-    >div{
-        background: #141414;
-        box-shadow: 0 10px 20px rgba(0,0,0,.2);
-    }
 
-    div{
-        border-radius: 10px;
-        padding: 1rem;
+    .ticket{
+        background-color: #1d1b1b;
+        display: grid;
+        color: #fff;
+        place-items: center;
+
+
         .header{
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
+            font-size: 0.7rem;
+            padding:.4rem 0;
             align-items: center;
-            .profile{
-                display: flex;
-                align-items: center;
-                .profilePic{
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 50%;
-                    overflow: hidden;
-                    img{
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                    }
-                }
-                .profileInfo{
-                    margin-left: 1rem;
-                    h3{
-                        font-size: 1rem;
-                        color: #f5f1f1;
-                    }
-                    p{
-                        font-size: 0.8rem;
-                        color: #9d9696;
-                    }
-                }
+            background-color: #e80c0c75;
+            width: 100%;
+            margin-bottom: 1rem;
+            cursor: pointer;
+
+            &:hover{
+                background-color: #800000;
             }
-            .streamCoverImage{
-                width: 100px;
-                height: 100px;
-                border-radius: 10px;
-                overflow: hidden;
-                img{
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
+            
+        }
+
+        .qrcode{
+            background-color: #fff;
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+        }
+
+        .info{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+
+            >*{
+                margin: 0;
             }
         }
-        .streamInfo{
+
+        .upperInfo{
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1rem;
-            h2{
-                font-size: 1rem;
-                color: #e7e1e1;
-            }
-            p{
+            place-self: start;
+            flex-direction: column;
+            padding: 1rem;
+            >p{
+                margin: 0;
                 font-size: 0.8rem;
-                color: #c2baba;
-            }
-            .seemore{
-                display: flex;
-                align-items: center;
-                font-size: 0.8rem;
-                color: #e7e0e0;
-                text-decoration: none;
-                svg{
-                    margin-left: 0.2rem;
-                }
             }
         }
     }

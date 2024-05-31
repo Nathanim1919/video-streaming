@@ -6,7 +6,7 @@ const RSVPSchema = new Schema<IRsvp>({
     userId:{type:Schema.Types.ObjectId, ref:'User', required:true},
     eventId:{type:mongoose.Schema.Types.ObjectId, ref:'Event', required:true},
     qrCodeUrl:{type:String},
-    rsvpId: {type:String, required:true},
+    // rsvpId: {type:String, required:true},
     isUsed:{type:Boolean, default:false},
     expiresAt:{type:Date, required:true}
 },

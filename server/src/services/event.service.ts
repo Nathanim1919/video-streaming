@@ -5,7 +5,6 @@ import IUser from '../interfaces/user.interface';
 import EventModel from '../models/event.model';
 import { User } from '../models/user.model';
 import logger from '../logger';
-import { v4 as uuidv4 } from 'uuid';
 import QRCode from 'qrcode';
 import IRsvp from '../interfaces/rsvp.interface';
 import RSVP from '../models/rsvp.model';
@@ -59,20 +58,12 @@ export class EventService {
         const rsvp = new RSVP({
             userId: user._id,
             eventId: event._id,
-            rsvpId:uuidv4(),
             expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
         });
 
         await rsvp.save();
 
-        const qrData = `rsvpId:${rsvp._id}`; // Only encoding the RSVP ID
-
-
-        // const qrData = JSON.stringify({
-        //     rsvpId: rsvp.rsvpId,
-        //     eventId:eventId,
-        //     userId: user._id,
-        // });
+        const qrData = `https://eventify.nathanim.me/verify-rsvp/${rsvp._id}`; // Only encoding the RSVP ID
 
         const qrCodeImage = await QRCode.toDataURL(qrData);
         rsvp.qrCodeUrl = qrCodeImage;
@@ -115,6 +106,10 @@ export class EventService {
 
         event.attendees = event.attendees.filter((attendee) => attendee.toString() !== user._id.toString());
         person.rvps = person.rvps.filter((rsvp) => rsvp.toString() !== event._id.toString());
+
+        // delete the rsvp of the user from the rsvp collection
+        await RSVP.deleteOne({ userId: user._id, eventId: event._id });
+
 
         await person.save();
         await event.save();
@@ -228,6 +223,22 @@ export class EventService {
     }
 
 
+    async getTopEventsOfTheWeek(): Promise<IEvent[]> {
+        logger.info('Getting top events of the week');
+        const today = new Date();
+        const weekStart = new Date(today.setDate(today.getDate() - today.getDay()));
+        const weekEnd = new Date(today.setDate(today.getDate() - today.getDay() + 6));
+        const events = await EventModel.find({
+            date: {
+                $gte: weekStart.toISOString().split('T')[0],
+                $lte: weekEnd.toISOString().split('T')[0],
+            },
+        }).populate('owner').populate('attendees').sort({ attendees: -1 }).limit(3);
+        
+        return events;
+    }
+
+
     // Get events happening this month
     async getEventsThisMonth(): Promise<IEvent[]> {
         const today = new Date();
@@ -290,5 +301,33 @@ export class EventService {
         }).sort('date').limit(4).populate('owner').populate('attendees');
     
         return events;
+    }
+
+
+    async verifyTicket(rsvpId: string): Promise<IRsvp>{
+        try{
+            const rsvp = await RSVP.findById(rsvpId);
+
+            if (!rsvp) {
+                return
+            }
+
+            if (rsvp.isUsed){
+                return
+            }
+
+            if (new Date() > new Date(rsvp.expiresAt)){
+                return
+            }
+
+
+            // Mark the RSVP as used
+            rsvp.isUsed = true
+            await rsvp.save()
+
+            return rsvp;
+        } catch(error) {
+            return error
+        }
     }
 }

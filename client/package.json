@@ -19,6 +19,8 @@
     "axios": "^1.6.8",
     "dayjs": "^1.11.11",
     "dayjs-timezone-iana-plugin": "^0.1.0",
+    "file-saver": "^2.0.5",
+    "html-to-image": "^1.11.11",
     "jwt-decode": "^4.0.0",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
@@ -29,6 +31,7 @@
     "styled-components": "^6.1.10"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",

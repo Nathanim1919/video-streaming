@@ -126,6 +126,12 @@ export class EventController {
         res.json(new ApiResponse(200, events, "Events fetched successfully"));
     });
 
+    // get all 3 events whose tickets are sold the most
+    getTopEventsOfTheWeek = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const events = await this.eventService.getTopEventsOfTheWeek();
+        res.json(new ApiResponse(200, events, "Events fetched successfully"));
+    });
+
 
     // check if a user has RSVP'd to an event
     checkRsvp = asyncHandler(async (req: Request, res: Response): Promise<void> => {
@@ -134,11 +140,11 @@ export class EventController {
     });
 
 
-    // Check if a user has created an event
-    // checkOwner = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    //     const isOwner = await this.eventService.checkOwner(req.params.id, req.user as IUser);
-    //     res.json(new ApiResponse(200, isOwner, "Ownership status fetched successfully"));
-    // });
+    verifyRsvp = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const { rsvpId } = req.params;
+        const rsvp = await this.eventService.verifyTicket(rsvpId);
+        res.json(new ApiResponse(200, rsvp, "Ownership status fetched successfully"));
+    });
 
 
 
