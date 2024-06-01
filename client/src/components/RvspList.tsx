@@ -39,9 +39,6 @@ export const RvspList: React.FC = () => {
 
     const {isAuthenticated} = useAuth();
 
-    if (rsvpEvents.length === 0) {
-        return <div>No RSVPs found.</div>;
-      }
     return (
         <Container>
             <div className="header">

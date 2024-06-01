@@ -11,7 +11,6 @@ interface JwtPayload {
 
 export const verifyJWT = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
-    // console.log("token is: ", token)
 
     if (!token) {
         return res.status(401).json({
