@@ -10,12 +10,12 @@ const eventController = new EventController();
 // Event routes
 router.post(
         '/create',
-        verifyJWT, 
+        verifyJWT,
         [eventController.createEvent.bind(eventController)]
 );
 router.get(
         '/all',
-        verifyJWT, 
+        verifyJWT,
         [eventController.getAllEvents.bind(eventController)]
 );
 router.get(
@@ -25,27 +25,27 @@ router.get(
 );
 router.get(
         '/my-events',
-        verifyJWT, 
+        verifyJWT,
         [eventController.getMyEvents.bind(eventController)]
 );
 router.get(
-        '/top-events', 
+        '/top-events',
         [eventController.getTopEventsOfTheWeek.bind(eventController)]
 );
 router.get(
         '/my-created-events',
-        verifyJWT, 
+        verifyJWT,
         [eventController.getMyCreatedEvents.bind(eventController)]
 );
 
 router.get(
         '/:eventId',
-        verifyJWT, 
+        verifyJWT,
         [eventController.getEvent.bind(eventController)]
 );
 router.post(
         '/:id/rsvp',
-        verifyJWT, 
+        verifyJWT,
         [eventController.rsvp.bind(eventController)]
 );
 
@@ -57,13 +57,13 @@ router.get(
 
 router.delete(
         '/:id/remove-rsvp',
-        verifyJWT, 
+        verifyJWT,
         [eventController.removeRsvp.bind(eventController)]
 );
 
 router.post(
         '/:id/check-rsvp',
-        verifyJWT, 
+        verifyJWT,
         [eventController.checkRsvp.bind(eventController)]
 );
 

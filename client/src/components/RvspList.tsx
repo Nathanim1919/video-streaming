@@ -45,7 +45,7 @@ export const RvspList: React.FC = () => {
         <h1>RSVP Events</h1>
         <Link to={isAuthenticated() ? '/streames' : "/login"}>Browse all</Link>
             </div>
-            
+
             {isLoading? <Loader/>:<StreamList>
                 {
                     rsvpEvents?.map((event) => {
@@ -93,8 +93,8 @@ const Container = styled.div`
         margin-bottom: 1rem;
         position: sticky;
         top: 0;
-       
-       
+
+
         h1{
             font-size: 1.5rem;
             color: #fff;
@@ -134,7 +134,7 @@ const StreamList = styled.div`
             &:hover{
                 background-color: #800000;
             }
-            
+
         }
 
         .qrcode{

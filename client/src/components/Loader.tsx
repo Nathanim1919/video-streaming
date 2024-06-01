@@ -17,7 +17,7 @@ const Loader = () => {
     //   </Container>
     // )
   };
-  
+
   export default Loader;
 
 
@@ -40,7 +40,7 @@ const Loader = () => {
   //         place-items: center;
   //         animation: spin 1s linear infinite;
   //   }
-    
+
   //   .circle{
   //     width: 65px;
   //     position: relative;
@@ -51,18 +51,18 @@ const Loader = () => {
 
 
   //   @keyframes spin {
-  //    0% { 
+  //    0% {
   //     transform: scale(0);
   //     opacity: 0;
   //    }
-  //    100% { 
+  //    100% {
   //     transform: scale(1);
   //     opacity: 1;
   //    }
   //    }
   // `
 
-  
+
 
 
   const Container = styled.div`
