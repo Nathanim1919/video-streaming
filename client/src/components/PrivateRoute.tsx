@@ -12,10 +12,10 @@ const PrivateRoute: React.FC<{children: ReactNode}> = ({
     children,
 }) => {
     // Access user and token information from the authentication context
-    const { user, token } = useAuth();
+    const { user } = useAuth();
 
     // Redirect to login page if user is not authenticated
-    if (!user?._id || !token) return <Navigate to="/login" />
+    if (!user?._id) return <Navigate to="/" />
 
     // Render the child component if user is authenticated
     return children;

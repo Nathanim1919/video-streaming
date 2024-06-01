@@ -1,6 +1,12 @@
 import apiClient from "./config";
 
 
+
+const getUserData = () => {
+    return apiClient.get('/auth/me');
+}
+
+
 // API functions for different actions
 const loginUser = (data: {email: string; password: string}) => {
     return apiClient.post('/auth/login', data);
@@ -12,7 +18,7 @@ const registerUser = (data: {
     username: string;
     password: string;
     profession: string;
-    fullname: string;
+    fullName: string;
 }) => {
     return apiClient.post("/auth/register", data);
 };
@@ -44,7 +50,6 @@ const handleUnFollow = (id: string) => {
 
 
 
-
 // Export all the API functions
 export {
     loginUser,
@@ -53,5 +58,6 @@ export {
     fetchStreamers,
     handleFollow,
     handleUnFollow,
-    fetchStreamer
+    fetchStreamer,
+    getUserData
 }

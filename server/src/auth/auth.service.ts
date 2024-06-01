@@ -1,7 +1,7 @@
 // auth.service.ts
 
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request } from "express";
 import IUser from "../interfaces/user.interface";
 import { UserService } from "../services/user.service";
@@ -25,6 +25,10 @@ export class AuthService {
 
   constructor() {
     this.userService = new UserService();
+  }
+
+  async getUserById(userId: string): Promise<IUser> {
+    return await this.userService.userFindById(userId);
   }
 
   /**
@@ -54,8 +58,6 @@ export class AuthService {
         password: hashedPassword,
       });
 
-      console.log("new user is: ", newUser);
-
       // Return a success message or user ID
       return `User registered successfully: ${newUser?._id}`;
     } catch (error) {
@@ -73,7 +75,7 @@ export class AuthService {
    */
   async login(
     user: IUser
-  ): Promise<{ token: string; existingUser: IUser; success: boolean }> {
+  ): Promise<IUser> {
     try {
       // Verify user credentials (Example: fetch user from the database)
       const existingUser = await this.userService.userFindByEmail(user.email);
@@ -90,13 +92,7 @@ export class AuthService {
         throw new Error("Invalid email or password");
       }
 
-      // Generate JWT token
-      const token = jwt.sign({ _id: existingUser._id }, JWT_SECRET, {
-        expiresIn: "1d",
-      });
-      // Return the JWT token
-      const success = true;
-      return { token, existingUser, success };
+      return existingUser;
     } catch (error) {
       // Handle login errors
       throw new Error(`Login failed: ${error.message}`);
@@ -160,5 +156,34 @@ export class AuthService {
     // Example: Blacklist the token or perform additional cleanup
     logger.info(`User logged out: ${token}`);
     return;
+  }
+
+  /**
+   * Refreshes the access token using the provided refresh token.
+   * @param refreshToken - The refresh token used to generate a new access token.
+   * @returns A promise that resolves to the new access token or an error message.
+   */
+  async refreshAccessToken(refreshToken: string): Promise<string> {
+    if (!refreshToken) {
+      throw new Error("Unauthorized request");
+    }
+    try {
+      const decodeToken = jwt.verify(
+        refreshToken,
+        process.env.JWT_REFRESH_SECRET
+      ) as jwt.JwtPayload;
+      const user = await this.userService.userFindById(decodeToken.userId);
+      if (!user) {
+        throw new Error("Invalid Refresh token");
+      }
+      const newAccessToken = jwt.sign(
+        { userId: user._id },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_SECRET_EXPIRY }
+      );
+      return newAccessToken;
+    } catch (error) {
+      throw error;
+    }
   }
 }

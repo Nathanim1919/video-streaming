@@ -8,6 +8,10 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import { createRouteHandler } from "uploadthing/express";
 import { uploadRouter } from "./uploadthing";
+import dotenv from 'dotenv';
+
+
+dotenv.config()
 
 // Import routes
 import eventRouter from "./routes/event.route";
@@ -15,6 +19,8 @@ import authRouter from "./routes/auth.route";
 import userRouter from "./routes/user.route";
 
 const app = express();
+const cookieSecret = process.env.JWT_SECRET
+app.use(cookieParser(cookieSecret))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());

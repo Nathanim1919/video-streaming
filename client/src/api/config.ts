@@ -1,27 +1,28 @@
 import axios from "axios";
-import { LocalStorage } from "../utils";
+
 
 // Create an axios instance for API requests
 const apiClient = axios.create({
     baseURL: 'http://localhost:3000/api/v1',
     withCredentials: true,
     timeout: 120000,
-})
+});
 
-
-// Add an interceptor to set authorization header with user token before requests
-apiClient.interceptors.request.use(
-    function (config) {
-        // Retrieve user token from local storage
-        const token = LocalStorage.get("token");
-        // Set authorization header with bearer token
-        config.headers.Authorization = `Bearer ${token}`
-        return config;
-    },
-    function (error) {
+apiClient.interceptors.response.use(
+    response => response,
+    async error => {
+        if (error.response.status === 401 && !error.config.__isRetryRequest) {
+            error.config.__isRetryRequest = true;
+            try {
+                await axios.post('http://localhost:3000/api/v1/auth/refresh-token', {}, { withCredentials: true });
+                return apiClient(error.config);
+            } catch (refreshError) {
+                console.error("Failed to refresh access token", refreshError);
+                window.location.href = '/login';
+            }
+        }
         return Promise.reject(error);
     }
-)
+);
 
-
-export default apiClient
+export default apiClient;
