@@ -39,7 +39,7 @@ router.get(
 );
 
 router.get(
-        '/:id',
+        '/:eventId',
         verifyJWT, 
         [eventController.getEvent.bind(eventController)]
 );

@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import ProImage from '/home/bg.jpg';
 import styled from 'styled-components';
@@ -7,6 +7,8 @@ import { useAuth } from '../contexts/AuthContext';
 import useRsvp from '../customeHook/useRsvp';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa6";
 import { SimilarEvents } from './SimilarEvents';
+import { formatDate, requestHandler } from '../utils';
+import { getEvent } from '../api/event';
 
 
 
@@ -37,11 +39,32 @@ interface EventDetailProps {
     event: EventDetailData;
 }
 
-const EventDetail = ({event}) => {
+const EventDetail = () => {
     const {user} = useAuth();
+    const {eventId}=useParams()
+    console.log(eventId)
     const [isLoading, setIsLoading] = React.useState(false);
+    const [event, setEvent] = useState({} as EventDetailData)
     const [isRsvp, setIsRsvp] = useState(event?.attendees?.includes(user?._id))
     const handleRsvpClick = useRsvp(event?._id, isRsvp, setIsRsvp, setIsLoading);
+
+
+    useEffect(() => {
+        const fetchEventDetail = async() => {
+            await requestHandler(
+                async () => getEvent(eventId),
+                setIsLoading,
+                (res) => {
+                    setEvent(res.data.data)
+                },
+                (error) => {
+                    alert(error)
+                }
+            )
+        }
+
+        fetchEventDetail()
+    }, [])
 
 
     return (
@@ -49,14 +72,14 @@ const EventDetail = ({event}) => {
         <Container>
             <div className="header">
                 <div className="heroText">
-                    <h1>Empowering Women in Tech: A Networking Luncheo</h1>
-                    <p>Wednesday, June 12th, 2024 | 12:00 PM - 2:00 PM</p>
-                    <p>ABC Tech Center, Grand Auditorium (123 Main St., Anytown, CA 12345)</p>
+                    <h1>{event.title}</h1>
+                    <p>{formatDate(event.date)}</p>
+                    <p>{event.location}</p>
                 </div>
                 <div className="calander">
                     <div className="time">
                         <h3>Data and time</h3>
-                        <p>Saturday 12:40 PM 12-09-2016 Local time</p>
+                        <p>{formatDate(event.date)}</p>
                     </div>
                     <p>+ add to calender</p>
                     <div className="btns">
@@ -70,7 +93,7 @@ const EventDetail = ({event}) => {
                 <div className="descriptions">
                     <div className="desc">
                         <h2>Description</h2>
-                        <p>Join us for an inspiring luncheon designed to connect and empower women in the tech industry. This event features a keynote address from a prominent female tech leader, followed by a panel discussion with diverse industry professionals. Enjoy a delicious catered lunch while networking with fellow attendees.pen_spark</p>
+                        <p>{event.description}</p>
                     </div>
                     <div className="hours">
                         <h2>Hours</h2>

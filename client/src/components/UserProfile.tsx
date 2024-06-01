@@ -43,7 +43,6 @@ const UserProfile = () => {
         async () => await fetchStreamer(id),
         setIsLoading,
         (response) => {
-          console.log(response);
           const {data, actions, isOwner} = response.data;
           setStreamer(data);
           setActions(actions);
@@ -70,8 +69,8 @@ const UserProfile = () => {
             <div className='profile-info'>
               <h4>{streamer.fullName}</h4>
               <p>{streamer.profession}</p>
-{ !isOwner &&<button onClick={handleClick}>{isLoading?<span className='spinner'><ImSpinner9/></span>:<RiUserFollowLine/>}{isFollow?"Following":"Follow"}</button>
-}            </div>
+              { !isOwner &&<button onClick={handleClick}>{isLoading?<span className='spinner'><ImSpinner9/></span>:<RiUserFollowLine/>}{isFollow?"Following":"Follow"}</button>
+              }            </div>
           </div>
           <div className="social">
             <div className='social-links'>
@@ -120,7 +119,7 @@ const UserProfile = () => {
             <h3>Scheduled Events</h3>
             {isOwner && <button onClick={() => setCreateEvent(true)}>Schedule new Event</button>}
           </div>
-          {streamer.events?<div className="events-list">
+          {isLoading?<Loader/>: streamer.events?<div className="events-list">
             {streamer.events?.length === 0 ? <p>No events available</p> :
               streamer.events?.map((event: any) => (
                 <div key={event._id}>
@@ -135,7 +134,7 @@ const UserProfile = () => {
                     <div className="event-buttons">
                       <Link to={'/'}>Delete</Link>
                       <Link to={`/events/${event._id}`}>Edit</Link>
-                      <Link to={`/events/${event._id}`}>Details</Link>
+                      <Link to={`/streames/${event._id}`}>Details</Link>
                     </div>:
                     <div className="event-buttons">
                       <Link to={'/'}>RSVP</Link>
