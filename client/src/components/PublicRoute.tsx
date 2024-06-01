@@ -8,10 +8,10 @@ const PublicRoute: React.FC<{children: ReactNode}> = ({
     children,
 }) => {
     // Access user and token information from the authentication context
-    const { user, token } = useAuth();
+    const { user } = useAuth();
 
     // Redirect to home page if user is authenticated
-    if (user?._id && token) return <Navigate to="/me" />
+    if (user?._id) return <Navigate to="/me" />
 
     // Render the child component if user is not authenticated
     return children;

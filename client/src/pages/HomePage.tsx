@@ -1,11 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import BgImage from '/home/bg.jpg';
-import StreamImage from '/image/stream.jpg';
-import JoinImage from '/image/join.jpg';
-import CommunityImage from '/image/community.jpg';
-import ScheduleImage from '/image/schedule.jpg';
-import { UpcomingStreams } from '../components/authenticatedPageComponents/upcomingStreams';
 import { TopStreamers } from '../components/authenticatedPageComponents/topTreamers';
 import { TopStreams } from '../components/authenticatedPageComponents/TopStreames';
 import Footer from '../components/authenticatedPageComponents/footer';
@@ -102,7 +97,7 @@ const HomePage = () => {
 
     </div>
 
-    <UpcomingStreams/>
+    {/* <UpcomingStreams/> */}
     <CreateStream/>
     <TopStreamers/>
     <TopStreams/>
@@ -210,7 +205,6 @@ const Container = styled.div`
 
                 >*{
                     margin: 0em;
-                
                 }
 
                 p{

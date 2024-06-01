@@ -14,6 +14,7 @@ import PricingPage from './pages/pricingPage';
 import PrivateRouteWithHeader from './components/PrivateRouteWithHeader';
 import { EventsPage } from './pages/EventsPage';
 import { OrganizationsList } from './pages/OrgsPage';
+import { RvspList } from './components/RvspList';
 
 
 const App = () => {
@@ -48,6 +49,14 @@ const App = () => {
         element={
           <PrivateRouteWithHeader >
             <AuthenticatedPage/>
+          </PrivateRouteWithHeader>
+        }
+      />
+      <Route 
+        path="/my-rvsps" 
+        element={
+          <PrivateRouteWithHeader >
+            <RvspList/>
           </PrivateRouteWithHeader>
         }
       />

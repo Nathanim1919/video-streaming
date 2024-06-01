@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { requestHandler } from '../utils';
 import { handleRSVP, removeRsvp, checkRsvp } from '../api/event';
 
-export default function useRsvp(streamId: string, setIsRsvp: (value: boolean) => void, setIsLoading: (value: boolean) => void) {
+export default function useRsvp(streamId: string, setIsRsvp: (value: boolean) => void, setIsLoading: (value: boolean) => void, setQrCodeUrl: (value: string) => void){
 
   const checkRsvpStatus = useCallback(async () => {
     // e.preventDefault();
@@ -25,7 +25,8 @@ export default function useRsvp(streamId: string, setIsRsvp: (value: boolean) =>
     await requestHandler(
         async () => await handleRSVP(streamId),
         setIsLoading,
-        () => {
+        (data) => {
+          setQrCodeUrl(data.data.qrCodeUrl);
           checkRsvpStatus();
         },
         (error) => {

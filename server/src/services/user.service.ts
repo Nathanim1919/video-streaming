@@ -14,7 +14,7 @@ export class UserService {
         const currentUserId = req.user?._id
         // filter all users other than the logged in user
         const users = await User.find({_id: {$ne: currentUserId}});
-        console.log(users)
+        // console.log(users)
         return users;
     }
 
