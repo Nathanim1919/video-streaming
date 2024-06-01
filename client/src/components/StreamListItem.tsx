@@ -43,7 +43,7 @@ interface StreamListItemProps {
 
 const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
   const { user } = useAuth();
-  const [countdown, setCountdown] = useState<{days?: number, hours?: number, minutes?: number, seconds?: number}>({days: 0, hours: 0, minutes: 0, seconds: 0}); 
+  const [countdown, setCountdown] = useState<{days?: number, hours?: number, minutes?: number, seconds?: number}>({days: 0, hours: 0, minutes: 0, seconds: 0});
   const [isRsvp, setIsRsvp] = useState((user?.rvps).includes(user?._id));
   const [isLoading, setIsLoading] = useState(false);
   const eventDate = useMemo(() => new Date(stream?.date), [stream?.date]);
@@ -57,13 +57,13 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
     checkRsvpStatus();
   }, [checkRsvpStatus]);
 
-  // Countdown timer 
+  // Countdown timer
   useEffect(() => {
       // Update the countdown every second
       const intervalId = setInterval(() => {
         const now = new Date();
         const distance = eventDate.getTime() - now.getTime();
-    
+
         if (distance < 0) {
 
           // Event has already occurred
@@ -79,7 +79,7 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
           if (days !== 0) {
             // Event is more than 24 hours away
             setCountdown({days});
-          } 
+          }
           else if (hours !== 0) {
             // Event is less than 24 hours away
             setCountdown({hours});
@@ -87,14 +87,14 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
           else if (minutes !== 0) {
             // Event is less than 1 hour away
             setCountdown({minutes});
-          } 
+          }
           else {
             // Event is less than 1 minute away
             setCountdown({seconds});
           }
         }
       }, 1000);
-    
+
       // Clear the interval when the component is unmounted
       return () => clearInterval(intervalId);
     }, [eventDate]);
@@ -112,7 +112,7 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
             <Link to={`/edit/${stream.id}`}><FaRegEdit/></Link>
           </div>
         </div>
-        <div className='info'> 
+        <div className='info'>
           <Link to={`/edit/${stream.id}`}><FaRegEdit/></Link>
           <div className="schedule">
             <p>{formatDate(stream?.date)} Eastern centeral time </p>
@@ -143,11 +143,11 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
                   <p>{stream.owner?.profession}</p>
               </div>
           </div>
-         
+
 
           <div className='buttons'>
               <div className="btns">
-                <Link to={'/'} className={isRsvp? 'cancel' : 'rsvp'} 
+                <Link to={'/'} className={isRsvp? 'cancel' : 'rsvp'}
                   onClick={isRsvp?handleRemoveRsvp:handleRsvp}>{isLoading && <ImSpinner9/>}{isRsvp? 'Cancel My Online RSVP' : 'RSVP to Attend Online'}
                 </Link>
                 <Link to={`/streames/${stream._id}`} className='details'>Details and Schedule</Link>

@@ -26,8 +26,8 @@ export class EventService {
 
         // Add the user as the owner of the event
         // newEvent.owner = user._id;
-        newEvent.owner = user._id as unknown as mongoose.Types.ObjectId;    
-        await newEvent.save();    
+        newEvent.owner = user._id as unknown as mongoose.Types.ObjectId;
+        await newEvent.save();
         return newEvent;
     }
 
@@ -234,7 +234,7 @@ export class EventService {
                 $lte: weekEnd.toISOString().split('T')[0],
             },
         }).populate('owner').populate('attendees').sort({ attendees: -1 }).limit(3);
-        
+
         return events;
     }
 
@@ -289,17 +289,17 @@ export class EventService {
     async getUpcomingEvents(user: any): Promise<IEvent[]> {
         logger.info("Getting upcoming events");
         const today = new Date();
-    
+
         // Get the IDs of the users that the current user is following
         const followingUserIds = user.followers;
-    
+
         const events = await EventModel.find({
             date: { $gte: today.toISOString().split('T')[0] },
             owner: { $in: followingUserIds },
             attendees: { $ne: user._id },
             status: { $ne: 'full' },
         }).sort('date').limit(4).populate('owner').populate('attendees');
-    
+
         return events;
     }
 

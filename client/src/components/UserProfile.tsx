@@ -35,7 +35,7 @@ const UserProfile = () => {
   const [userFollowers, setUserFollowers] = React.useState<number>(streamer.followers?.length);
   const {id} = useParams();
   const handleClick = useFollow(streamer?._id, isFollow,setIsFollow, setIsLoading, setUserFollowers);
-  
+
 
   useEffect(() => {
     async function fetchData() {
@@ -57,7 +57,7 @@ const UserProfile = () => {
     fetchData();
   }, [id]);
 
-  
+
   return (
     <Container>
      {createEvent && <CreateEventForm setCreateEvent={setCreateEvent}/>}
@@ -262,11 +262,11 @@ const Container = styled.div`
               justify-content: center;
               align-items: center;
               gap: 1rem;
-              
+
               a{
                 font-size: 1rem;
                 color: #413f3f;
-                
+
               }
             }
             .bio{
@@ -295,7 +295,7 @@ const Container = styled.div`
 
                 >*:nth-child(1){
                   font-size: 2rem;
-                
+
                 }
 
                 p{
@@ -334,9 +334,9 @@ const Container = styled.div`
         display: flex;
         flex-direction: column;
         margin-top: 1rem;
-        
-      
-  
+
+
+
         >*{
           margin: 0;
         }
@@ -358,15 +358,15 @@ const Container = styled.div`
         max-width: 300px;
         cursor: pointer;
         border-radius: 10px;
-       
+
 
         &:hover{
           .event-info{
-         
+
            >img{
 
             filter: brightness(1);
-          } 
+          }
         }
         }
 
@@ -382,7 +382,7 @@ const Container = styled.div`
             gap: 0.5rem;
           }
         }
-        
+
         .event-info{
           background-color: red;
            >img{
@@ -390,7 +390,7 @@ const Container = styled.div`
             height: auto;
             filter: brightness(.8);
             transition: all .3s ease-in-out;
-          } 
+          }
         }
         .event-buttons{
           display: flex;

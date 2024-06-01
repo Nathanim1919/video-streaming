@@ -59,7 +59,7 @@ const StreamList: React.FC = () => {
     )
 
   }
-  
+
   useEffect(() => {
     getAllStreams();
     console.log("page: ", page);
@@ -112,7 +112,7 @@ const Container = styled.div`
       }
 
       @media screen and (max-width:600px){
-       
+
         width: 100vw;
     }
 

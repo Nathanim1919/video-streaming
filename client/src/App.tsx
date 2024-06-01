@@ -20,7 +20,7 @@ import { RvspList } from './components/RvspList';
 const App = () => {
   return (
     <Routes>
-      <Route 
+      <Route
         path='/'
         element={
         <PublicRoute>
@@ -28,63 +28,63 @@ const App = () => {
         </PublicRoute>
         }
       />
-      <Route 
-        path="/login" 
+      <Route
+        path="/login"
         element={
           <PublicRoute>
             <LoginPage/>
           </PublicRoute>
         }
       />
-      <Route 
-        path="/signup" 
+      <Route
+        path="/signup"
         element={
           <PublicRoute>
             <RegisterPage/>
           </PublicRoute>
         }
       />
-        <Route 
-        path="/me" 
+        <Route
+        path="/me"
         element={
           <PrivateRouteWithHeader >
             <AuthenticatedPage/>
           </PrivateRouteWithHeader>
         }
       />
-      <Route 
-        path="/my-rvsps" 
+      <Route
+        path="/my-rvsps"
         element={
           <PrivateRouteWithHeader >
             <RvspList/>
           </PrivateRouteWithHeader>
         }
       />
-       <Route 
-        path="/subscription" 
+       <Route
+        path="/subscription"
         element={
           <PrivateRouteWithHeader>
             <PricingPage/>
           </PrivateRouteWithHeader>
         }
       />
-      <Route 
-        path="/events" 
+      <Route
+        path="/events"
         element={
           <PrivateRouteWithHeader>
             <EventsPage/>
           </PrivateRouteWithHeader>
         }
       />
-        <Route 
-        path="/account" 
+        <Route
+        path="/account"
         element={
           <PrivateRouteWithHeader>
             <Account/>
           </PrivateRouteWithHeader>
         }
       />
-      <Route 
+      <Route
         path="/streamers"
         element={
           <PrivateRouteWithHeader>
@@ -92,30 +92,30 @@ const App = () => {
         </PrivateRouteWithHeader>
         }/>
 
-      <Route 
-        path='/streamers/:id' 
+      <Route
+        path='/streamers/:id'
         element={
           <PrivateRouteWithHeader>
            <UserProfilePage/>
           </PrivateRouteWithHeader>
       }/>
 
-      <Route 
-        path="/streames" 
+      <Route
+        path="/streames"
         element={
         <PrivateRouteWithHeader>
           <StreamList/>
         </PrivateRouteWithHeader>
       }/>
-      <Route 
-        path="/orgs" 
+      <Route
+        path="/orgs"
         element={
         <PrivateRouteWithHeader>
           <OrganizationsList/>
         </PrivateRouteWithHeader>
       }/>
-      <Route 
-        path='/streames/:eventId' 
+      <Route
+        path='/streames/:eventId'
         element={
         <PrivateRouteWithHeader>
           <EventDetailPage/>

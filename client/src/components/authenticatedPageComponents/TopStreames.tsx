@@ -113,7 +113,7 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    
+
 
     .header{
         h1{
@@ -141,15 +141,15 @@ const Container = styled.div`
         top:-50%;
         margin-top: -2rem;
 
-      
+
 
 
         @media screen and (max-width: 800px){
             grid-template-columns: 1fr;
             width: 95%;
-            
+
         }
-       
+
 
 
         >div:nth-child(2){
@@ -171,11 +171,11 @@ const Container = styled.div`
 
         >div:nth-child(1){
             position: relative;
-           
+
             @media screen and (max-width: 800px){
             top: 20%;
         }}
-        
+
     }
 
 
@@ -208,7 +208,7 @@ const Container = styled.div`
         }
     }
 
-    
+
 `
 const StreamContainer = styled.div`
     display: flex;
@@ -220,7 +220,7 @@ const StreamContainer = styled.div`
     padding-bottom: 5rem;
     position: relative;
     margin: 2rem 0 ;
-    
+
 
 
 `

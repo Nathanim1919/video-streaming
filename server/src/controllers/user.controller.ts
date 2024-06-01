@@ -16,14 +16,14 @@ interface RequestWithUser extends Request {
 */
 export class UserController{
     private userService: UserService;
-    
+
     // Inject user service or repository here for database interactions.
     constructor(){
         this.userService = new UserService();
     }
     // get actions based on the user's role whether they are the owner of the profile or not
     getActions(isOwner: boolean): string[] {
-        return isOwner 
+        return isOwner
           ? ['create', 'edit', 'delete', 'other'] // Actions for the owner
           : ['follow', 'unfollow', 'RSVP', 'unRSVP']; // Actions for others
       }
@@ -49,7 +49,7 @@ export class UserController{
 
         // get the actions based on the user's role
         const actions = this.getActions(isOwner);
-      
+
         // send the response
         res.json(new ApiResponse(200, user, "User found successfully", actions, isOwner));
     })

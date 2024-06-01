@@ -78,21 +78,21 @@ const HomePage = () => {
             <p>Pay securely with our secure payment system.</p>
         </div>
       </div>
-    <div className='joinCommunity'> 
+    <div className='joinCommunity'>
            <h2>Become a Member in Three Easy Steps</h2>
         <div className="membership-steps">
             <div>
-                <h2>Sign Up</h2> 
+                <h2>Sign Up</h2>
                 <p>Create your account and join our vibrant community.</p>
             </div>
             <div>
-                <h2>Schedule Your Event</h2> 
+                <h2>Schedule Your Event</h2>
                 <p>Choose from hosting an online stream or an in-person event. Provide all the necessary details, including date, time, location, and event description.</p>
             </div>
             <div>
                 <h2>Start Earning</h2>
                  <p>Once your event is live and tickets are sold, watch your revenue grow. We handle the transactions, so you can focus on delivering an unforgettable experience.</p>
-            </div> 
+            </div>
     </div>
 
     </div>
@@ -123,7 +123,7 @@ const Container = styled.div`
             background: linear-gradient(45deg, #970505, #59033f);
             padding: 2rem;
             color: #fff;
-          
+
 
 
             img{
@@ -147,7 +147,7 @@ const Container = styled.div`
                 font-size: 3rem;
                 text-align: center;
             }
-            
+
 
             .btns{
                 display: flex;
@@ -244,7 +244,7 @@ const Content = styled.div`
         flex-direction: column;
         align-items: flex-start;
         /* background-color: red; */
-        
+
         h1{
             font-size: 4rem;
             margin: 0;

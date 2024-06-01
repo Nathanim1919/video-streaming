@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 
 export const EventTicket: React.FC<{ qrCodeUrl: string }> = ({ qrCodeUrl }) => {
-        
+
         return (
                 <Container>
                     <Content>
@@ -19,7 +19,7 @@ export const EventTicket: React.FC<{ qrCodeUrl: string }> = ({ qrCodeUrl }) => {
                             <h1>Success!</h1>
                             <h2>You have successfully RSVPed for the event. 🎉</h2>
                         </div>
-                        
+
                         <p>Your ticket with the QR code will be available for download and viewing in the My RSVPs tab.</p>
                         {/* <QRCode value={qrCodeUrl} /> */}
                         <h3>Thank you for your RSVP, and we look forward to seeing you at the event!</h3>

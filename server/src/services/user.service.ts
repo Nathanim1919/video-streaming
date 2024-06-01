@@ -73,9 +73,9 @@ export class UserService {
         if(user && followUser){
             user.followers = user.followers.filter((id) => id.toString() !== followUser._id.toString());
             followUser.following = followUser.following.filter((id) => id.toString() !== user._id.toString());
-        
+
             console.log("after unfollowing, users followers are: ", user.followers)
-        
+
             await user.save();
             await followUser.save();
         }

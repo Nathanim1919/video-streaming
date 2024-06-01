@@ -75,7 +75,7 @@ const Conatiner = styled.div`
         display: flex;
         align-items: center;
         gap: 1rem;
-        
+
 
         >li{
             text-decoration: none;
@@ -114,7 +114,7 @@ const Conatiner = styled.div`
                     to {
                         transform: translateY(0);
                         opacity: 1;
-                    } 
+                    }
                 }
                 li{
                     padding:.4rem 1rem;
@@ -134,7 +134,7 @@ const Conatiner = styled.div`
                 }
             }
         }
-    
+
     }
     ul {
         display: flex;

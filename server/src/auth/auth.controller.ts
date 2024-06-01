@@ -68,7 +68,7 @@ export class AuthController {
   login = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const existingUser = await this.authService.login(req.body as IUser);
     const {password, ...userInfo} = existingUser;
-    
+
     if (existingUser) {
         const { username, _id } = existingUser;
         const { token, refreshToken } = this.generateTokens(_id);

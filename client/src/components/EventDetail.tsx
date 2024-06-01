@@ -176,7 +176,7 @@ const Container = styled.div`
             border-radius: 10px;
             box-shadow: 0 12px 20px rgba(0,0,0,0.1);
             gap: 1.4rem;
-            
+
 
             >p{
                 color: #9b46f0;
@@ -260,7 +260,7 @@ const Container = styled.div`
 
 
     .desc{
-       
+
         max-width: 60%;
 
         @media screen and (max-width: 800px){
@@ -268,7 +268,7 @@ const Container = styled.div`
         }
         h2{
             font-size: 1.5rem;
-           
+
         }
         p{
             font-size: .8rem;

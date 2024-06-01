@@ -59,7 +59,7 @@ export const UpcomingStreams: React.FC = () => {
                                         <h2>{(event.title).slice(0,20)}..</h2>
                                         <p>Saturday {event.date} Local time</p>
                                     </div>
-                                    
+
                                     <Link  className="seemore" to={`/streames/${event._id}`}>See More<GrFormNextLink/></Link>
                                 </div>
                             </div>
@@ -83,7 +83,7 @@ const Container = styled.div`
     margin-bottom: 2rem;
     background: linear-gradient(45deg, #141313, #1a1919);
     overflow: hidden;
-    
+
 
     >div.header{
         display: flex;
