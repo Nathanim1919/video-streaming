@@ -52,6 +52,26 @@ export class EventController {
     });
 
 
+    // fetch live events only
+    getLiveEvents = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const events = await this.eventService.getLiveEvents();
+        res.json(new ApiResponse(200, events, "Live events fetched successfully"));
+    });
+
+
+    // if the date of the event is now or will be in 30 minutes, it is considered live and set the status to live
+    // if the date of the event is in the future, set the status to upcoming
+    // if the date of the event is in the past, set the status to past
+    // this function is called every 30 minutes to update the status of the events
+    // this is to ensure that the status of the events are always up to date
+    setEventStatus = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+        const events = await this.eventService.setEventStatus();
+        res.json(new ApiResponse(200, events, "Event status updated successfully"));
+    });
+
+
+
+
     getUpcomingEvent = asyncHandler(async (req: Request, res: Response): Promise<void> => {
         const events = await this.eventService.getUpcomingEvents(req.user as IUser);
         res.json(new ApiResponse(200, events, "Upcoming events fetched successfully"));

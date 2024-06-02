@@ -10,7 +10,7 @@ import { RiUserFollowLine } from "react-icons/ri";
 import { MdOutlineWatchLater } from "react-icons/md";
 import { MdOutlineStarRate } from "react-icons/md";
 import { LuGhost } from "react-icons/lu";
-import TechImage from '/image/bg.jpg';
+import TechImage from '/home/live3.jpg';
 import { IoMdClose } from "react-icons/io";
 import profilePic from '/image/profile.jpg'
 import { CreateEventForm } from './CreateEventForm';
@@ -45,6 +45,8 @@ const UserProfile = () => {
         (response) => {
           const {data, actions, isOwner} = response.data;
           setStreamer(data);
+          setIsFollow(data.followers?.includes(user._id));
+          setUserFollowers(data.followers?.length);
           setActions(actions);
           setIsOwner(isOwner);
         },
@@ -119,7 +121,7 @@ const UserProfile = () => {
             <h3>Scheduled Events</h3>
             {isOwner && <button onClick={() => setCreateEvent(true)}>Schedule new Event</button>}
           </div>
-          {isLoading?<Loader/>: streamer.events?<div className="events-list">
+          {streamer.events?<div className="events-list">
             {streamer.events?.length === 0 ? <p>No events available</p> :
               streamer.events?.map((event: any) => (
                 <div key={event._id}>
@@ -128,7 +130,10 @@ const UserProfile = () => {
                   </div>
                   <div className='info'>
                     <p>{event.date} - {event.time}</p>
-                    <h4>{event.title}</h4>
+                    <h4>{(event.title).length > 30?(event.title).slice(0, 30)+"...":event.title}</h4>
+                    <p>{(event.description).length > 100 ? (event.description).slice(0, 100)+"..." :
+                    (event.description)
+                    }</p>
                   </div>
                   {isOwner?
                     <div className="event-buttons">
@@ -373,9 +378,9 @@ const Container = styled.div`
           padding: 1rem;
           p{
             font-size: .8rem;
-            color: #ab9f9f;
+            color: #dfd8d8;
             margin: 0;
-            font-weight: 100;
+            font-weight: 400;
             display: flex;
             align-items: center;
             gap: 0.5rem;

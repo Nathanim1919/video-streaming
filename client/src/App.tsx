@@ -15,6 +15,7 @@ import PrivateRouteWithHeader from './components/PrivateRouteWithHeader';
 import { EventsPage } from './pages/EventsPage';
 import { OrganizationsList } from './pages/OrgsPage';
 import { RvspList } from './components/RvspList';
+import { LiveNow } from './pages/LiveNow';
 
 
 const App = () => {
@@ -105,6 +106,13 @@ const App = () => {
         element={
         <PrivateRouteWithHeader>
           <StreamList/>
+        </PrivateRouteWithHeader>
+      }/>
+       <Route 
+        path="/streames/live" 
+        element={
+        <PrivateRouteWithHeader>
+          <LiveNow/>
         </PrivateRouteWithHeader>
       }/>
       <Route 

@@ -67,7 +67,6 @@ export class AuthController {
   // Login user
   login = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const existingUser = await this.authService.login(req.body as IUser);
-    const {password, ...userInfo} = existingUser;
     
     if (existingUser) {
         const { username, _id } = existingUser;
@@ -92,7 +91,7 @@ export class AuthController {
             sameSite: 'strict'
         });
 
-        res.json(new ApiResponse(200, userInfo, "Login successfull"))
+        res.json(new ApiResponse(200, existingUser, "Login successfull"))
     } else {
         res.status(403).redirect('/login?error=Invalid login credentials.');
     }

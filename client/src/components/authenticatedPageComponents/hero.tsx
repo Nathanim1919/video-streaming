@@ -11,7 +11,7 @@ export const Hero = () => {
             <div>
                 <h1>Welcome, {user?.fullName}</h1>
                 <p>Get access to all the features by upgrading your account</p>
-                <button>Who is Live Now? </button>
+                <Link to={'/streames/live'}>Who is Live Now? </Link>
             </div>
             <Link to="/subscription">Upgrade Account</Link>
         </Conatiner>

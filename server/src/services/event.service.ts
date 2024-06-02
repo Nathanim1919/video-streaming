@@ -46,6 +46,42 @@ export class EventService {
         return event;
     }
 
+    
+    // set event status to live
+    async setEventStatus(eventId: string): Promise<IEvent> {
+        // Check if the event exists, and then if the date is today and also it is 30 minutes to the event, set the status to live
+        const event = await EventModel.findById(eventId);
+        if (!event) {
+            throw new Error('Event not found');
+        }
+
+        const eventDate = new Date(event.date);
+        const currentDate = new Date();
+        const eventTime = eventDate.getTime();
+        const currentTime = currentDate.getTime();
+        const timeDifference = eventTime - currentTime;
+        const thirtyMinutes = 30 * 60 * 1000;
+
+        if (timeDifference <= thirtyMinutes) {
+            event.status = 'live';
+            await event.save();
+        } else if (timeDifference < 0) {
+            event.status = 'completed';
+            await event.save();
+        } else {
+            event.status = 'scheduled';
+            await event.save();
+        }
+
+        return event;
+    }
+
+    // Get live events
+    async getLiveEvents(): Promise<IEvent[]> {
+        const events = await EventModel.find({ status: 'live' }).populate('owner').populate('attendees');
+        return events;
+    }
+
     // RSVP to an event
     async rsvp(eventId: string, user: any): Promise<IRsvp | IEvent> {
         // Check if the event exists

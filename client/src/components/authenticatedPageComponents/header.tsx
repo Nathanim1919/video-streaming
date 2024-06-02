@@ -5,29 +5,31 @@ import { useAuth } from '../../contexts/AuthContext';
 import { FaSearch } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
 
-
-
+// Header component
 export const Header = () => {
     const {logout, user} = useAuth()
     const [showOptions, setShowOptions] = React.useState(false);
+
+    // handle logout
     const handleLogout = async () => {
         try {
             await logout();
-            // window.location.href = "/login";
         } catch (error) {
             console.log(error);
         }
     }
+
+    // return the header component
     return (
         <Conatiner className="header">
             <Link to={'/me'}>Eventify.</Link>
             <div>
               <ul>
-                <li><Link to="/me">Home</Link></li>
-                <li><Link to="/events">Events</Link></li>
-                <li><Link to="/streames">Streams</Link></li>
-                <li><Link to="/streamers">Streamers</Link></li>
-                <li><Link to="/orgs">Organizations</Link></li>
+                <li onClick={() => setShowOptions(false)}><Link to="/me">Home</Link></li>
+                <li onClick={() => setShowOptions(false)}><Link to="/events">Events</Link></li>
+                <li onClick={() => setShowOptions(false)}><Link to="/streames">Streams</Link></li>
+                <li onClick={() => setShowOptions(false)}><Link to="/streamers">Streamers</Link></li>
+                <li onClick={() => setShowOptions(false)}><Link to="/orgs">Organizations</Link></li>
             </ul>
                 <li><FaSearch/></li>
                 <div className="account">
@@ -45,6 +47,8 @@ export const Header = () => {
     );
 }
 
+
+// Styled components for the header component
 const Conatiner = styled.div`
     display: flex;
     justify-content: space-around;

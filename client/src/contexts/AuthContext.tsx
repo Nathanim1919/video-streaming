@@ -41,12 +41,14 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     await requestHandler(
       async () => await loginUser(data),
       setIsLoading,
-      async (res) => {
+      (res) => {
         const { data } = res;
         setUser(data);
         navigate('/me');
       },
-      alert
+      () => {
+        navigate('/login');
+      }
     );
   };
 
