@@ -1,13 +1,13 @@
 import { useCallback } from 'react';
 import { requestHandler } from '../utils';
-import { handleRSVP, removeRsvp, checkRsvp } from '../api/event';
+import { eventApi } from '../api';
 
 export default function useRsvp(streamId: string, setIsRsvp: (value: boolean) => void, setIsLoading: (value: boolean) => void, setQrCodeUrl: (value: string) => void){
 
   const checkRsvpStatus = useCallback(async () => {
     // e.preventDefault();
     await requestHandler(
-        async () => await checkRsvp(streamId),
+        async () => await eventApi.checkRsvp(streamId),
         setIsLoading,
         (res) => {
           const { data } = res;
@@ -23,22 +23,22 @@ export default function useRsvp(streamId: string, setIsRsvp: (value: boolean) =>
   const handleRsvp = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
     await requestHandler(
-        async () => await handleRSVP(streamId),
+        async () => await eventApi.handleRSVP(streamId),
         setIsLoading,
         (data) => {
-          setQrCodeUrl(data.data.qrCodeUrl);
+          setQrCodeUrl(data?.data.qrCodeUrl);
           checkRsvpStatus();
         },
         (error) => {
           console.log(error);
         }
     )
-  }, [setIsLoading, streamId, checkRsvpStatus]);
+  }, [setIsLoading, streamId, setQrCodeUrl, checkRsvpStatus]);
 
   const handleRemoveRsvp = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
     await requestHandler(
-        async () => await removeRsvp(streamId),
+        async () => await eventApi.removeRsvp(streamId),
         setIsLoading,
         () => {
           checkRsvpStatus();

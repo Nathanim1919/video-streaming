@@ -32,9 +32,10 @@ const EventSchema = new Schema<IEvent>({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
-    rsvp: {
+    isOpenForRsvp: {
         type: String,
-        default: false
+        default: 'off',
+        enum: ['on', 'off']
     },
     status: {
         type: String,
@@ -62,18 +63,54 @@ const EventSchema = new Schema<IEvent>({
         type: [String],
         default: []
     },
-    eventInformations: [
-        {
-          title: {
+    duration: {
+        type: Number,
+        default: 1,
+    },
+    guests: [{
+        name: {
             type: String,
-            default: ""
-          },
-          description: {
+            required: false
+        },
+        profession: {
             type: String,
-            default: ""
-          }
+            required: false
+        },
+        imageUrl: {
+            type: String,
+            required: false
         }
-      ]
+    }],
+
+    specialInstructions: {
+        type: String,
+        default: ''
+    },
+
+    schedule: [{
+        time: {
+            type: String,
+            required: false
+        },
+        activity: {
+            type: String,
+            required: false
+        }
+    }],
+
+    socialLinks: [{
+        platform: {
+            type: String,
+            required: false
+        },
+        url: {
+            type: String,
+            required: false
+        }
+    }],
 }, { timestamps: true });
 
 export default mongoose.model('Event', EventSchema);
+
+
+// Path: server/src/models/user.model.ts

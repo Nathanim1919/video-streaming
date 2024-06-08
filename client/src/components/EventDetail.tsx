@@ -6,9 +6,11 @@ import Loader from './Loader';
 import { useAuth } from '../contexts/AuthContext';
 import useRsvp from '../customeHook/useRsvp';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa6";
-import { SimilarEvents } from './SimilarEvents';
+import { SimplarEvents } from '../components/SimilarEvents';
 import { formatDate, requestHandler } from '../utils';
 import { getEvent } from '../api/event';
+import { CountDown } from './CountDown';
+import { Speakers } from './Speackers';
 
 
 
@@ -73,22 +75,20 @@ const EventDetail = () => {
             <div className="header">
                 <div className="heroText">
                     <h1>{event.title}</h1>
-                    <p>{formatDate(event.date)}</p>
-                    <p>{event.location}</p>
+                    <p className='date'>{formatDate(event.date)}</p>
+                    <p>{event.description}</p>
                 </div>
-                <div className="calander">
-                    <div className="time">
-                        <h3>Data and time</h3>
-                        <p>{formatDate(event.date)}</p>
-                    </div>
-                    <p>+ add to calender</p>
-                    <div className="btns">
-                        <button className="book">Book Now(free)</button>
-                        <button className="promote">Promoter Program</button>
-                    </div>
-                    <p>No refunds</p>
+                <div className="btns">
+                  <button className="button">Get Ticket</button>
                 </div>
             </div>
+            <div className="counter">
+                <div className="text">
+                    <h1>Counting <span>every second</span> until the {event.eventType} begins.</h1>
+                </div>
+            <CountDown event={event}/>
+            </div>
+            <Speakers/>
             <div className="eventInfos">
                 <div className="descriptions">
                     <div className="desc">
@@ -138,7 +138,7 @@ const EventDetail = () => {
                     </div>
                 </div>
             </div>
-            <SimilarEvents/>
+            <SimplarEvents/>
         </Container>
     );
 }
@@ -150,18 +150,55 @@ export default EventDetail;
 
 const Container = styled.div`
     width: 100%;
+    display: grid;
+    place-items: center;
+
+    .counter{
+        width: 80%;
+        margin:1rem  auto;
+        display: grid;
+        align-items: center;
+        grid-template-columns: .4fr .7fr;
+
+        >*{
+            padding:1rem;
+        }
+
+        >div:nth-child(1){
+            /* background-color: #333; */
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            h1{
+                font-size: 3rem;
+                text-align: left;
+
+
+                span{
+                    color: red;
+                }
+            }
+        }
+
+        @media screen and (max-width: 800px){
+            grid-template-columns: 1fr;
+        
+        }
+    }
     .header{
         width: 100vw;
-        background:linear-gradient(45deg, #0000005d, #00000065), url(${ProImage});
+        background:linear-gradient(to bottom, #000000bc, #000000), url(${ProImage});
         background-size: cover;
         background-position: center;
         padding: 2rem 0;
         color: aliceblue;
-        height: 50vh;
+        height: 90vh;
         display: flex;
-        /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
+        flex-direction:column;
         place-items: center;
-        justify-content: space-around;
+        justify-content: center;
         gap: 2rem;
 
         @media screen and (max-width: 768px){
@@ -169,101 +206,47 @@ const Container = styled.div`
             height: auto;
         }
 
+        button{
+                padding: .6rem 4rem;
+                border: none;
+                border-radius: 35px;
+                background-color: transparent;
+                color: #fff;
+                cursor: pointer;
+                border: 1px solid #5f5c5c;
+                transition: all .3s;
+                &:hover{
+                    background-color: #bdb4b4;
+                }
+            }
+    
+
         .heroText{
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            max-width: 30%;
+            max-width: 50%;
+            text-align: center;
 
             @media screen and (max-width: 768px){
                 max-width: 100%;
                 text-align: center;
             }
             h1{
-                font-size: 2rem;
+                font-size: 4rem;
                 margin: 0;
             }
             p{
                 margin: 0;
+                text-align: left;
             }
+
+            p.date{
+                color: #5f5c5c;
+            }
+          
         }
 
-
-        .calander{
-            background-color: #fff;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding:3rem 2rem;
-            border-radius: 10px;
-            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
-            gap: 1.4rem;
-            
-
-            >p{
-                color: #9b46f0;
-                font-size: .9rem;
-                cursor: pointer;
-                transition: all .3s;
-                margin: 0;
-                &:hover{
-                    color: #bdb4b4;
-                }
-            }
-
-            .time{
-                display: flex;
-                flex-direction: column;
-                margin: 0;
-                gap: .5rem;
-
-
-                > *{
-                    margin: 0;
-                }
-            }
-
-            p:last-of-type{
-                font-size: .8rem;
-                color: #333;
-                align-self: center;
-                margin: 0;
-            }
-
-
-            >*{
-                margin: 0;
-                /* flex: 1; */
-            }
-
-
-            .btns{
-                display: flex;
-                flex-direction: column;
-                gap: .3rem;
-                button{
-                    padding: .6rem 4rem;
-                    border: none;
-                    border-radius: 5px;
-                    background-color: #0655c4;
-                    color: #fff;
-                    cursor: pointer;
-                    transition: all .3s;
-                    &:hover{
-                        background-color: #bdb4b4;
-                    }
-                }
-
-                .promote{
-                    background-color: #ebe9e7;
-                    color: #333;
-                    &:hover{
-                        background-color: #f5a623;
-                    }
-            }
-        }
-    }
 
 }
 .eventInfos{

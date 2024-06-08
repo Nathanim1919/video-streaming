@@ -1,6 +1,6 @@
 import express from 'express';
 import { EventController } from '../controllers/event.controller';
-import { verifyJWT } from '../middlewares/authMiddleware';
+import { verifyJWT } from '../auth/guards/jwt-auth.guard';
 
 
 const router = express.Router();

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUser, logoutUser, registerUser, getUserData } from '../api'; // Ensure you have an API call to get user data
+import { authApi } from '../api';
 import { UserInterface } from '../interfaces/user';
 import { requestHandler } from '../utils';
 import Loader from '../components/Loader';
@@ -39,7 +39,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   // Function to handle user login
   const login = async (data: { email: string; password: string }) => {
     await requestHandler(
-      async () => await loginUser(data),
+      async () => await authApi.loginUser(data),
       setIsLoading,
       (res) => {
         const { data } = res;
@@ -61,7 +61,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     profession: string;
   }) => {
     await requestHandler(
-      async () => await registerUser(data),
+      async () => await authApi.registerUser(data),
       setIsLoading,
       () => {
         alert('Account created successfully! Go ahead and login.');
@@ -76,7 +76,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   // Function to handle user logout
   const logout = async () => {
     await requestHandler(
-      async () => await logoutUser(),
+      async () => await authApi.logoutUser(),
       null,
       () => {
         setUser(null);
@@ -90,7 +90,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   useEffect(() => {
     const fetchUserData = async() => {
         await requestHandler(
-            async () => await getUserData(),
+            async () => await authApi.getUserData(),
             setIsLoading,
             (res) => {
                 setUser(res.data)

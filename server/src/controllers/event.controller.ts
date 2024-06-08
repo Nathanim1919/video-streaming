@@ -64,10 +64,10 @@ export class EventController {
     // if the date of the event is in the past, set the status to past
     // this function is called every 30 minutes to update the status of the events
     // this is to ensure that the status of the events are always up to date
-    setEventStatus = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-        const events = await this.eventService.setEventStatus();
-        res.json(new ApiResponse(200, events, "Event status updated successfully"));
-    });
+    // setEventStatus = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    //     const events = await this.eventService.setEventStatus();
+    //     res.json(new ApiResponse(200, events, "Event status updated successfully"));
+    // });
 
 
 

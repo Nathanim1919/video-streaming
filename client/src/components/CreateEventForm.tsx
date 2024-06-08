@@ -1,526 +1,440 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-// import close icon from 'react-icons/fa';
-import {FaTimes} from 'react-icons/fa';
-import {FaPlus} from 'react-icons/fa';
-import { requestHandler } from "../utils";
+import { FaTimes, FaPlus } from 'react-icons/fa';
+import { DateTimePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import {AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { createTheme, ThemeProvider } from '@mui/material';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { DateTimePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { createTheme, ThemeProvider } from '@mui/material';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import {createEvent} from "../api/event";
+import { eventApi } from "../api";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { Event, ScheduleItem, SocialLink } from "../interfaces/event";
+import { requestHandler } from "../utils";
+import { ImSpinner9 } from "react-icons/im";
+
 
 const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  });
-
-type EventInformation = {
-    title: string;
-    description: string;
-    saved: boolean;
-    error: string;
-  };
-  
-  type Event = {
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    location: string;
-    image: string;
-    price: number;
-    capacity: number;
-    eventType: string;
-    isOnline: boolean;
-    rsvp: string;
-    status: string;
-    tags: string[];
-    duration: number;
-    eventInformations: EventInformation[];
-  };
-
-type CreateEventFormProps = {
-    setCreateEvent: (value: boolean) => void;
-
-}
-export const CreateEventForm = ({setCreateEvent}: CreateEventFormProps) => {
-    const [date, setDate] = React.useState<dayjs.Dayjs | null>(dayjs());
-    const [event, setEvent] = useState<Event>({
-            title: '',
-            description: '',
-            date: '',
-            time: '',
-            location: '',
-            image: '',
-            price: 0,
-            capacity: 100,
-            eventType: 'meetup',
-            isOnline: true,
-            rsvp: "off",
-            status: 'scheduled',
-            tags: [],
-            duration: 130,
-            eventInformations: [
-                    {
-                        title: '',
-                        description: '',
-                        saved: false,
-                        error: ''
-                    }
-            ]
-    });
-
-    const [eventInformations, setEventInformations] = useState<EventInformation[]>([
-            {
-                    title: '',
-                    description: '',
-                    saved: false,
-                    error: ''
-            }
-    ]);
-
-
-    const handleInputOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-            const { name, value } = e.target;
-            setEvent(prevState => ({
-                    ...prevState,
-                    [name]: value
-            }));
-    };
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            await requestHandler(
-                // console.log(event)
-                    async () => await createEvent(event),
-                    null,
-                    () => setCreateEvent(false),
-                    (error) => console.log(error)
-            );
-    };
-
-    const createInfo = () => {
-            // Check if the last set of inputs is populated
-            const lastInfo = eventInformations[eventInformations.length - 1];
-            if (lastInfo && (!lastInfo.title || !lastInfo.description)) {
-                return;
-            }
-        
-            // Add a new set of inputs
-            setEventInformations([...eventInformations, { title: '', description: '', saved: false, error:'' }]);
-        };
-
-        const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
-            const { name, value } = e.target;
-            const list = [...eventInformations];
-            list[index][name] = value;
-            setEventInformations(list);
-        };
-
-        const handleSave = (index: number) => {
-            const list = [...eventInformations];
-            if (!list[index].title || !list[index].description) {
-                list[index].error = 'Please fill out the title and description.';
-            } else {
-                    list[index].error = '';
-                list[index].saved = true;
-            }
-            const listToSave = list.map(({...keepAttrs }) => keepAttrs);
-            // setEventInformations(listToSave);
-            setEvent(prevState => ({
-                    ...prevState,
-                    eventInformations: listToSave
-            }));
-            console.log(event.eventInformations)
-        };
-
-
-        const editInformation = (index: number) => {
-            const list = [...eventInformations];
-            list[index].saved = false;
-            setEventInformations(list);
-        }
-
-
-        const handleDelete = (index: number) => {
-            // Update eventInformations state
-            const list = [...eventInformations];
-            list.splice(index, 1);
-            setEventInformations(list);
-        
-            // Update event state
-            setEvent(prevState => ({
-                ...prevState,
-                eventInformations: list
-            }));
-        };
-
-
-    const handleTags = (e: React.ChangeEvent<HTMLInputElement>) => {
-            const { value } = e.target;
-            setEvent(prevState => ({
-                    ...prevState,
-                    tags: value.split(',')
-            }));
-    }
-
-    return (
-        <Container>
-
-            <div className="header">
-                <div>
-                <h4>Create Event</h4>
-                 <FaTimes onClick={()=>setCreateEvent(false)}/>
-
-                </div>
-            </div>
-        <form onSubmit={handleSubmit}>
-            <div>
-                <div>
-                    {/* <label htmlFor="title">Title</label> */}
-                    <input type="text" id="title" name="title" value={event.title} onChange={handleInputOnChange} placeholder="Just Short Title"/>
-                </div>
-                <div>
-                    {/* <label htmlFor="location">Location</label> */}
-                    <input type="text" id="location" name="location" value={event.location} onChange={handleInputOnChange} placeholder="Where?"/>
-                </div>
-            </div>
-            <div>
-                <div>
-                    {/* <label htmlFor="description">Description</label> */}
-                    <textarea id="description" name="description" value={event.description} onChange={handleInputOnChange} placeholder="What is this Event about?"/>
-                </div>
-                <div>
-                    <div>
-                        {/* <label htmlFor="price">Price</label> */}
-                        <input type="number" id="price" name="price" value={event.price} onChange={handleInputOnChange} />
-                    </div>
-                    <div>
-                        {/* <label htmlFor="capacity">Capacity</label> */}
-                        <input type="number" id="capacity" name="capacity" value={event.capacity} onChange={handleInputOnChange} />
-                    </div>
-                </div>
-            </div>
-            <div>
-                <div className="datetimepicker">
-                <ThemeProvider theme={darkTheme}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
-                        label="Event Date and Time"
-                        minDate={dayjs()}
-                        value={date}
-                        onChange={(newDate) => {
-                            setDate(newDate);
-                            setEvent(prevState => ({
-                            ...prevState,
-                            date: newDate?.toDate(),  // Convert the Dayjs object back to a Date object
-                            }));
-                        }}
-                        />
-                    </LocalizationProvider>
-                </ThemeProvider>
-                </div>
-             
-                <div>
-                    <label htmlFor="eventType">Event Type</label>
-                    <select id="eventType" name="eventType" value={event.eventType} onChange={handleInputOnChange}>
-                        <option value="meetup">Meetup</option>
-                        <option value="webinar">Webinar</option>
-                        <option value="seminar">Seminar</option>
-                        <option value="workshop">Workshop</option>
-                        <option value="conference">Conference</option>
-                        <option value="hackathon">Hackathon</option>
-                        <option value="party">Party</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-
-               
-                
-            </div>
-            <div>
-                
-                <div>
-                    <label htmlFor="tags">Tags</label>
-                    <input type="text" id="tags" name="tags" value={event.tags.join(',')} onChange={handleTags} placeholder="Technology, Business, Freelance"/>
-                </div>
-                <div className="rsvp">
-                        <label htmlFor="rsvp">OPEN FOR RSVP</label>
-                        <input type="checkbox" id="rsvp" name="rsvp" checked={event.rsvp} onChange={handleInputOnChange} />
-                    </div>
-            </div>
-            <div className="eventInformations">
-                <div className="info">
-                    <div className="info-header">
-                        <h3>Event Information</h3>
-                        <div>
-                            <div className="add" onClick={createInfo}>
-                              <FaPlus/>
-                            </div>
-                        </div>
-                    </div>
-                    {eventInformations.map((info, index) => (
-                        <div key={index} className="infoCard">
-                           {!info.saved && <input type="text" name="title" value={info.title} placeholder="Title" onChange={e => handleInputChange(e, index)}/>}
-                            {!info.saved && <textarea name="description" value={info.description} placeholder="Description" onChange={e => handleInputChange(e, index)}/>}
-                            {info.saved && <h3 className="title" onClick={() => editInformation(index)}>{info.title}</h3>}
-                            {info.error && <p>{info.error}</p>}
-                            {!info.saved && <div className="btns">
-                                <button className="save" onClick={()=> handleSave(index)} type="button">Save</button>
-                                <button className="delete" onClick={()=> handleDelete(index)} type="button">Delete</button>
-                            </div>}
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <button type="submit">Create Event</button>
-        </form>
-    </Container>
-    );
-};
-
+  palette: {
+    mode: 'dark',
+  },
+});
 
 const Container = styled.div`
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background-color: #00000096;
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(5px);
+  position: relative;
+  width: 100vw;
+  /* height: 100vh; */
+  top: 0;
+  left: 0;
+  background-color: #171616;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  color: #fff;
 
-    .header{
+  .header {
+    width: 90%;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* width: 60%; */
+    position: sticky;
+    top: 10%;
+
+    h4 {
+      margin: 0;
+    }
+
+    svg {
+      cursor: pointer;
+    }
+  }
+
+  form {
+    width: 60%;
+    padding: 1rem 3rem;
+    background-color: #232222;
+    border-radius: 8px;
+
+    .spinner{
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }  
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+
+      label {
+        margin-bottom: 0.5rem;
+      }
+
+      input, textarea, select {
+        padding: 0.5rem;
+        background-color: #2b2929;
+        border: 1px solid #444;
+        color: #fff;
+        border-radius: 4px;
+        outline: none;
+      }
+
+      textarea {
+        resize: none;
+        height: 100px;
+      }
+    }
+
+    .datetimepicker {
+      .MuiFormControl-root {
         width: 100%;
+      }
+
+      .MuiInputBase-root {
+        background-color: #2b2929;
+        color: #fff;
+      }
+    }
+
+    .event-informations, .schedule-section, .social-links-section, .guest-list {
+      margin-top: 1rem;
+
+      .info-header, .schedule-header, .social-header, .guest-header {
         display: flex;
-        flex-direction: column;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 1rem;
+
+        h3 {
+          margin: 0;
+        }
+
+        .add-info, .add-schedule, .add-social, .add-guest {
+          cursor: pointer;
+        }
+      }
+
+      .info-card, .schedule-card, .social-card, .guest-card {
+        background-color: #2b2929;
         padding: 1rem;
-        color: #fff;
-        font-size: 1.5rem;
-        font-weight: bold;
-        font-family: inherit;
-        position: relative;
+        margin-bottom: 1rem;
+        border-radius: 4px;
 
-        div{
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            justify-content: space-between;
-            width: 60%;
-        }
+        .btns {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 0.5rem;
 
-        svg{
-            cursor: pointer;
-        }
-
-
-        >*{
-            margin: 0;
-        }
-       
-    }
-
-
-    form{
-        background-color: #232222;
-        width: 60%;
-        padding: 3rem;
-        max-height: 70vh;
-        overflow-y: auto;
-        border-top: 6px solid red;
-        overflow-x: hidden;
-        position: relative;
-
-        
-
-        .rsvp{
-            background-color: #232222;
-            display: flex;
-            align-items: center;
-            flex-direction: row;
-            justify-content: flex-start;
-            /* border: 1px solid #2b2929; */
-
-            >*{
-                flex: 1;
-            }
-        }
-
-
-
-        input{
-            width: 100%;
-            padding: .5rem;
-            margin: .5rem 0;
-            margin-bottom: 1rem;
-            background-color: transparent;
-            border: 1px solid #2b2929;
-            color: #fff;
-            outline: none;
-        }
-
-        textarea{
-            width: 100%;
-            padding: .5rem;
-            margin-top: .5rem;
-            height: 11rem;
-            resize: none;
-            background-color: transparent;
-            border: 1px solid #2b2929;
-            color: #fff;
-            outline: none;
-        }
-
-        select{
-            width: 100%;
-            padding: .5rem;
-            margin-top: .5rem;
-            background-color: transparent;
-            border: 1px solid #2b2929;
-            color: #fff;
-        }
-
-        button{
-            width: 100%;
-            padding: .5rem 1rem;
-            margin-top: 1rem;
+          button {
             background: linear-gradient(45deg, #ef9206, #8c0c0c);
-            color: #fff;
             border: none;
+            color: #fff;
             cursor: pointer;
-            font-family: inherit;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            outline: none;
+
+            &.delete {
+              background: linear-gradient(45deg, #d9534f, #c9302c);
+            }
+          }
         }
-
-
-        >div{
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-
-
-            >div{
-                display: flex;
-                flex-direction: column;
-
-                >div{
-                display: flex;
-                flex-direction: column;
-
-                .datetimepicker{
-                    color: #fff;
-
-                    >*{
-
-                        background-color: #333;
-                    }
-                }
-            }
-            }
-        }
-
-        >div.eventInformations{
-            width: 100%;
-            /* background-color: #c02121; */
-            padding: 0;
-            margin-top: 1rem;
-            display: grid;
-            grid-template-columns: 1fr;
-
-            .infoCard{
-                background-color: #2b2929;
-                padding: 1rem;
-                margin: .5rem 0;
-                border-radius: 5px;
-                position: relative;
-                width: 100%;
-                cursor: pointer;
-                font-family: inherit;
-
-                input, textarea{
-                    font-family: inherit;
-                }
-
-                p{
-                    color: red;
-                }
-
-            }
-            div.btns{
-                display: flex;
-                justify-content: flex-end;
-                gap: 1rem;
-                button.save, button.delete{
-                    font-family: inherit;
-                    background: linear-gradient(60deg, #282626, #191818);
-                    color: #fff;
-                    box-shadow: 0 5px 13px #0000004c;
-
-                    &:hover{
-                        background: linear-gradient(60deg, #191818, #282626);
-                    }
-                }
-            }
-
-
-            h3.title{
-               
-
-                &:hover{
-                    color: #615b5b;
-                }
-            }
-            
-            .info{
-                width: 100%;
-                div.info-header{
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    place-items: center;
-                    background-color: #292828;
-                    width: 100%;
-                    color: orange;
-                    padding:0 1rem;
-                  
-
-                    div.add{
-                        width: 30px;
-                        height: 30px;
-                        background-color: #1c201c;
-                        display: grid;
-                        place-items: center;
-                        border-radius: 50%;
-                        place-self: flex-end;
-                        cursor: pointer;
-                        color: orange;
-
-                       
-
-                        &:hover{
-                            background-color: #1c1c1c;
-                            color: #fff;
-                        }
-                    }
-
-                    >*{
-                       
-                        display: flex;
-                        justify-content: end;
-                    }
-                }
-            }
-        }
+      }
     }
-`
+
+    button[type="submit"] {
+      background: linear-gradient(45deg, #ef9206, #8c0c0c);
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      padding: 0.75rem 1.5rem;
+      margin-top: 1rem;
+      border-radius: 4px;
+      width: 100%;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      font-size: 1.2rem;
+    }
+  }
+`;
+
+
+
+const initialScheduleItem: ScheduleItem = {
+  time: '',
+  activity: ''
+};
+
+const initialSocialLink: SocialLink = {
+  platform: '',
+  url: ''
+};
+
+export const CreateEventForm = () => {
+  const [date, setDate] = useState<dayjs.Dayjs | null>(dayjs());
+  const navigate = useNavigate();
+  const {user} = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [event, setEvent] = useState<Event>({
+    title: '',
+    description: '',
+    date: '',
+    time: '',
+    location: '',
+    price: 0,
+    capacity: 100,
+    eventType: 'meetup',
+    isOnline: true,
+    isOpenForRsvp: 'off',
+    tags: [],
+    duration: 0,
+    guests: [],
+    specialInstructions: '',
+    schedule: [initialScheduleItem],
+    socialLinks: [initialSocialLink]
+  });
+
+  const handleInputOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setEvent(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await requestHandler(
+      async () => eventApi.createEvent(event),
+      setLoading,
+      () => navigate(`/streamers/${user._id}`),
+      () => {}
+    )
+  };
+  
+
+  const createScheduleItem = () => {
+    const lastScheduleItem = event.schedule[event.schedule.length - 1];
+    if (!lastScheduleItem.time || !lastScheduleItem.activity) return;
+
+    setEvent(prevState => ({
+      ...prevState,
+      schedule: [...prevState.schedule, initialScheduleItem]
+    }));
+  };
+
+  const handleScheduleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const { name, value } = e.target;
+    const updatedSchedule = [...event.schedule];
+    updatedSchedule[index][name] = value;
+    setEvent(prevState => ({
+      ...prevState,
+      schedule: updatedSchedule
+    }));
+  };
+
+  const handleDeleteSchedule = (index: number) => {
+    const updatedSchedule = event.schedule.filter((_, i) => i !== index);
+    setEvent(prevState => ({
+      ...prevState,
+      schedule: updatedSchedule
+    }));
+  };
+
+  const createSocialLink = () => {
+    const lastSocialLink = event.socialLinks[event.socialLinks.length - 1];
+    if (!lastSocialLink.platform || !lastSocialLink.url) return;
+
+    setEvent(prevState => ({
+      ...prevState,
+      socialLinks: [...prevState.socialLinks, initialSocialLink]
+    }));
+  };
+
+  const handleSocialLinkChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const { name, value } = e.target;
+    const updatedSocialLinks = [...event.socialLinks];
+    updatedSocialLinks[index][name] = value;
+    setEvent(prevState => ({
+      ...prevState,
+      socialLinks: updatedSocialLinks
+    }));
+  };
+
+  const handleDeleteSocialLink = (index: number) => {
+    const updatedSocialLinks = event.socialLinks.filter((_, i) => i !== index);
+    setEvent(prevState => ({
+      ...prevState,
+      socialLinks: updatedSocialLinks
+    }));
+  };
+
+  const handleGuestChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const { value } = e.target;
+    const updatedGuests = [...event.guests];
+    updatedGuests[index] = value;
+    setEvent(prevState => ({
+      ...prevState,
+      guests: updatedGuests
+    }));
+  };
+
+  const handleAddGuest = () => {
+    setEvent(prevState => ({
+      ...prevState,
+      guests: [...prevState.guests, '']
+    }));
+  };
+
+  const handleDeleteGuest = (index: number) => {
+    const updatedGuests = event.guests.filter((_, i) => i !== index);
+    setEvent(prevState => ({
+      ...prevState,
+      guests: updatedGuests
+    }));
+  };
+
+  return (
+    <Container>
+      <div className="header">
+        <h4>Create Event</h4>
+        <FaTimes size={20} onClick={() => navigate(`/streamers/${user._id}`)}/>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="title">Event Title</label>
+          <input type="text" id="title" name="title" value={event.title} onChange={handleInputOnChange} disabled={loading} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="description">Event Description</label>
+          <textarea id="description" name="description" value={event.description} onChange={handleInputOnChange} disabled={loading}></textarea>
+        </div>
+        <div className="form-group">
+          <label htmlFor="location">Location</label>
+          <input type="text" id="location" name="location" value={event.location} onChange={handleInputOnChange} disabled={loading} />
+        </div>
+        <div className="form-group datetimepicker">
+          <label htmlFor="date">Date & Time</label>
+          <ThemeProvider theme={darkTheme}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                value={date}
+                onChange={(newValue) => {
+                  setDate(newValue);
+                  setEvent(prevState => ({
+                    ...prevState,
+                    date: newValue?.format('YYYY-MM-DD') || '',
+                    time: newValue?.format('HH:mm') || '',
+                    
+                  }));
+                }}
+                // renderInput={(params) => <input {...params} />}
+              />
+            </LocalizationProvider>
+          </ThemeProvider>
+        </div>
+        <div className="form-group">
+          <label htmlFor="price">Price</label>
+          <input type="number" id="price" name="price" value={event.price} onChange={handleInputOnChange} disabled={loading} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="capacity">Capacity</label>
+          <input type="number" id="capacity" name="capacity" value={event.capacity} onChange={handleInputOnChange} disabled={loading} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="rsvp">RSVP</label>
+          <select id="rsvp" name="rsvp" value={event.rsvp} onChange={handleInputOnChange} disabled={loading}>
+            <option value="off">Off</option>
+            <option value="on">On</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="tags">Tags</label>
+          <input type="text" id="tags" name="tags" value={event.tags.join(', ')} onChange={(e) => setEvent(prevState => ({ ...prevState, tags: e.target.value.split(',').map(tag => tag.trim()) }))} placeholder="Comma-separated tags" disabled={loading} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="specialInstructions">Special Instructions</label>
+          <textarea id="specialInstructions" name="specialInstructions" value={event.specialInstructions} onChange={handleInputOnChange} disabled={loading}></textarea>
+        </div>
+        <div className="schedule-section">
+          <div className="schedule-header">
+            <h3>Schedule</h3>
+            <FaPlus className="add-schedule" onClick={createScheduleItem} />
+          </div>
+          {event.schedule.map((item, index) => (
+            <div key={index} className="schedule-card">
+              <div className="form-group">
+                <label htmlFor={`schedule-time-${index}`}>Time</label>
+                <input type="text" id={`schedule-time-${index}`} name="time" value={item.time} onChange={(e) => handleScheduleChange(e, index)} placeholder="09:00 AM" disabled={loading} />
+              </div>
+              <div className="form-group">
+                <label htmlFor={`schedule-activity-${index}`}>Activity</label>
+                <input type="text" id={`schedule-activity-${index}`} name="activity" value={item.activity} onChange={(e) => handleScheduleChange(e, index)} placeholder="Activity" disabled={loading} />
+              </div>
+              <div className="btns">
+                <button type="button" className="delete" onClick={() => handleDeleteSchedule(index)} disabled={loading}>Delete</button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="social-links-section">
+          <div className="social-header">
+            <h3>Social Links</h3>
+            <FaPlus className="add-social" onClick={createSocialLink} />
+          </div>
+          {event.socialLinks.map((link, index) => (
+            <div key={index} className="social-card">
+              <div className="form-group">
+                <label htmlFor={`social-platform-${index}`}>Platform</label>
+                <input type="text" id={`social-platform-${index}`} name="platform" value={link.platform} onChange={(e) => handleSocialLinkChange(e, index)} placeholder="Platform" disabled={loading} />
+              </div>
+              <div className="form-group">
+                <label htmlFor={`social-url-${index}`}>URL</label>
+                <input type="text" id={`social-url-${index}`} name="url" value={link.url} onChange={(e) => handleSocialLinkChange(e, index)} placeholder="https://example.com" disabled={loading} />
+              </div>
+              <div className="btns">
+                <button type="button" className="delete" onClick={() => handleDeleteSocialLink(index)} disabled={loading}>Delete</button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="guest-list">
+          <div className="guest-header">
+            <h3>Guest List</h3>
+            <FaPlus className="add-guest" onClick={handleAddGuest} />
+          </div>
+          {event.guests.map((guest, index) => (
+            <div key={index} className="guest-card">
+              <div className="form-group">
+                <label htmlFor={`guest-${index}`}>Guest</label>
+                <input type="text" id={`guest-${index}`} name="guest" value={guest} onChange={(e) => handleGuestChange(e, index)} placeholder="Guest Name" disabled={loading} />
+              </div>
+              <div className="btns">
+                <button type="button" className="delete" onClick={() => handleDeleteGuest(index)} disabled={loading}>Delete</button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button type="submit" disabled={loading}>{loading&&<ImSpinner9 className="spinner"/>}Create Event</button>
+      </form>
+    </Container>
+  );
+};

@@ -21,7 +21,7 @@ export class AuthService {
   /**
    * Inject user service or repository here for database interactions.
    */
-  private userService: UserService;
+  public userService: UserService;
 
   constructor() {
     this.userService = new UserService();

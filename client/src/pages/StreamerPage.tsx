@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import StreamerList from "../components/StreamerList";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import { fetchStreamers } from "../api";
+import { authApi } from "../api";
 import { requestHandler } from "../utils";
 import Loader from "../components/Loader";
 
@@ -29,7 +29,7 @@ const StreamerPage = () => {
     // fetch all streamers
     useEffect(() => {
         (async () => {await requestHandler(
-            async () => await fetchStreamers(),
+            async () => await authApi.fetchStreamers(),
             setIsLoading,
             (response) => {
                 console.log(response);

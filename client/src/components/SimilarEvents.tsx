@@ -1,211 +1,301 @@
-import styled from "styled-components"
-import Image from '/home/bg.jpg'
+import styled from "styled-components";
+import Image from "/home/bg.jpg";
 
-export const SimilarEvents = () => {
-    return (
-        <Conatainer className="container">
-            <h1>Other Events you may like</h1>
-            <div className="events">
-                <div className="event">
-                    <div className="image">
-                        <img src={Image} alt="" />
-                    </div>
-                    <div className="infos">
-                       <div className="date">
-                          <p>May</p>
-                          <h2>17</h2>
-                       </div>
-                        <div className="info">
-                                <h2>Empowering Women in Tech</h2>
-                                <p>Wednesday, June 12th, 2024 | 12:00 PM - 2:00 PM</p>
-                        </div>
-                    </div>
-                </div>
-               
-                <div className="event">
-                    <div className="image">
-                        <img src={Image} alt="" />
-                    </div>
-                    <div className="infos">
-                       <div className="date">
-                          <p>May</p>
-                          <h2>17</h2>
-                       </div>
-                        <div className="info">
-                                <h2>Empowering Women in Tech</h2>
-                                <p>Wednesday, June 12th, 2024 | 12:00 PM - 2:00 PM</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="event">
-                    <div className="image">
-                        <img src={Image} alt="" />
-                    </div>
-                    <div className="infos">
-                       <div className="date">
-                          <p>May</p>
-                          <h2>17</h2>
-                       </div>
-                        <div className="info">
-                                <h2>Empowering Women in Tech</h2>
-                                <p>Wednesday, June 12th, 2024 | 12:00 PM - 2:00 PM</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="event">
-                    <div className="image">
-                        <img src={Image} alt="" />
-                    </div>
-                    <div className="infos">
-                       <div className="date">
-                          <p>May</p>
-                          <h2>17</h2>
-                       </div>
-                        <div className="info">
-                                <h2>Empowering Women in Tech</h2>
-                                <p>Wednesday, June 12th, 2024 | 12:00 PM - 2:00 PM</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="event">
-                    <div className="image">
-                        <img src={Image} alt="" />
-                    </div>
-                    <div className="infos">
-                       <div className="date">
-                          <p>May</p>
-                          <h2>17</h2>
-                       </div>
-                        <div className="info">
-                                <h2>Empowering Women in Tech</h2>
-                                <p>Wednesday, June 12th, 2024 | 12:00 PM - 2:00 PM</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="event">
-                    <div className="image">
-                        <img src={Image} alt="" />
-                    </div>
-                    <div className="infos">
-                       <div className="date">
-                          <p>May</p>
-                          <h2>17</h2>
-                       </div>
-                        <div className="info">
-                                <h2>Empowering Women in Tech</h2>
-                                <p>Wednesday, June 12th, 2024 | 12:00 PM - 2:00 PM</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="event">
-                    <div className="image">
-                        <img src={Image} alt="" />
-                    </div>
-                    <div className="infos">
-                       <div className="date">
-                          <p>May</p>
-                          <h2>17</h2>
-                       </div>
-                        <div className="info">
-                                <h2>Empowering Women in Tech</h2>
-                                <p>Wednesday, June 12th, 2024 | 12:00 PM - 2:00 PM</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="event">
-                    <div className="image">
-                        <img src={Image} alt="" />
-                    </div>
-                    <div className="infos">
-                       <div className="date">
-                          <p>May</p>
-                          <h2>17</h2>
-                       </div>
-                        <div className="info">
-                                <h2>Empowering Women in Tech</h2>
-                                <p>Wednesday, June 12th, 2024 | 12:00 PM - 2:00 PM</p>
-                        </div>
-                    </div>
-                </div>
+export const SimplarEvents: React.FC = () => {
+  const sampleEvents = [
+    {
+      date: "May",
+      image: Image,
+      title: "Event title",
+      description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+    },
+    {
+      date: "May",
+      image: Image,
+      title: "Event title",
+      description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+    },
+    {
+      date: "May",
+      image: Image,
+      title: "Event title",
+      description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+    },
+    {
+      date: "May",
+      image: Image,
+      title: "Event title",
+      description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+    },
+    {
+        date: "May",
+        image: Image,
+        title: "Event title",
+        description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+      },
+      {
+        date: "May",
+        image: Image,
+        title: "Event title",
+        description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+      },
+      {
+        date: "May",
+        image: Image,
+        title: "Event title",
+        description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+      },
+      {
+        date: "May",
+        image: Image,
+        title: "Event title",
+        description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+      },
+      {
+        date: "May",
+        image: Image,
+        title: "Event title",
+        description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+      },
+      {
+        date: "May",
+        image: Image,
+        title: "Event title",
+        description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+      },
+      {
+        date: "May",
+        image: Image,
+        title: "Event title",
+        description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+      },
+      {
+        date: "May",
+        image: Image,
+        title: "Event title",
+        description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+      },
+      {
+          date: "May",
+          image: Image,
+          title: "Event title",
+          description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+        },
+        {
+          date: "May",
+          image: Image,
+          title: "Event title",
+          description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+        },
+        {
+          date: "May",
+          image: Image,
+          title: "Event title",
+          description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+        },
+        {
+          date: "May",
+          image: Image,
+          title: "Event title",
+          description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+        },
+        {
+            date: "May",
+            image: Image,
+            title: "Event title",
+            description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+          },
+          {
+            date: "May",
+            image: Image,
+            title: "Event title",
+            description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+          },
+          {
+            date: "May",
+            image: Image,
+            title: "Event title",
+            description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+          },
+          {
+            date: "May",
+            image: Image,
+            title: "Event title",
+            description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+          },
+          {
+              date: "May",
+              image: Image,
+              title: "Event title",
+              description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+            },
+            {
+              date: "May",
+              image: Image,
+              title: "Event title",
+              description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+            },
+            {
+              date: "May",
+              image: Image,
+              title: "Event title",
+              description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+            },
+            {
+              date: "May",
+              image: Image,
+              title: "Event title",
+              description: "Every person in the world should be concerned about the gender gap present within technology. It is an issue that will have a large and lasting impact on us all, regardless of gender or background. Shockingly, in the tech industry, less than one-fifth of employees are",
+            },
+  ];
+  return (
+    <Container className="container">
+      <div className="header-info">
+        <h1>Other Events you may like</h1>
+        <button>browse all</button>
+      </div>
+      <EventsContainer>
+        {sampleEvents.map((even, index) => (
+          <div className="event" key={index}>
+            <div className="date">
+              <p>{even.date}</p>
+              <h2>17</h2>
             </div>
-        </Conatainer>
-    )
-}
+            <div className="image">
+              <img src={even.image} alt="" />
+            </div>
+            <div className="desc">
+              <h2>{even.title}</h2>
+              <p>{even.description}</p>
+            </div>
+            <div className="btns">
+              <button>More info</button>
+            </div>
+          </div>
+        ))}
+      </EventsContainer>
+    </Container>
+  );
+};
 
+const Container = styled.div`
+    /* position: sticky;
+    top: 2%; */
+    background: radial-gradient(to bottom, #0f1f86, #000), url(${Image});
 
-const Conatainer = styled.div`
-    width: 100%;
-    background-color: #151515;
-    padding: 2rem 0;
-
-
-    >h1{
+    .header-info{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
         color: #fff;
-        margin-left: 2rem;
-        width: 80%;
-        margin: auto;
-        padding: 3rem 0;
-    }
-
-
-    .events{
         width: 80%;
         margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1rem;
-
-        .event{
-            background-color: #242323;
+        button {
+            background-color: transparent;
             color: #fff;
-            border-radius: 10px;
-            overflow: hidden;
+            border: 1px solid #fff;
+            padding: .7rem 2rem;
+            border-radius: 50px;
+        }
+    
+    }
+`;
 
-            .image{
-                max-height: 200px;
-                overflow: hidden;
-            }
+const EventsContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 0 auto;
+    gap: 2rem;
+    color: #fff;
+    border-top: 1px solid #494a4a;
+    padding-top: 2rem;
+    position: sticky;
+    top: 0%;
+    height: 70vh;
+    overflow-y: auto;
 
-            .infos{
-                display: grid;
-                grid-template-columns: .15fr .85fr;
+
+    .event {
+        display: grid;
+        grid-template-columns: .1fr .1fr .5fr .2fr;
+        justify-content: space-around;
+        align-items: center;
+        position: relative;
+
+
+        @media screen and (max-width: 768px){
+            grid-template-columns: 1fr;
+            justify-content: center;
+        }
+
+
+        .date {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            @media screen and (max-width: 768px){
+                position: absolute;
+                top: 2rem;
+                left: 2rem;
+                background-color: #fff;
+                color: red;
                 padding: 1rem;
-                gap: 1rem;
-
-                .info{
-                    h2{
-                        font-size: 1rem;
-                    }
-
-                    p{
-                        font-size: .8rem;
-                        color: #bdb9b9;
-                    }
-                }
-
-                .date{
-                    background-color: red;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-around;
-                    padding: 0.4rem;
-                    box-shadow: 0 20px 40px rgba(0,0,0,.2);
-                    border-radius: 6px;
-
-
-                    h2{
-                        font-size: 1.7rem;
-                    }
-
-
-                    >*{
-                        margin: 0;
-                    }
-                }
+                box-shadow: 0 10px 36px rgba(0, 0, 0, 0.312);
+                border-radius: 10px;
+                
             }
-            img{
-                width: 100%;
+            p {
+                margin: 0;
+            }
+            h2 {
+                margin: 0;
+                font-family: 4rem;
+            }
+        }
+
+
+        .image {
+            img {
+                width: 100px;
+                height: 100px;
+                object-fit: cover;
+                border-radius: 10px;
+                @media screen and (max-width: 768px){
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 10px;
+            }
+            }
+
+        }
+
+
+        .desc {
+            h2 {
+                font-size: 1rem;
+                margin: 0;
+            }
+            p {
+                font-size: 0.8rem;
+                color: #bdb9b9;
+                margin: 0;
+            }
+        }
+
+
+        .btns {
+            button {
+                background-color: transparent;
+
+                color: #fff;
+                padding: .7rem 2rem;
+                border: 1px solid rgb(92, 92, 96);
+                border-radius: 50px;
             }
         }
     }
-`
+`;

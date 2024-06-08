@@ -5,9 +5,8 @@ import Image4 from '/image/profile.jpg';
 import { useState, useEffect } from 'react';
 import { formatDate, requestHandler } from '../../utils';
 import Loader from '../Loader';
-import { getTopEvents } from '../../api/event';
+import { eventApi } from '../../api';
 import { useAuth } from '../../contexts/AuthContext';
-import useRsvp from '../../customeHook/useRsvp';
 import { useNavigate } from 'react-router-dom';
 import { MdOutlineRadioButtonChecked } from "react-icons/md";
 
@@ -35,7 +34,7 @@ export const TopStreams = () => {
 
     useEffect(() => {
         (async () => {await requestHandler(
-            async () => await getTopEvents(),
+            async () => await eventApi.getTopEvents(),
             setIsLoading,
             (response) => {
                 setStreams(response.data);
@@ -139,7 +138,8 @@ const Container = styled.div`
         width: 70%;
         position: relative;
         top:-50%;
-        margin-top: -2rem;
+        margin-bottom: 3rem;
+
 
       
 

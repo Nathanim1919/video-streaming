@@ -11,11 +11,9 @@ import { MdOutlineWatchLater } from "react-icons/md";
 import { MdOutlineStarRate } from "react-icons/md";
 import { LuGhost } from "react-icons/lu";
 import TechImage from '/home/live3.jpg';
-import { IoMdClose } from "react-icons/io";
 import profilePic from '/image/profile.jpg'
-import { CreateEventForm } from './CreateEventForm';
 import { requestHandler } from '../utils';
-import {fetchStreamer} from '../api';
+import { authApi } from '../api';
 import { useParams } from 'react-router-dom';
 import { ImSpinner9 } from "react-icons/im";
 import { Streamer } from '../pages/StreamerPage';
@@ -26,7 +24,6 @@ import Loader from './Loader';
 
 const UserProfile = () => {
   const {user} = useAuth();
-  const [createEvent, setCreateEvent] = React.useState(false);
   const [streamer, setStreamer] = React.useState<Streamer>({} as Streamer);
   const [actions, setActions] = React.useState<any>({}); // [follow, unfollow]
   const [isOwner, setIsOwner] = React.useState(true);
@@ -40,7 +37,7 @@ const UserProfile = () => {
   useEffect(() => {
     async function fetchData() {
       await requestHandler(
-        async () => await fetchStreamer(id),
+        async () => await authApi.fetchStreamer(id),
         setIsLoading,
         (response) => {
           const {data, actions, isOwner} = response.data;
@@ -61,7 +58,6 @@ const UserProfile = () => {
   
   return (
     <Container>
-     {createEvent && <CreateEventForm setCreateEvent={setCreateEvent}/>}
       <div className='profile'>
         <div className='header-info'>
           <div className='profileInfo'>
@@ -119,7 +115,7 @@ const UserProfile = () => {
         <div>
           <div className='header'>
             <h3>Scheduled Events</h3>
-            {isOwner && <button onClick={() => setCreateEvent(true)}>Schedule new Event</button>}
+            {isOwner && <Link to={'/events/schedule'}>Schedule new Event</Link>}
           </div>
           {streamer.events?<div className="events-list">
             {streamer.events?.length === 0 ? <p>No events available</p> :
@@ -322,15 +318,16 @@ const Container = styled.div`
           width: 100%;
           z-index: 10;
       top: 0;
-      background-color: #222020;
+      /* background-color: #222020; */
 
 
-      button{
+      a{
         padding: .5rem 1rem;
         background: linear-gradient(45deg, #2846ce, #0e478d);
         border: none;
         color: #fff;
         font-family: inherit;
+        text-decoration: none;
       }
       }
 

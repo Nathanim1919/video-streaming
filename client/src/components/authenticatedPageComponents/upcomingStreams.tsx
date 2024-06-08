@@ -5,7 +5,7 @@ import coverImage from '/home/live.jpeg'
 import profilePic from '/image/profile.jpg'
 import { useAuth } from '../../contexts/AuthContext';
 import { GrFormNextLink } from "react-icons/gr";
-import { requestHandler } from '../../utils';
+import { formatDate, requestHandler } from '../../utils';
 import { getUpcomingEvents } from '../../api/event';
 import Loader from '../Loader';
 
@@ -57,7 +57,7 @@ export const UpcomingStreams: React.FC = () => {
                                 <div className="streamInfo">
                                     <div>
                                         <h2>{(event.title).slice(0,20)}..</h2>
-                                        <p>Saturday {event.date} Local time</p>
+                                        <p>{formatDate(event.date)} Local time</p>
                                     </div>
                                     
                                     <Link  className="seemore" to={`/streames/${event._id}`}>See More<GrFormNextLink/></Link>

@@ -16,6 +16,7 @@
     "@mui/material": "^5.15.17",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@mui/x-date-pickers": "^7.3.2",
+    "@types/react-icons": "^3.0.0",
     "axios": "^1.6.8",
     "dayjs": "^1.11.11",
     "dayjs-timezone-iana-plugin": "^0.1.0",

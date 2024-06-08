@@ -1,31 +1,38 @@
-import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../config";
+import { User } from '../../models/user.model';
+import jwt from 'jsonwebtoken';
+import { asyncHandler } from "../../utils/asyncHandler";
+import { NextFunction, Response, Request } from "express";
 
-export const jwtAuthGuard = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  // Extract the JWT token from the request headers
-  const token = req.headers.authorization?.split(" ")[1];
 
-  // Check if token exists
-  if (!token) {
-    return res.status(401).json({ message: "Authentication token missing" });
-  }
+interface JwtPayload {
+    userId: string
+}
 
-  try {
-    // Verify the JWT token
-    const decodedToken = jwt.verify(token, JWT_SECRET) as { userId: string };
 
-    // Attach the user ID to the request object for further processing
-    req.userId = decodedToken.userId;
+export const verifyJWT = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const token = req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
 
-    // Call the next middleware function
-    next();
-  } catch (error) {
-    // Handle token verification errors
-    return res.status(401).json({ message: "Invalid authentication token" });
-  }
-};
+    if (!token) {
+        return res.status(401).json({
+            message: "Unauthorized request"
+        });
+    }
+
+    try {
+        const JWT_SECRET = process.env.JWT_SECRET;
+        const decodedToken = jwt.verify(token, JWT_SECRET) as JwtPayload;
+        const user = await User.findById(decodedToken.userId).select('-password');
+        if (!user) {
+            return res.status(401).json({
+                message: "Invalid access token"
+            });
+        }
+
+        req.user = user;
+        next();
+    } catch (error) {
+        return res.status(401).json({
+            message: "Invalid access token"
+        });
+    }
+});

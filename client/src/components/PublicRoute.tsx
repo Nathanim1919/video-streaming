@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 
@@ -9,9 +9,10 @@ const PublicRoute: React.FC<{children: ReactNode}> = ({
 }) => {
     // Access user and token information from the authentication context
     const { user } = useAuth();
+    const navigate = useNavigate();
 
     // Redirect to home page if user is authenticated
-    if (user?._id) return <Navigate to="/me" />
+    if (user?._id) return navigate('/me');
 
     // Render the child component if user is not authenticated
     return children;

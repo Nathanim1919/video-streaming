@@ -1,7 +1,7 @@
 // auth.routes.ts
 import express from 'express';
 import { AuthController } from '../auth/auth.controller';
-import { verifyJWT } from '../middlewares/authMiddleware';
+import { verifyJWT } from '../auth/guards/jwt-auth.guard';
 
 
 const router = express.Router();

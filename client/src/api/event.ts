@@ -15,15 +15,12 @@ const createEvent = (data: {
     capacity: number;
     location: string;
     eventType: string;
-    rsvp: string,
-    eventInformations: [
-        {
-          title: string,
-          description: string,
-          saved: boolean,
-          error: string,
-        }
-      ]
+    isOpenForRsvp: string,
+    tags: string[];
+    guests: string[];
+    specialInstructions: string;
+    schedule: { time: string; activity: string }[];
+    socialLinks: { platform: string; url: string }[];    
 }) => {
     console.log(data);
     return apiClient.post("/events/create", data);

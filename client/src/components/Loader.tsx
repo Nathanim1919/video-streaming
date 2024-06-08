@@ -83,7 +83,7 @@ const Loader = () => {
     >*:nth-child(1){
           animation: spin .61s linear infinite;
           font-size: 2rem;
-          background-color: orange;
+          background-color: #264658;
       }
 
 

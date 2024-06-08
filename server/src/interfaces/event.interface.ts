@@ -1,5 +1,4 @@
 // Define the structure of the Event model
-import { Schema, SchemaTypeOpts } from 'mongoose';
 interface IEvent {
     _id: string;
     owner: import('mongoose').Types.ObjectId; // Reference to the User who owns the event
@@ -9,7 +8,7 @@ interface IEvent {
     image?: string;
     date: string;
     attendees: string[]; // References to Users who are attending the event
-    rsvp: SchemaTypeOpts<any>; // indicates if the event is open for RSVP
+    isOpenForRsvp: string; // indicates if the event is open for RSVP
     status: 'scheduled' | 'live' | 'completed' | 'cancelled'| 'postponed' | 'full';
     eventType: 'meetup' | 'webinar' | 'seminar' | 'workshop' | 'conference' | 'hackathon' | 'party' | 'other';
     capacity: number;
@@ -19,6 +18,12 @@ interface IEvent {
     eventInformations: { title: string; description: string }[];
     createdAt: Date;
     updatedAt: Date;
+    duration: number;
+    guests: {name: string, profession: string, imageUrl: string}[];
+    specialInstructions: string;
+    schedule: { time: string; activity: string }[];
+    socialLinks: { platform: string; url: string }[];
+
   }
   
   // Export the Event interface

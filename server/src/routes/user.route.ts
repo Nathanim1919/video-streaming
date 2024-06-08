@@ -1,6 +1,6 @@
 import express from 'express'
 import { UserController } from '../controllers/user.controller'
-import { verifyJWT } from '../middlewares/authMiddleware';
+import { verifyJWT } from '../auth/guards/jwt-auth.guard';
 const router = express.Router();
 const userController = new UserController();
 

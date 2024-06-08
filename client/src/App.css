@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Jersey+25+Charted&family=Poetsen+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
 body{
     margin: 0;
     padding: 0;
@@ -8,9 +9,10 @@ body{
     font-family: "Ubuntu Sans", sans-serif;
     /* font-weight: 400; */
     font-style: normal;
-    background-color: #000000df;
+    background-color: #000000f1;
     overflow-x: hidden;
 }
+
 
 
 /* Define the styles for the scrollbar */
