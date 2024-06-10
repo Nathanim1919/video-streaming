@@ -1,3 +1,4 @@
+import { RegisterInterface } from "../interfaces/authContext";
 import apiClient from "./config";
 
 
@@ -13,13 +14,7 @@ const loginUser = (data: {email: string; password: string}) => {
 }
 
 
-const registerUser = (data: {
-    email: string;
-    username: string;
-    password: string;
-    profession: string;
-    fullName: string;
-}) => {
+const registerUser = (data: RegisterInterface) => {
     return apiClient.post("/auth/register", data);
 };
 

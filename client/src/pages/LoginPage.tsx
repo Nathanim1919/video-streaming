@@ -38,24 +38,6 @@ const LoginPage: React.FC = () => {
     window.location.href = `http://localhost:3000/api/v1/auth/${social}`;
   } 
 
-  // const location = useLocation();
-
-  // useEffect(() => {
-  //   const urlParams = new URLSearchParams(window.location.search);
-  //   const accessToken = urlParams.get('accessToken');
-  //   const refreshToken = urlParams.get('refreshToken');
-  
-  //   if (accessToken && refreshToken) {
-  //     localStorage.setItem('accessToken', accessToken);
-  //     localStorage.setItem('refreshToken', refreshToken);
-  //     setToken(accessToken);
-
-
-  //     // Decode the accessToken to get the user information
-  //   const decodedToken = jwtDecode(accessToken);
-  //   setUser(decodedToken.user); // Store the user in the authentication context
-  //   }
-  // }, [location, setToken, setUser]);
 
   return (
     <Container>

@@ -35,10 +35,13 @@ interface Stream {
   status: string;
   tags: string[];
   eventInformations: string[];
+  schedule: { time: string; activity: string }[];
+
 }
 
 interface StreamListItemProps {
   stream: Stream;
+  
 }
 
 const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {

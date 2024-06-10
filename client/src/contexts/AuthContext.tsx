@@ -4,21 +4,10 @@ import { authApi } from '../api';
 import { UserInterface } from '../interfaces/user';
 import { requestHandler } from '../utils';
 import Loader from '../components/Loader';
+import { AuthContextInterface, RegisterInterface } from '../interfaces/authContext';
 
 // Create a context to manage authentication-related data and functions
-const AuthContext = createContext<{
-  user: UserInterface | null;
-  login: (data: { email: string; password: string }) => Promise<void>;
-  register: (data: {
-    email: string;
-    fullName: string;
-    profession: string;
-    password: string;
-    username: string;
-  }) => Promise<void>;
-  logout: () => Promise<void>;
-  isAuthenticated: () => boolean;
-}>({
+const AuthContext = createContext<AuthContextInterface>({
   user: null,
   login: async () => {},
   register: async () => {},
@@ -53,13 +42,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   };
 
   // Function to handle user registration
-  const register = async (data: {
-    fullName: string;
-    username: string;
-    email: string;
-    password: string;
-    profession: string;
-  }) => {
+  const register = async (data: RegisterInterface) => {
     await requestHandler(
       async () => await authApi.registerUser(data),
       setIsLoading,
