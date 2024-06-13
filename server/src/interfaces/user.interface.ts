@@ -11,6 +11,7 @@ interface IUser extends Document{
     followers: string[];
     following: string[];
     events: string[];
+    streams: string[];
     rvps: string[];
     rating: number;
     refreshToken?: string;

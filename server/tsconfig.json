@@ -8,7 +8,7 @@
     "target": "es6",
     "esModuleInterop": true,
   },
-    "include": ["src/**/*.ts"],
+    "include": ["src/**/*.ts", "../client/src/interfaces/stream.interface.ts"],
     "exclude": ["node_modules"]
   }
   

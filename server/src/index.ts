@@ -17,6 +17,7 @@ dotenv.config()
 import eventRouter from "./routes/event.route";
 import authRouter from "./routes/auth.route";
 import userRouter from "./routes/user.route";
+import streamRouter from "./routes/stream.route";
 
 const app = express();
 const cookieSecret = process.env.JWT_SECRET
@@ -26,7 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:5174",
     credentials: true,
   })
 );
@@ -59,6 +60,7 @@ db.once("open", function () {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/events", eventRouter);
+app.use("/api/v1/stream", streamRouter);
 // app.use(
 //   "/api/uploadthing",
 //   createRouteHandler({

@@ -46,6 +46,10 @@ const UserSchema = new Schema<User>({
         type:Schema.Types.ObjectId,
         ref:'Event'
     }],
+    streams:[{
+        type:Schema.Types.ObjectId,
+        ref:'Stream'
+    }],
     rvps:[{
         type:Schema.Types.ObjectId,
         ref:'Event'

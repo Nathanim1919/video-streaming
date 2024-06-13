@@ -107,7 +107,6 @@ export class AuthController {
     res.json(new ApiResponse(200, null,'logout successfull'));
   });
 
-
   refreshToken = asyncHandler(async(req: Request, res: Response): Promise<void> => {
     try {
       const newAccessToken = await this.authService.refreshAccessToken(req.cookies?.refreshToken);
@@ -120,5 +119,18 @@ export class AuthController {
         res.status(500).send('An error occurred while refreshing the access token');
       }
     }
-  })
+  });
+
+
+  // loginGoogle = asyncHandler(async(req: Request, res: Response): Promise<void> => {
+  //     return await this.authService.loginGoogle(req.query);
+  // });
+
+   // Callback method for after Google has authenticated the user
+   googleCallback = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    // Your AuthService would handle the callback logic
+    // For simplicity, let's just redirect the user
+    res.redirect('/home');
+  });
+
 }

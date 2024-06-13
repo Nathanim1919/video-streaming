@@ -31,10 +31,10 @@ export class EventController {
 
     // Get all events
     getAllEvents = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-        const page = parseInt(req.query.page as string) || 1;
-        const limit = parseInt(req.query.limit as string) || 2;
+        const page = parseInt(req.query.page as string);
+        const limit = parseInt(req.query.limit as string);
         console.log(`Page: ${page}, Limit: ${limit}`);
-        const events = await this.eventService.getAllEvents(page, limit);
+        const events = await this.eventService.getAllEvents();
         res.json(new ApiResponse(200, events, "Events fetched successfully"));
     });
 

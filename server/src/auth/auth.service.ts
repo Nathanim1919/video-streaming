@@ -186,4 +186,12 @@ export class AuthService {
       throw error;
     }
   }
+
+  /**
+   * Sign in with Google.
+   * @param token - The Google access token.
+   * @returns A promise that resolves to the user data or an error message.
+   * @throws If sign in fails.
+   */
+  
 }

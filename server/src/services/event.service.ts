@@ -32,10 +32,10 @@ export class EventService {
     }
 
     // Get all events
-    async getAllEvents(page: number, limit: number): Promise<IEvent[]> {
-        console.log(`Page: ${page}, Limit: ${limit}`);
-        const skip = (page - 1) * limit;
-        const events = await EventModel.find().skip(skip).limit(limit).populate('owner').populate('attendees');
+    async getAllEvents(): Promise<IEvent[]> {
+        // console.log(`Page: ${page}, Limit: ${limit}`);
+        // const skip = (page - 1) * limit;
+        const events = await EventModel.find().populate('owner').populate('attendees');
         // console.log(events);
         return events;
     }
