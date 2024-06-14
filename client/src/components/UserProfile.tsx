@@ -25,10 +25,10 @@ import Loader from './Loader';
 const UserProfile = () => {
   const {user} = useAuth();
   const [streamer, setStreamer] = React.useState<Streamer>({} as Streamer);
-  const [actions, setActions] = React.useState<any>({}); // [follow, unfollow]
+  const [actions, setActions] = React.useState<string[]>([]); // [follow, unfollow]
   const [isOwner, setIsOwner] = React.useState(true);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [isFollow, setIsFollow] = React.useState(streamer.followers?.includes(user._id));
+  const [isFollow, setIsFollow] = React.useState(streamer?.followers?.includes(user!._id));
   const [userFollowers, setUserFollowers] = React.useState<number>(streamer.followers?.length);
   const {id} = useParams();
   const handleClick = useFollow(streamer?._id, isFollow,setIsFollow, setIsLoading, setUserFollowers);
@@ -41,11 +41,13 @@ const UserProfile = () => {
         setIsLoading,
         (response) => {
           const {data, actions, isOwner} = response.data;
+          console.log(data.data);
           setStreamer(data);
-          setIsFollow(data.followers?.includes(user._id));
+          setIsFollow(data?.followers?.includes(user!._id));
           setUserFollowers(data.followers?.length);
-          setActions(actions);
+          // setActions(actions);
           setIsOwner(isOwner);
+
         },
         (error) => {
           console.log(error);
@@ -99,7 +101,8 @@ const UserProfile = () => {
                 <p>100 Upcoming events</p>
               </div>
             </div>
-            {/* <div>
+            <div>
+              <h1>What you can do?</h1>
             {actions?.includes('create') && <button>Create</button>}
             {actions?.includes('edit') && <button>Edit</button>}
             {actions?.includes('delete') && <button>Delete</button>}
@@ -107,7 +110,7 @@ const UserProfile = () => {
             {actions?.includes('unfollow') && <button>Unfollow</button>}
             {actions?.includes('RSVP') && <button>RSVP</button>}
             {actions?.includes('unRSVP') && <button>UnRSVP</button>}
-          </div> */}
+          </div>
           </div>
         </div>
       </div>
@@ -117,7 +120,8 @@ const UserProfile = () => {
             <h3>Scheduled Events</h3>
             {isOwner && <Link to={'/events/schedule'}>Schedule new Event</Link>}
           </div>
-          {streamer.events?<div className="events-list">
+          {isLoading && <Loader/>}
+          <div className="events-list">
             {streamer.events?.length === 0 ? <p>No events available</p> :
               streamer.events?.map((event: any) => (
                 <div key={event._id}>
@@ -144,7 +148,7 @@ const UserProfile = () => {
                   }
                 </div>
               ))}
-        </div>:<Loader/>}
+        </div>
         </div>
       </div>
     </Container>
