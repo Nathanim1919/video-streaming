@@ -30,11 +30,6 @@ export class EventService {
     person.events.push(newEvent._id);
     await person.save();
 
-    // save the event in the cache
-    const eventCacheKey = `event:${newEvent._id}`;
-    const eventCacheValue = JSON.stringify(newEvent);
-    await this.cacheClient.set(eventCacheKey, eventCacheValue);
-
     // Add the user as the owner of the event
     // newEvent.owner = user._id;
     newEvent.owner = user._id as unknown as mongoose.Types.ObjectId;
@@ -44,38 +39,17 @@ export class EventService {
 
   // Get all events
   async getAllEvents(): Promise<IEvent[]> {
-    // Get all events from the cache
-    const allEventsCacheKey = "events";
-    const eventsCacheValue = await this.cacheClient.get(allEventsCacheKey);
-    if (eventsCacheValue) {
-      logger.info("Getting events from cache");
-      return JSON.parse(eventsCacheValue);
-    }
     const events = await EventModel.find()
       .populate("owner")
       .populate("attendees");
-
-    // Save the events in the cache
-    await this.cacheClient.set(allEventsCacheKey, JSON.stringify(events));
-    logger.info("Saving events in cache");
     return events;
   }
 
   // Get a single event
   async getEvent(eventId: string): Promise<IEvent> {
-    // Get the event from the cache
-    const eventCacheKey = `event:${eventId}`;
-    const eventCacheValue = await this.cacheClient.get(eventCacheKey);
-    if (eventCacheValue) {
-      logger.info("Getting event from cache");
-      return JSON.parse(eventCacheValue);
-    }
     const event = await EventModel.findById(eventId)
       .populate("owner")
       .populate("attendees");
-
-    // Save the event in the cache
-    await this.cacheClient.set(eventCacheKey, JSON.stringify(event), 60);
     return event;
   }
 
@@ -191,19 +165,10 @@ export class EventService {
 
   // Get all events a user has RSVP'd to
   async getMyEvents(user: any): Promise<IRsvp[]> {
-    // Get from cache
-    const rsvpCacheKey = `rsvp:${user._id}`;
-    const rsvpCacheValue = await this.cacheClient.get(rsvpCacheKey);
-    if (rsvpCacheValue) {
-      logger.info("Getting RSVPs from cache");
-      return JSON.parse(rsvpCacheValue);
-    }
     const rsvps = await RSVP.find({ userId: user._id })
       .populate("eventId")
       .populate("userId");
 
-    // Save in cache
-    await this.cacheClient.set(rsvpCacheKey, JSON.stringify(rsvps), 60);
     return rsvps;
   }
 
@@ -408,7 +373,7 @@ export class EventService {
   }
 
   async getUpcomingEvents(user: any): Promise<IEvent[]> {
-    logger.info("Getting upcoming events");
+   
     const today = new Date();
 
     // Get the IDs of the users that the current user is following

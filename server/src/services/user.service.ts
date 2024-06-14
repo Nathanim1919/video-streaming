@@ -1,8 +1,6 @@
-import { use } from "passport";
 import IUser from "../interfaces/user.interface";
 import { User } from "../models/user.model";
 import { Request, Response } from "express";
-import { CacheClient } from "../config/redisClient";
 import logger from "../logger";
 
 interface RequestWithUser extends Request {
@@ -10,12 +8,6 @@ interface RequestWithUser extends Request {
 }
 
 export class UserService {
-  // instance of the CacheClient class
-  private cacheClient: CacheClient;
-
-  constructor() {
-    this.cacheClient = CacheClient.getInstance();
-  }
 
   // this is a function that is responsible for finding all users
   async userFindAll(
@@ -37,17 +29,8 @@ export class UserService {
 
   // this is a function that is responsible for finding a user by id
   async userFindById(id: string): Promise<IUser | null> {
-    // check if the user exists in the cache
-    const userExists = await this.cacheClient.exists(`user:${id}`);
-    if (userExists) {
-      // get the user from the cache
-      logger.info("User found in cache");
-      const user = await this.cacheClient.get(`user:${id}`);
-      return JSON.parse(user);
-    }
     const user = await User.findById(id).populate("events");
     // set the user in the cache
-    await this.cacheClient.set(`user:${id}`, JSON.stringify(user));
     return user;
   }
 
@@ -103,8 +86,6 @@ export class UserService {
       followUser.following = followUser.following.filter(
         (id) => id.toString() !== user._id.toString()
       );
-
-      console.log("after unfollowing, users followers are: ", user.followers);
 
       await user.save();
       await followUser.save();

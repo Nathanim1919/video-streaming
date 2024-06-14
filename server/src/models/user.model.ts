@@ -1,12 +1,10 @@
 // Purpose: Define the User model schema and export it as a model.
-import mongoose, {Schema, Document} from 'mongoose'
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import mongoose, {Schema} from 'mongoose'
 import { AvailableSocialLogins, userLoginTypes } from '../../constants';
-import User from '../interfaces/user.interface.js';
+import IUser from '../interfaces/user.interface.js';
 
 // Define the schema
-const UserSchema = new Schema<User>({
+const UserSchema = new Schema<IUser>({
     email:{
         type:String,
         required:true,

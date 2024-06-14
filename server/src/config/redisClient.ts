@@ -24,7 +24,7 @@ export class CacheClient {
 
   public async exists(key: string): Promise<boolean> {
     try {
-      return await this.client.exists(key) > 1;
+      return await this.client.exists(key) > 0;
     } catch (error) {
       console.log(`Error checking key in Redis: ${error}`);
       return false;
