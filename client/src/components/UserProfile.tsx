@@ -317,8 +317,10 @@ const Container = styled.div`
         position: sticky;
           width: 100%;
           z-index: 10;
-      top: 0;
-      /* background-color: #222020; */
+      top: 10%;
+      background-color: #0b0b0b92;
+      backdrop-filter: blur(10px);
+      padding: 1rem;
 
 
       a{

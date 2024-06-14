@@ -1,185 +1,71 @@
+import { useState, useEffect } from "react"
 import styled from "styled-components"
 import Image from '/home/live3.jpg'
 import { Link } from "react-router-dom"
+import { eventApi } from "../api"
+import { formatDate, requestHandler } from "../utils"
+import { Event } from "../interfaces/event"
+import Loader from "./Loader"
 
 export const Events = () => {
+    const [events, setEvents] = useState<Event[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchEvents = async () => {
+            await requestHandler(
+                async () => eventApi.getEvents(),
+                setIsLoading,
+                (res) => {
+                    setEvents(res.data);
+                },
+                alert
+            );
+        };
+
+        fetchEvents();
+    }, []);
+
     return (
+        isLoading?<Loader/>:
         <Conatainer className="container">
             <div className="events">
-                <div className="event">
-                    <div className="image">
-                            <div className="price">
-                                <p>Free</p>
-                            </div>
-                        <img src={Image} alt="" />
-                    </div>
-                    <div className="infos">
-                       <div className="date">
-                          <p>May</p>
-                          <h2>17</h2>
-                       </div>
-                        <div className="info">
-                            <div className="e-info">
-                                <h2>Empowering Women in Tech</h2>
-                                <p>Wednesday, June 12th, 2024 | 12:00 PM - 2:00 PM</p>
-                                <p>Location: 1234 Street Name, City, State, 12345</p>
-                            </div>
-                            <div className="host">
-                                <div className="image">
-                                    <img src={Image} alt="" />
-                                </div>
-                                <div className="pro">
-                                    <h2>John Doe</h2>
-                                    <p>CEO, Google</p>
-                                </div>
-                            </div>
+                {events.map((event) => (
+                     <div className="event">
+                     <div className="image">
+                         <img src={Image} alt="" />
+                           <div className="price">
+                                 <p>ETH {event.price}</p>
+                             </div>
+                     </div>
+                     <div className="infos">
+                        <div className="date">
+                           <p>May</p>
+                           <h2>17</h2>
                         </div>
-                    </div>
-                    <div className="actionBtns">
-                        <Link to={'/'} className="learnMore">Learn More</Link>
-                        <Link to={'/'} className="getTicket">Get Ticket</Link>
-                    </div>
-                </div>
-
-                <div className="event">
-                    <div className="image">
-                        <img src={Image} alt="" />
-                          <div className="price">
-                                <p>$100</p>
-                            </div>
-                    </div>
-                    <div className="infos">
-                       <div className="date">
-                          <p>May</p>
-                          <h2>17</h2>
-                       </div>
-                        <div className="info">
-                            <div className="e-info">
-                                <h2>Empowering Women in Tech</h2>
-                                <p>Wednesday, June 12th, 2024 | 12:00 PM - 2:00 PM</p>
-                                <p>Location: 1234 Street Name, City, State, 12345</p>
-                            </div>
-                            <div className="host">
-                                <div className="image">
-                                    <img src={Image} alt="" />
-                                </div>
-                                <div className="pro">
-                                    <h2>John Doe</h2>
-                                    <p>CEO, Google</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="actionBtns">
-                        <Link to={'/'} className="learnMore">Learn More</Link>
-                        <Link to={'/'} className="getTicket">Get Ticket</Link>
-                    </div>
-                </div>
-
-                <div className="event">
-                    <div className="image">
-                        <img src={Image} alt="" />
-                          <div className="price">
-                                <p>$123</p>
-                            </div>
-                    </div>
-                    <div className="infos">
-                       <div className="date">
-                          <p>May</p>
-                          <h2>17</h2>
-                       </div>
-                        <div className="info">
-                            <div className="e-info">
-                                <h2>Empowering Women in Tech</h2>
-                                <p>Wednesday, June 12th, 2024 | 12:00 PM - 2:00 PM</p>
-                                <p>Location: 1234 Street Name, City, State, 12345</p>
-                            </div>
-                            <div className="host">
-                                <div className="image">
-                                    <img src={Image} alt="" />
-                                </div>
-                                <div className="pro">
-                                    <h2>John Doe</h2>
-                                    <p>CEO, Google</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="actionBtns">
-                        <Link to={'/'} className="learnMore">Learn More</Link>
-                        <Link to={'/'} className="getTicket">Get Ticket</Link>
-                    </div>
-                </div>
-
-                <div className="event">
-                    <div className="image">
-                        <img src={Image} alt="" />
-                          <div className="price">
-                                <p>Free</p>
-                            </div>
-                    </div>
-                    <div className="infos">
-                       <div className="date">
-                          <p>May</p>
-                          <h2>17</h2>
-                       </div>
-                        <div className="info">
-                            <div className="e-info">
-                                <h2>Empowering Women in Tech</h2>
-                                <p>Wednesday, June 12th, 2024 | 12:00 PM - 2:00 PM</p>
-                                <p>Location: 1234 Street Name, City, State, 12345</p>
-                            </div>
-                            <div className="host">
-                                <div className="image">
-                                    <img src={Image} alt="" />
-                                </div>
-                                <div className="pro">
-                                    <h2>John Doe</h2>
-                                    <p>CEO, Google</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="actionBtns">
-                        <Link to={'/'} className="learnMore">Learn More</Link>
-                        <Link to={'/'} className="getTicket">Get Ticket</Link>
-                    </div>
-                </div>
-
-                <div className="event">
-                    <div className="image">
-                        <img src={Image} alt="" />
-                          <div className="price">
-                                <p>$345</p>
-                            </div>
-                    </div>
-                    <div className="infos">
-                       <div className="date">
-                          <p>May</p>
-                          <h2>17</h2>
-                       </div>
-                        <div className="info">
-                            <div className="e-info">
-                                <h2>Empowering Women in Tech</h2>
-                                <p>Wednesday, June 12th, 2024 | 12:00 PM - 2:00 PM</p>
-                                <p>Location: 1234 Street Name, City, State, 12345</p>
-                            </div>
-                            <div className="host">
-                                <div className="image">
-                                    <img src={Image} alt="" />
-                                </div>
-                                <div className="pro">
-                                    <h2>John Doe</h2>
-                                    <p>CEO, Google</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="actionBtns">
-                        <Link to={'/'} className="learnMore">Learn More</Link>
-                        <Link to={'/'} className="getTicket">Get Ticket</Link>
-                    </div>
-                </div>
+                         <div className="info">
+                             <div className="e-info">
+                                 <h2>{event.title}</h2>
+                                 <p>{formatDate(event.date)}</p>
+                                 <p>{event.location}</p>
+                             </div>
+                             <div className="host">
+                                 <div className="image">
+                                     <img src={Image} alt="" />
+                                 </div>
+                                 <div className="pro">
+                                     <h2>{event.owner.fullName}</h2>
+                                     <p>{event.owner.profession}</p>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                     <div className="actionBtns">
+                         <Link to={'/'} className="learnMore">Learn More</Link>
+                         <Link to={'/'} className="getTicket">Get Ticket</Link>
+                     </div>
+                 </div>
+                ))}
             </div>
         </Conatainer>
     )

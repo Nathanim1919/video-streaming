@@ -10,7 +10,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { eventApi } from "../api";
+import { eventApi, streamApi } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { Event, ScheduleItem, SocialLink } from "../interfaces/event";
@@ -199,10 +199,11 @@ export const CreateEventForm = () => {
     date: '',
     time: '',
     location: '',
+    attendees: [],
     price: 0,
     capacity: 100,
     eventType: 'meetup',
-    isOnline: true,
+    isOnline: false,
     isOpenForRsvp: 'off',
     tags: [],
     duration: 0,
@@ -214,16 +215,21 @@ export const CreateEventForm = () => {
 
   const handleInputOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    let adjustedValue: string | boolean = value;
+    if (name === 'isOnline') {
+      adjustedValue = value === 'true';
+    }
     setEvent(prevState => ({
       ...prevState,
-      [name]: value
+      [name]: adjustedValue
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const apiFunction = event.isOnline ? streamApi.createStream : eventApi.createEvent;
     await requestHandler(
-      async () => eventApi.createEvent(event),
+      async () => apiFunction(event),
       setLoading,
       () => navigate(`/streamers/${user._id}`),
       () => {}
@@ -328,9 +334,16 @@ export const CreateEventForm = () => {
           <textarea id="description" name="description" value={event.description} onChange={handleInputOnChange} disabled={loading}></textarea>
         </div>
         <div className="form-group">
-          <label htmlFor="location">Location</label>
-          <input type="text" id="location" name="location" value={event.location} onChange={handleInputOnChange} disabled={loading} />
+          <label htmlFor="rsvp">IsOnline Event</label>
+          <select id="rsvp" name="isOnline" value={event.isOnline} onChange={handleInputOnChange} disabled={loading}>
+            <option value="true">Yes, It is</option>
+            <option value="false">No, It is not</option>
+          </select>
         </div>
+        {!event.isOnline && <div className="form-group">
+          <label htmlFor="location">Location</label>
+          <input type="text" id="location" name="location" value={event.location} onChange={handleInputOnChange} disabled={loading} placeholder="Enter map link or Exact Location."/>
+        </div>}
         <div className="form-group datetimepicker">
           <label htmlFor="date">Date & Time</label>
           <ThemeProvider theme={darkTheme}>

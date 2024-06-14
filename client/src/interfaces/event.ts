@@ -10,11 +10,13 @@ export type SocialLink = {
 };
 
 export type Event = {
+  _id: string;
   title: string;
   description: string;
   date: string;
   time: string;
-  location: string;
+  owner: string;
+  location?: string;
   price: number;
   capacity: number;
   eventType: string;
@@ -26,4 +28,5 @@ export type Event = {
   specialInstructions: string;
   schedule: ScheduleItem[];
   socialLinks: SocialLink[];
+  attendees: string[];
 };

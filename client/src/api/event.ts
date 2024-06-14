@@ -27,13 +27,8 @@ const createEvent = (data: {
 }
 
 
-const getEvents = ({page, limit}: PageinationParams) => {
-    return apiClient.get("/events/all", {
-        params: {
-            page,
-            limit
-        }
-    });
+const getEvents = () => {
+    return apiClient.get("/events/all");
 }
 
 const getUpcomingEvents = () => {

@@ -7,47 +7,19 @@ import { useAuth } from '../contexts/AuthContext';
 import { ImSpinner9 } from "react-icons/im";
 import useRsvp from '../customeHook/useRsvp';
 import { FaRegEdit } from "react-icons/fa";
-import { BiEditAlt } from 'react-icons/bi';
 import { EventTicket } from './EventTicket';
+import { IStream } from '../interfaces/stream.interface';
 
-
-
-
-interface Stream {
-  id: string | undefined | null;
-  title: string;
-  streamer: string;
-  scheduledDate: string;
-  attendees: string[];
-  rsvp: boolean;
-  eventType: string;
-  description: string;
-  location: string;
-  image: string;
-  owner: {
-    username: string;
-    profession: string;
-  };
-  date: string;
-  isOnline: boolean;
-  capacity: number;
-  price: number;
-  status: string;
-  tags: string[];
-  eventInformations: string[];
-  schedule: { time: string; activity: string }[];
-
-}
 
 interface StreamListItemProps {
-  stream: Stream;
+  stream: IStream;
   
 }
 
 const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
   const { user } = useAuth();
   const [countdown, setCountdown] = useState<{days?: number, hours?: number, minutes?: number, seconds?: number}>({days: 0, hours: 0, minutes: 0, seconds: 0}); 
-  const [isRsvp, setIsRsvp] = useState((user?.rvps).includes(user?._id));
+  const [isRsvp, setIsRsvp] = useState((user!.rvps).includes(user!._id));
   const [isLoading, setIsLoading] = useState(false);
   const eventDate = useMemo(() => new Date(stream?.date), [stream?.date]);
   const [qrCodeUrl, setQrCodeUrl] = useState('');
@@ -112,11 +84,11 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
         <div className='image'>
           <img src={StreamImage} alt='Stream' />
           <div className="editImage">
-            <Link to={`/edit/${stream.id}`}><FaRegEdit/></Link>
+            <Link to={`/edit/${stream._id}`}><FaRegEdit/></Link>
           </div>
         </div>
         <div className='info'> 
-          <Link to={`/edit/${stream.id}`}><FaRegEdit/></Link>
+          <Link to={`/edit/${stream._id}`}><FaRegEdit/></Link>
           <div className="schedule">
             <p>{formatDate(stream?.date)} Eastern centeral time </p>
             <h3>{countdown.days && countdown.days} days to go</h3>
