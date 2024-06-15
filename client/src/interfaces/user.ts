@@ -8,4 +8,11 @@ export interface UserInterface {
     createdAt: string;
     updatedAt: string;
     rvps:string[];
+    streams:string[];
+    followers:string[];
+    following:string[];
+    bio:string;
+    location:string;
+    events:string[];
+    rating: number;
 }

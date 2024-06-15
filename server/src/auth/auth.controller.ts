@@ -37,17 +37,16 @@ export class AuthController {
 
       if (!token) {
         res.json(new ApiResponse(401, null, 'Unauthorized access'));
+      } else {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET) as { userId: string };
+        const user = await this.userService.userFindById(decoded.userId);
+
+        if (!user) {
+          res.json(new ApiResponse(401, null, 'User not found'));
+        } else {
+          res.json(new ApiResponse(200, user, 'User found'));
+        }
       }
-
-      const decoded = jwt.verify(token, process.env.JWT_SECRET) as { userId: string };
-
-      // Fetch user data from database using decoded.userId
-      const user = await this.userService.userFindById(decoded.userId); // Replace with actual user fetching logic
-
-      if (!user) {
-        res.json(new ApiResponse(401, null, 'User not found'));
-      }
-      res.json(new ApiResponse(200, user, 'User found'));
     } catch (error) {
       console.error(error);
       res.json(new ApiResponse(500, null, 'Internal server error'));
@@ -71,13 +70,6 @@ export class AuthController {
     if (existingUser) {
         const { username, _id } = existingUser;
         const { token, refreshToken } = this.generateTokens(_id);
-
-        res.cookie('username', username, {
-            httpOnly: true,
-            signed: true,
-            // secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict'
-        });
 
         res.cookie('token', token, {
             httpOnly: true,

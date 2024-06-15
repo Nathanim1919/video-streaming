@@ -39,42 +39,38 @@ export class UserController {
 
   userFindById = asyncHandler(
     async (req: RequestWithUser, res): Promise<void> => {
-      // get the id from the request parameters
+      // Step 1: Get the user ID from the request parameters
       const { id } = req.params;
-
-      // GET the user from the cache
-      const userExists = await this.cacheClient.get(`user:${id}`);
+  
+      let user;
+      // Step 2: Check if the user data is in the cache
+      const userExists = await this.cacheClient.exists(`user:${id}`);
       if (userExists) {
-        // get the user from the cache
-        logger.info(`User of id ${id} found in cache`);
-        res.json(new ApiResponse(200, userExists, "User found successfully"));
-        return;
+        // User data is in the cache, retrieve it
+        const cachedUser = await this.cacheClient.get(`user:${id}`);
+        user = JSON.parse(cachedUser);
       } else {
-        // find the user by id
-        const user = await this.userService.userFindById(id);
-
-        // check if the user is the owner of the profile
-        // i think we have to compare the string id with the user id
-        const isOwner = req.user._id.toString() === id.toString();
-        console.log(user);
-
-        // get the actions based on the user's role
-        const actions = this.getActions(isOwner);
-
-        // set the user in the cache
+        // User data is not in the cache, fetch and cache it
+        user = await this.userService.userFindById(id);
         await this.cacheClient.set(`user:${id}`, JSON.stringify(user));
-
-        // send the response
-        res.json(
-          new ApiResponse(
-            200,
-            user,
-            "User found successfully",
-            actions,
-            isOwner
-          )
-        );
       }
+  
+      // Step 3: Determine if the current user is the owner of the profile
+      const isOwner = req.user._id.toString() === id.toString();
+  
+      // Step 4: Get the actions based on the user's role
+      const actions = this.getActions(isOwner);
+  
+      // Step 5: Send the response with the user data and actions
+      res.json(
+        new ApiResponse(
+          200,
+          user,
+          "User found successfully",
+          actions,
+          isOwner
+        )
+      );
     }
   );
 
