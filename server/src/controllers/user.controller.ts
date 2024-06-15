@@ -46,32 +46,35 @@ export class UserController {
       const userExists = await this.cacheClient.get(`user:${id}`);
       if (userExists) {
         // get the user from the cache
-        logger.info("User found in cache: ", userExists);
-        console.log(userExists);
-        res.json(
-          new ApiResponse(200, userExists, "User found successfully")
-        );
+        logger.info(`User of id ${id} found in cache`);
+        res.json(new ApiResponse(200, userExists, "User found successfully"));
         return;
+      } else {
+        // find the user by id
+        const user = await this.userService.userFindById(id);
+
+        // check if the user is the owner of the profile
+        // i think we have to compare the string id with the user id
+        const isOwner = req.user._id.toString() === id.toString();
+        console.log(user);
+
+        // get the actions based on the user's role
+        const actions = this.getActions(isOwner);
+
+        // set the user in the cache
+        await this.cacheClient.set(`user:${id}`, JSON.stringify(user));
+
+        // send the response
+        res.json(
+          new ApiResponse(
+            200,
+            user,
+            "User found successfully",
+            actions,
+            isOwner
+          )
+        );
       }
-
-      // find the user by id
-      const user = await this.userService.userFindById(id);
-
-      // check if the user is the owner of the profile
-      // i think we have to compare the string id with the user id
-      const isOwner = req.user._id.toString() === id.toString();
-      console.log(user);
-
-      // get the actions based on the user's role
-      const actions = this.getActions(isOwner);
-
-      // set the user in the cache
-      await this.cacheClient.set(`user:${id}`, JSON.stringify(user));
-
-      // send the response
-      res.json(
-        new ApiResponse(200, user, "User found successfully", actions, isOwner)
-      );
     }
   );
 
@@ -121,22 +124,20 @@ export class UserController {
   userFindAll = asyncHandler(
     async (req: RequestWithUser, res): Promise<void> => {
       // Get all from cache
-      const cachedUsers = await this.cacheClient.get("users");
+      const cachedUsers = await this.cacheClient.exists("users");
       if (cachedUsers) {
         logger.info("Users found in cache");
+        const users = await this.cacheClient.get("users");
         res.json(
-          new ApiResponse(
-            200,
-            JSON.parse(cachedUsers),
-            "Users found successfully"
-          )
+          new ApiResponse(200, JSON.parse(users), "Users found successfully")
         );
         return;
+      } else {
+        const users = await this.userService.userFindAll(req, res);
+        // Save all in cache
+        await this.cacheClient.set("users", JSON.stringify(users));
+        res.json(new ApiResponse(200, users, "Users found successfully"));
       }
-      const users = await this.userService.userFindAll(req, res);
-      // Save all in cache
-      await this.cacheClient.set("users", JSON.stringify(users));
-      res.json(new ApiResponse(200, users, "Users found successfully"));
     }
   );
 }

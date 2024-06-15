@@ -49,15 +49,21 @@ export class EventController {
 
       if (existsInCache) {
         const events = await this.cacheClient.get("events");
-        res.json(new ApiResponse(200, JSON.parse(events), "Events fetched successfully"));
+        res.json(
+          new ApiResponse(
+            200,
+            JSON.parse(events),
+            "Events fetched successfully"
+          )
+        );
+      } else {
+        // get from the database if it does not exist in the cache
+        const events = await this.eventService.getAllEvents();
+
+        // save the events in the cache
+        await this.cacheClient.set("events", JSON.stringify(events));
+        res.json(new ApiResponse(200, events, "Events fetched successfully"));
       }
-
-      // get from the database if it does not exist in the cache
-      const events = await this.eventService.getAllEvents();
-
-      // save the events in the cache
-      await this.cacheClient.set("events", JSON.stringify(events));
-      res.json(new ApiResponse(200, events, "Events fetched successfully"));
     }
   );
 
@@ -72,25 +78,25 @@ export class EventController {
       if (existsInCache) {
         const event = await this.cacheClient.get(`event:${req.params.eventId}`);
         res.json(new ApiResponse(200, event, "Event fetched successfully"));
+      } else {
+        // get from the database if it does not exist in the cache
+        const event = await this.eventService.getEvent(req.params.eventId);
+
+        // is the user the owner of the event
+        const isOwner = true;
+
+        const actions = isOwner ? ["edit", "delete"] : ["RSVP", "unRSVP"];
+
+        // save the event in the cache
+        await this.cacheClient.set(
+          `event:${req.params.eventId}`,
+          JSON.stringify(event)
+        );
+
+        res.json(
+          new ApiResponse(200, event, "Event fetched successfully", actions)
+        );
       }
-
-      // get from the database if it does not exist in the cache
-      const event = await this.eventService.getEvent(req.params.eventId);
-
-      // is the user the owner of the event
-      const isOwner = true;
-
-      const actions = isOwner ? ["edit", "delete"] : ["RSVP", "unRSVP"];
-
-      // save the event in the cache
-      await this.cacheClient.set(
-        `event:${req.params.eventId}`,
-        JSON.stringify(event)
-      );
-
-      res.json(
-        new ApiResponse(200, event, "Event fetched successfully", actions)
-      );
     }
   );
 
@@ -104,17 +110,17 @@ export class EventController {
         res.json(
           new ApiResponse(200, events, "Live events fetched successfully")
         );
-      }
-      const events = await this.eventService.getLiveEvents();
+      } else {
+        const events = await this.eventService.getLiveEvents();
 
-      // save the events in the cache
-      await this.cacheClient.set("liveEvents", JSON.stringify(events));
-      res.json(
-        new ApiResponse(200, events, "Live events fetched successfully")
-      );
+        // save the events in the cache
+        await this.cacheClient.set("liveEvents", JSON.stringify(events));
+        res.json(
+          new ApiResponse(200, events, "Live events fetched successfully")
+        );
+      }
     }
   );
-
 
   getUpcomingEvent = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
@@ -124,19 +130,23 @@ export class EventController {
         // logger.info("Getting upcoming events from cache");
         const events = await this.cacheClient.get("upcomingEvents");
         res.json(
-          new ApiResponse(200, JSON.parse(events), "Upcoming events fetched successfully")
+          new ApiResponse(
+            200,
+            JSON.parse(events),
+            "Upcoming events fetched successfully"
+          )
+        );
+      } else {
+        const events = await this.eventService.getUpcomingEvents(
+          req.user as IUser
+        );
+
+        // save the events in the cache
+        await this.cacheClient.set("upcomingEvents", JSON.stringify(events));
+        res.json(
+          new ApiResponse(200, events, "Upcoming events fetched successfully")
         );
       }
-
-      const events = await this.eventService.getUpcomingEvents(
-        req.user as IUser
-      );
-
-      // save the events in the cache
-      await this.cacheClient.set("upcomingEvents", JSON.stringify(events));
-      res.json(
-        new ApiResponse(200, events, "Upcoming events fetched successfully")
-      );
     }
   );
 
@@ -161,17 +171,28 @@ export class EventController {
   getMyEvents = asyncHandler(
     async (req: RequestWithUser, res: Response): Promise<void> => {
       // get from cache if it exits
-      const existsInCache = await this.cacheClient.exists(`rsvps:${req.user._id}`);
+      const existsInCache = await this.cacheClient.exists(
+        `rsvps:${req.user._id}`
+      );
       if (existsInCache) {
         const events = await this.cacheClient.get(`rsvps:${req.user._id}`);
-        res.json(new ApiResponse(200, JSON.parse(events), "Events fetched successfully"));
+        res.json(
+          new ApiResponse(
+            200,
+            JSON.parse(events),
+            "Events fetched successfully"
+          )
+        );
+      } else {
+        const rsvps = await this.eventService.getMyEvents(req.user as IUser);
+
+        // save the events in the cache
+        await this.cacheClient.set(
+          `rsvps:${req.user._id}`,
+          JSON.stringify(rsvps)
+        );
+        res.json(new ApiResponse(200, rsvps, "Events fetched successfully"));
       }
-
-      const rsvps = await this.eventService.getMyEvents(req.user as IUser);
-
-      // save the events in the cache
-      await this.cacheClient.set(`rsvps:${req.user._id}`, JSON.stringify(rsvps));
-      res.json(new ApiResponse(200, rsvps, "Events fetched successfully"));
     }
   );
 
@@ -187,18 +208,25 @@ export class EventController {
         const events = await this.cacheClient.get(
           `createdEvents:${req.user._id}`
         );
-        res.json(new ApiResponse(200, JSON.parse(events), "Events fetched successfully"));
-      }
-      const events = await this.eventService.getMyCreatedEvents(
-        req.user as IUser
-      );
+        res.json(
+          new ApiResponse(
+            200,
+            JSON.parse(events),
+            "Events fetched successfully"
+          )
+        );
+      } else {
+        const events = await this.eventService.getMyCreatedEvents(
+          req.user as IUser
+        );
 
-      // save the events in the cache
-      await this.cacheClient.set(
-        `createdEvents:${req.user._id}`,
-        JSON.stringify(events)
-      );
-      res.json(new ApiResponse(200, events, "Events fetched successfully"));
+        // save the events in the cache
+        await this.cacheClient.set(
+          `createdEvents:${req.user._id}`,
+          JSON.stringify(events)
+        );
+        res.json(new ApiResponse(200, events, "Events fetched successfully"));
+      }
     }
   );
 

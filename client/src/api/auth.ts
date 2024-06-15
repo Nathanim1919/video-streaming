@@ -28,6 +28,7 @@ const fetchStreamers = () => {
 
 
 const fetchStreamer = (id: string) => {
+    console.log(id);
     return apiClient.get(`/users/${id}`);
 }
 

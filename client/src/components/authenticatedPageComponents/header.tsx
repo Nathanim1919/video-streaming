@@ -35,7 +35,7 @@ export const Header = () => {
                 <div className="account">
                     <li onClick={()=>setShowOptions(!showOptions)}><MdAccountCircle/></li>
                    {showOptions && <div className="options">
-                        <li><Link onClick={() => setShowOptions(false)} to={`/streamers/${user?._id}`}>Profile</Link></li>
+                        <li><Link onClick={() => setShowOptions(false)} to={`/streamers/${user!._id}`}>Profile</Link></li>
                         <li><Link onClick={() => setShowOptions(false)} to="/account">Account</Link></li>
                         <li><Link onClick={() => setShowOptions(false)} to="/subscription">Subscription</Link></li>
                         <li><Link onClick={() => setShowOptions(false)} to="/my-rvsps">My Rvsps</Link></li>

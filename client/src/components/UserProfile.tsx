@@ -20,6 +20,10 @@ import { Streamer } from '../pages/StreamerPage';
 import useFollow from '../customeHook/useFollow';
 import { useAuth } from '../contexts/AuthContext';
 import Loader from './Loader';
+import { IoIosOptions } from "react-icons/io";
+import { FaSearch } from "react-icons/fa";
+
+
 
 
 const UserProfile = () => {
@@ -28,6 +32,7 @@ const UserProfile = () => {
   const [actions, setActions] = React.useState<string[]>([]); // [follow, unfollow]
   const [isOwner, setIsOwner] = React.useState(true);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [openOptions, setOpenOptions] = React.useState(false);
   const [isFollow, setIsFollow] = React.useState(streamer?.followers?.includes(user!._id));
   const [userFollowers, setUserFollowers] = React.useState<number>(streamer.followers?.length);
   const {id} = useParams();
@@ -102,7 +107,6 @@ const UserProfile = () => {
               </div>
             </div>
             <div>
-              <h1>What you can do?</h1>
             {actions?.includes('create') && <button>Create</button>}
             {actions?.includes('edit') && <button>Edit</button>}
             {actions?.includes('delete') && <button>Delete</button>}
@@ -118,7 +122,22 @@ const UserProfile = () => {
         <div>
           <div className='header'>
             <h3>Scheduled Events</h3>
-            {isOwner && <Link to={'/events/schedule'}>Schedule new Event</Link>}
+            <div className="search">
+              <input type="text" placeholder='Search Events, Streams...'/>
+              {/* <FaSearch/> */}
+            </div>
+            <div className="div">
+              <div className="options">
+                <IoIosOptions onClick={() => setOpenOptions(!openOptions)}/>
+                {openOptions && <div>
+                  <Link onClick={() => setOpenOptions(false)} to={'/eventsAndStreams/all'}>All</Link>
+                  <Link onClick={() => setOpenOptions(false)} to={'/streams'}>Streams</Link>
+                  <Link onClick={() => setOpenOptions(false)} to={'/events'}>Events</Link>
+                  <Link onClick={() => setOpenOptions(false)} to={'/events/past'}>Events</Link>
+                </div>}
+              </div>
+            {isOwner && <Link to={'/events/schedule'}>Schedule</Link>}
+            </div>
           </div>
           {isLoading && <Loader/>}
           <div className="events-list">
@@ -319,21 +338,57 @@ const Container = styled.div`
         justify-content: space-between;
         align-items: center;
         position: sticky;
+        width: 100%;
+        z-index: 10;
+        top: 10%;
+        gap: 1rem;
+        background-color: #0b0b0b92;
+        backdrop-filter: blur(10px);
+        padding:.3rem 1rem;
+
+    
+
+      >div.search{
+        flex: 1;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        font-size: 1.5rem;
+        
+
+
+        input{
+          padding: 0.6rem 2rem;
+          background-color: #191818;
+          border: 1px solid #5e3131;
           width: 100%;
-          z-index: 10;
-      top: 10%;
-      background-color: #0b0b0b92;
-      backdrop-filter: blur(10px);
-      padding: 1rem;
+          color:#fff;
+          outline: none;
+          font-family: inherit;
+        }
+      }
 
 
       a{
-        padding: .5rem 1rem;
+        padding: .3rem .6rem;
         background: linear-gradient(45deg, #2846ce, #0e478d);
         border: none;
         color: #fff;
         font-family: inherit;
         text-decoration: none;
+      }
+
+      .div{
+        display: flex;
+        flex-direction: row;
+         gap: 1rem;
+         align-items: center;
+
+         >*:nth-child(1){
+          font-size: 2rem;
+         }
+
       }
       }
 
@@ -348,11 +403,42 @@ const Container = styled.div`
           margin: 0;
         }
       }
-
-
-
     }
 
+
+    div.options{
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      flex-direction: roe;
+      align-items: center;
+      gap: .5rem;
+      width: 100%;
+      >div{
+        display: none;
+        position: absolute;
+        top: 2rem;
+        right: 0;
+        background-color: #000;
+        border-radius: 5px;
+        padding: .5rem;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        z-index: 10;
+        a{
+          color: #fff;
+          text-decoration: none;
+          font-size: .8rem;
+        }
+      }
+
+      &:hover{
+        >div{
+          display: flex;
+        }
+      }
+    }
     .events-list{
       display: flex;
       justify-content: center;
