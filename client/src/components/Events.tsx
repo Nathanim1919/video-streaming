@@ -99,6 +99,7 @@ const Conatainer = styled.div`
             color: #fff;
             border-radius: 10px;
             overflow: hidden;
+            max-width: 300px;
 
             .image{
                 max-height: 200px;

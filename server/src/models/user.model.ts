@@ -23,6 +23,9 @@ const UserSchema = new Schema<IUser>({
         required:true,
         unique:true
     },
+    bio:{
+        type:String,
+    },
     fullName:{
         type:String,
         required:true

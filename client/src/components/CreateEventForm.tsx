@@ -1,36 +1,36 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { FaTimes, FaPlus } from 'react-icons/fa';
+import { FaTimes, FaPlus } from "react-icons/fa";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import {AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { createTheme, ThemeProvider } from '@mui/material';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+import { createTheme, ThemeProvider } from "@mui/material";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 import { eventApi, streamApi } from "../api";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
 import { Event, ScheduleItem, SocialLink } from "../interfaces/event";
 import { requestHandler } from "../utils";
 import { ImSpinner9 } from "react-icons/im";
 
-
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
   },
 });
 
 const Container = styled.div`
-  position: relative;
+  position: fixed;
+  z-index: 1000;
+  overflow: hidden;
+  overflow-y: auto;
   width: 100vw;
-  /* height: 100vh; */
+  height: 100vh;
   top: 0;
   left: 0;
-  background-color: #171616;
+  background-color: #1716165e;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,14 +39,20 @@ const Container = styled.div`
   color: #fff;
 
   .header {
-    width: 90%;
     padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* width: 60%; */
+    width: 60%;
     position: sticky;
-    top: 10%;
+    top: -3rem;
+    background-color: red;
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.092);
+    z-index: 1000;
+
+    @media screen and (max-width: 800px) {
+      width: 90%;
+    }
 
     h4 {
       margin: 0;
@@ -58,12 +64,20 @@ const Container = styled.div`
   }
 
   form {
-    width: 60%;
+    width: 50%;
     padding: 1rem 3rem;
     background-color: #232222;
     border-radius: 8px;
+    height: 100vh;
+    overflow: auto;
+    position: relative;
+    bottom: 0;
 
-    .spinner{
+    @media screen and (max-width: 800px) {
+      width: 70%;
+    }
+
+    .spinner {
       animation: spin 1s linear infinite;
     }
 
@@ -73,7 +87,7 @@ const Container = styled.div`
       }
       100% {
         transform: rotate(360deg);
-      }  
+      }
     }
 
     .form-group {
@@ -85,7 +99,9 @@ const Container = styled.div`
         margin-bottom: 0.5rem;
       }
 
-      input, textarea, select {
+      input,
+      textarea,
+      select {
         padding: 0.5rem;
         background-color: #2b2929;
         border: 1px solid #444;
@@ -111,10 +127,16 @@ const Container = styled.div`
       }
     }
 
-    .event-informations, .schedule-section, .social-links-section, .guest-list {
+    .event-informations,
+    .schedule-section,
+    .social-links-section,
+    .guest-list {
       margin-top: 1rem;
 
-      .info-header, .schedule-header, .social-header, .guest-header {
+      .info-header,
+      .schedule-header,
+      .social-header,
+      .guest-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -124,12 +146,18 @@ const Container = styled.div`
           margin: 0;
         }
 
-        .add-info, .add-schedule, .add-social, .add-guest {
+        .add-info,
+        .add-schedule,
+        .add-social,
+        .add-guest {
           cursor: pointer;
         }
       }
 
-      .info-card, .schedule-card, .social-card, .guest-card {
+      .info-card,
+      .schedule-card,
+      .social-card,
+      .guest-card {
         background-color: #2b2929;
         padding: 1rem;
         margin-bottom: 1rem;
@@ -176,92 +204,108 @@ const Container = styled.div`
   }
 `;
 
-
-
 const initialScheduleItem: ScheduleItem = {
-  time: '',
-  activity: ''
+  time: "",
+  activity: "",
 };
 
 const initialSocialLink: SocialLink = {
-  platform: '',
-  url: ''
+  platform: "",
+  url: "",
 };
 
-export const CreateEventForm = () => {
+interface CreateEventFormProps {
+  setCreateEvent: (value: boolean) => void;
+  setEventEditMode: (value: boolean) => void;
+  eventEditMode: boolean;
+  selectedEvent?: Event;
+}
+
+export const CreateEventForm: React.FC<CreateEventFormProps> = ({
+  setCreateEvent,
+  eventEditMode,
+  setEventEditMode,
+  selectedEvent,
+}) => {
   const [date, setDate] = useState<dayjs.Dayjs | null>(dayjs());
-  const navigate = useNavigate();
-  const {user} = useAuth();
   const [loading, setLoading] = useState(false);
   const [event, setEvent] = useState<Event>({
-    title: '',
-    description: '',
-    date: '',
-    time: '',
-    location: '',
+    title: "",
+    description: "",
+    date: "",
+    time: "",
+    location: "",
     attendees: [],
     price: 0,
     capacity: 100,
-    eventType: 'meetup',
+    eventType: "meetup",
     isOnline: false,
-    isOpenForRsvp: 'off',
+    isOpenForRsvp: "off",
     tags: [],
     duration: 0,
     guests: [],
-    specialInstructions: '',
+    specialInstructions: "",
     schedule: [initialScheduleItem],
-    socialLinks: [initialSocialLink]
+    socialLinks: [initialSocialLink],
   });
 
-  const handleInputOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputOnChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     let adjustedValue: string | boolean = value;
-    if (name === 'isOnline') {
-      adjustedValue = value === 'true';
+    if (name === "isOnline") {
+      adjustedValue = value === "true";
     }
-    setEvent(prevState => ({
+    setEvent((prevState) => ({
       ...prevState,
-      [name]: adjustedValue
+      [name]: adjustedValue,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const apiFunction = event.isOnline ? streamApi.createStream : eventApi.createEvent;
+    const apiFunction = event.isOnline
+      ? streamApi.createStream
+      : eventApi.createEvent;
     await requestHandler(
       async () => apiFunction(event),
       setLoading,
-      () => navigate(`/streamers/${user._id}`),
+      () => setCreateEvent(false),
       () => {}
-    )
+    );
   };
-  
 
   const createScheduleItem = () => {
     const lastScheduleItem = event.schedule[event.schedule.length - 1];
     if (!lastScheduleItem.time || !lastScheduleItem.activity) return;
 
-    setEvent(prevState => ({
+    setEvent((prevState) => ({
       ...prevState,
-      schedule: [...prevState.schedule, initialScheduleItem]
+      schedule: [...prevState.schedule, initialScheduleItem],
     }));
   };
 
-  const handleScheduleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  const handleScheduleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
     const { name, value } = e.target;
     const updatedSchedule = [...event.schedule];
     updatedSchedule[index][name] = value;
-    setEvent(prevState => ({
+    setEvent((prevState) => ({
       ...prevState,
-      schedule: updatedSchedule
+      schedule: updatedSchedule,
     }));
   };
 
   const handleDeleteSchedule = (index: number) => {
     const updatedSchedule = event.schedule.filter((_, i) => i !== index);
-    setEvent(prevState => ({
+    setEvent((prevState) => ({
       ...prevState,
-      schedule: updatedSchedule
+      schedule: updatedSchedule,
     }));
   };
 
@@ -269,52 +313,58 @@ export const CreateEventForm = () => {
     const lastSocialLink = event.socialLinks[event.socialLinks.length - 1];
     if (!lastSocialLink.platform || !lastSocialLink.url) return;
 
-    setEvent(prevState => ({
+    setEvent((prevState) => ({
       ...prevState,
-      socialLinks: [...prevState.socialLinks, initialSocialLink]
+      socialLinks: [...prevState.socialLinks, initialSocialLink],
     }));
   };
 
-  const handleSocialLinkChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  const handleSocialLinkChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
     const { name, value } = e.target;
     const updatedSocialLinks = [...event.socialLinks];
     updatedSocialLinks[index][name] = value;
-    setEvent(prevState => ({
+    setEvent((prevState) => ({
       ...prevState,
-      socialLinks: updatedSocialLinks
+      socialLinks: updatedSocialLinks,
     }));
   };
 
   const handleDeleteSocialLink = (index: number) => {
     const updatedSocialLinks = event.socialLinks.filter((_, i) => i !== index);
-    setEvent(prevState => ({
+    setEvent((prevState) => ({
       ...prevState,
-      socialLinks: updatedSocialLinks
+      socialLinks: updatedSocialLinks,
     }));
   };
 
-  const handleGuestChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  const handleGuestChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
     const { value } = e.target;
     const updatedGuests = [...event.guests];
     updatedGuests[index] = value;
-    setEvent(prevState => ({
+    setEvent((prevState) => ({
       ...prevState,
-      guests: updatedGuests
+      guests: updatedGuests,
     }));
   };
 
   const handleAddGuest = () => {
-    setEvent(prevState => ({
+    setEvent((prevState) => ({
       ...prevState,
-      guests: [...prevState.guests, '']
+      guests: [...prevState.guests, ""],
     }));
   };
 
   const handleDeleteGuest = (index: number) => {
     const updatedGuests = event.guests.filter((_, i) => i !== index);
-    setEvent(prevState => ({
+    setEvent((prevState) => ({
       ...prevState,
-      guests: updatedGuests
+      guests: updatedGuests,
     }));
   };
 
@@ -322,28 +372,63 @@ export const CreateEventForm = () => {
     <Container>
       <div className="header">
         <h4>Create Event</h4>
-        <FaTimes size={20} onClick={() => navigate(`/streamers/${user._id}`)}/>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="title">Event Title</label>
-          <input type="text" id="title" name="title" value={event.title} onChange={handleInputOnChange} disabled={loading} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="description">Event Description</label>
-          <textarea id="description" name="description" value={event.description} onChange={handleInputOnChange} disabled={loading}></textarea>
-        </div>
-        <div className="form-group">
-          <label htmlFor="rsvp">IsOnline Event</label>
-          <select id="rsvp" name="isOnline" value={event.isOnline} onChange={handleInputOnChange} disabled={loading}>
+        <FaTimes
+          size={20}
+          onClick={() => {
+            setCreateEvent(false);
+            setEventEditMode(false);
+            }}
+          />
+          </div>
+          <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="title">Event Title</label>
+            <input
+            type="text"
+            id="title"
+            name="title"
+            value={selectedEvent?.title || event.title}
+            onChange={handleInputOnChange}
+            disabled={loading}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Event Description</label>
+            <textarea
+            id="description"
+            name="description"
+            value={selectedEvent?.description || event.description}
+            onChange={handleInputOnChange}
+            disabled={loading}
+            ></textarea>
+          </div>
+          <div className="form-group">
+            <label htmlFor="rsvp">IsOnline Event</label>
+            <select
+            id="rsvp"
+            name="isOnline"
+            value={selectedEvent?.isOnline || event.isOnline}
+            onChange={handleInputOnChange}
+            disabled={loading}
+            >
             <option value="true">Yes, It is</option>
             <option value="false">No, It is not</option>
-          </select>
-        </div>
-        {!event.isOnline && <div className="form-group">
-          <label htmlFor="location">Location</label>
-          <input type="text" id="location" name="location" value={event.location} onChange={handleInputOnChange} disabled={loading} placeholder="Enter map link or Exact Location."/>
-        </div>}
+            </select>
+          </div>
+          {((eventEditMode && !selectedEvent?.isOnline) || (!eventEditMode && !event.isOnline) ) && (
+            <div className="form-group">
+            <label htmlFor="location">Location</label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={selectedEvent?.location || event.location}
+              onChange={handleInputOnChange}
+              disabled={loading}
+              placeholder="Enter map link or Exact Location."
+            />
+          </div>
+        )}
         <div className="form-group datetimepicker">
           <label htmlFor="date">Date & Time</label>
           <ThemeProvider theme={darkTheme}>
@@ -352,11 +437,10 @@ export const CreateEventForm = () => {
                 value={date}
                 onChange={(newValue) => {
                   setDate(newValue);
-                  setEvent(prevState => ({
+                  setEvent((prevState) => ({
                     ...prevState,
-                    date: newValue?.format('YYYY-MM-DD') || '',
-                    time: newValue?.format('HH:mm') || '',
-                    
+                    date: newValue?.format("YYYY-MM-DD") || "",
+                    time: newValue?.format("HH:mm") || "",
                   }));
                 }}
                 // renderInput={(params) => <input {...params} />}
@@ -366,44 +450,106 @@ export const CreateEventForm = () => {
         </div>
         <div className="form-group">
           <label htmlFor="price">Price</label>
-          <input type="number" id="price" name="price" value={event.price} onChange={handleInputOnChange} disabled={loading} />
+          <input
+            type="number"
+            id="price"
+            name="price"
+            value={selectedEvent?.price || event.price}
+            onChange={handleInputOnChange}
+            disabled={loading}
+          />
         </div>
         <div className="form-group">
           <label htmlFor="capacity">Capacity</label>
-          <input type="number" id="capacity" name="capacity" value={event.capacity} onChange={handleInputOnChange} disabled={loading} />
+          <input
+            type="number"
+            id="capacity"
+            name="capacity"
+            value={selectedEvent?.capacity || event.capacity}
+            onChange={handleInputOnChange}
+            disabled={loading}
+          />
         </div>
         <div className="form-group">
           <label htmlFor="rsvp">RSVP</label>
-          <select id="rsvp" name="rsvp" value={event.rsvp} onChange={handleInputOnChange} disabled={loading}>
+          <select
+            id="rsvp"
+            name="rsvp"
+            value={selectedEvent?.rsvp || event.rsvp}
+            onChange={handleInputOnChange}
+            disabled={loading}
+          >
             <option value="off">Off</option>
             <option value="on">On</option>
           </select>
         </div>
         <div className="form-group">
           <label htmlFor="tags">Tags</label>
-          <input type="text" id="tags" name="tags" value={event.tags.join(', ')} onChange={(e) => setEvent(prevState => ({ ...prevState, tags: e.target.value.split(',').map(tag => tag.trim()) }))} placeholder="Comma-separated tags" disabled={loading} />
+          <input
+            type="text"
+            id="tags"
+            name="tags"
+            value={event.tags.join(", ")}
+            onChange={(e) =>
+              setEvent((prevState) => ({
+                ...prevState,
+                tags: e.target.value.split(",").map((tag) => tag.trim()),
+              }))
+            }
+            placeholder="Comma-separated tags"
+            disabled={loading}
+          />
         </div>
         <div className="form-group">
           <label htmlFor="specialInstructions">Special Instructions</label>
-          <textarea id="specialInstructions" name="specialInstructions" value={event.specialInstructions} onChange={handleInputOnChange} disabled={loading}></textarea>
+          <textarea
+            id="specialInstructions"
+            name="specialInstructions"
+            value={selectedEvent?.specialInstructions || event.specialInstructions}
+            onChange={handleInputOnChange}
+            disabled={loading}
+          ></textarea>
         </div>
         <div className="schedule-section">
           <div className="schedule-header">
             <h3>Schedule</h3>
             <FaPlus className="add-schedule" onClick={createScheduleItem} />
           </div>
-          {event.schedule.map((item, index) => (
+          {(selectedEvent?.schedule || event.schedule).map((item, index) => (
             <div key={index} className="schedule-card">
               <div className="form-group">
                 <label htmlFor={`schedule-time-${index}`}>Time</label>
-                <input type="text" id={`schedule-time-${index}`} name="time" value={item.time} onChange={(e) => handleScheduleChange(e, index)} placeholder="09:00 AM" disabled={loading} />
+                <input
+                  type="text"
+                  id={`schedule-time-${index}`}
+                  name="time"
+                  value={item.time}
+                  onChange={(e) => handleScheduleChange(e, index)}
+                  placeholder="09:00 AM"
+                  disabled={loading}
+                />
               </div>
               <div className="form-group">
                 <label htmlFor={`schedule-activity-${index}`}>Activity</label>
-                <input type="text" id={`schedule-activity-${index}`} name="activity" value={item.activity} onChange={(e) => handleScheduleChange(e, index)} placeholder="Activity" disabled={loading} />
+                <input
+                  type="text"
+                  id={`schedule-activity-${index}`}
+                  name="activity"
+                  value={item.activity}
+                  onChange={(e) => handleScheduleChange(e, index)}
+                  placeholder="Activity"
+                  disabled={loading}
+                />
               </div>
               <div className="btns">
-                <button type="button" className="delete" onClick={() => handleDeleteSchedule(index)} disabled={loading}>Delete</button>
+                <button
+                  type="button"
+                  className="delete"
+                  onClick={() => handleDeleteSchedule(index)}
+                  disabled={loading}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))}
@@ -417,14 +563,37 @@ export const CreateEventForm = () => {
             <div key={index} className="social-card">
               <div className="form-group">
                 <label htmlFor={`social-platform-${index}`}>Platform</label>
-                <input type="text" id={`social-platform-${index}`} name="platform" value={link.platform} onChange={(e) => handleSocialLinkChange(e, index)} placeholder="Platform" disabled={loading} />
+                <input
+                  type="text"
+                  id={`social-platform-${index}`}
+                  name="platform"
+                  value={link.platform}
+                  onChange={(e) => handleSocialLinkChange(e, index)}
+                  placeholder="Platform"
+                  disabled={loading}
+                />
               </div>
               <div className="form-group">
                 <label htmlFor={`social-url-${index}`}>URL</label>
-                <input type="text" id={`social-url-${index}`} name="url" value={link.url} onChange={(e) => handleSocialLinkChange(e, index)} placeholder="https://example.com" disabled={loading} />
+                <input
+                  type="text"
+                  id={`social-url-${index}`}
+                  name="url"
+                  value={link.url}
+                  onChange={(e) => handleSocialLinkChange(e, index)}
+                  placeholder="https://example.com"
+                  disabled={loading}
+                />
               </div>
               <div className="btns">
-                <button type="button" className="delete" onClick={() => handleDeleteSocialLink(index)} disabled={loading}>Delete</button>
+                <button
+                  type="button"
+                  className="delete"
+                  onClick={() => handleDeleteSocialLink(index)}
+                  disabled={loading}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))}
@@ -434,19 +603,36 @@ export const CreateEventForm = () => {
             <h3>Guest List</h3>
             <FaPlus className="add-guest" onClick={handleAddGuest} />
           </div>
-          {event.guests.map((guest, index) => (
+          {selectedEvent?.guests || event.guests.map((guest, index) => (
             <div key={index} className="guest-card">
               <div className="form-group">
                 <label htmlFor={`guest-${index}`}>Guest</label>
-                <input type="text" id={`guest-${index}`} name="guest" value={guest} onChange={(e) => handleGuestChange(e, index)} placeholder="Guest Name" disabled={loading} />
+                <input
+                  type="text"
+                  id={`guest-${index}`}
+                  name="guest"
+                  value={guest}
+                  onChange={(e) => handleGuestChange(e, index)}
+                  placeholder="Guest Name"
+                  disabled={loading}
+                />
               </div>
               <div className="btns">
-                <button type="button" className="delete" onClick={() => handleDeleteGuest(index)} disabled={loading}>Delete</button>
+                <button
+                  type="button"
+                  className="delete"
+                  onClick={() => handleDeleteGuest(index)}
+                  disabled={loading}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))}
         </div>
-        <button type="submit" disabled={loading}>{loading&&<ImSpinner9 className="spinner"/>}Create Event</button>
+        <button type="submit" disabled={loading}>
+          {loading && <ImSpinner9 className="spinner" />}{eventEditMode?"Update":"Create"}
+        </button>
       </form>
     </Container>
   );

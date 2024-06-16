@@ -12,7 +12,7 @@ import { MdOutlineStarRate } from "react-icons/md";
 import { LuGhost } from "react-icons/lu";
 import TechImage from "/home/live3.jpg";
 import profilePic from "/image/profile.jpg";
-import { requestHandler } from "../utils";
+import { formatDate, requestHandler } from "../utils";
 import { authApi } from "../api";
 import { useParams } from "react-router-dom";
 import { ImSpinner9 } from "react-icons/im";
@@ -24,22 +24,25 @@ import { IoIosOptions } from "react-icons/io";
 import { UserInterface } from "../interfaces/user";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
+import { IoCameraOutline } from "react-icons/io5";
 import { MdCreate } from "react-icons/md";
 import { EditUserBio } from "./profile/editBio";
+import { CreateEventForm } from "./CreateEventForm";
 
 const UserProfile = () => {
   const { user } = useAuth();
   const { id } = useParams();
 
-  // options for info editin
   const [editBio, setEditBio] = React.useState(false);
-  const [editUserInfos, setEditUserInfos] = React.useState(false);
-
+  const [createEvent, setCreateEvent] = React.useState(false);
+  const [selectedEvent, setSelectedEvent] = React.useState<any>({});
+  const [eventEditMode, setEventEditMode] = React.useState(false);
   const [streamer, setStreamer] = React.useState<Streamer>({} as Streamer);
   const [actions, setActions] = React.useState<string[]>([]);
   const [isOwner, setIsOwner] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [openOptions, setOpenOptions] = React.useState(false);
+  const [userSreamsAndEvents, setUserStreamsAndEvents] = React.useState<any[]>([]);
   const [isFollow, setIsFollow] = React.useState(
     streamer?.followers?.includes(user!._id)
   );
@@ -64,6 +67,7 @@ const UserProfile = () => {
             isOwner: boolean;
           };
           setStreamer(data);
+          setUserStreamsAndEvents([...data.events, ...data.streams]);
           setIsFollow(data?.followers?.includes(user!._id));
           setUserFollowers(data?.followers?.length);
           setActions(actions);
@@ -73,17 +77,23 @@ const UserProfile = () => {
           console.log(error);
         }
       );
-    }
-    fetchData();
-  }, [id, user]);
+      }
+      fetchData();
+      }, [id, user]);
+
+      console.log(streamer);
 
   return (
     <Container>
+       {(createEvent || eventEditMode )&& <CreateEventForm eventEditMode={eventEditMode} setEventEditMode={setEventEditMode} selectedEvent={selectedEvent}  setCreateEvent={setCreateEvent}/>}
       <div className="profile">
         <div className="header-info">
           <div className="profileInfo">
             <div className="profile-pic">
               <img src={profilePic} alt="profile-pic" />
+              <div className="camera">
+                <IoCameraOutline />
+              </div>
             </div>
             <div className="profile-info">
               <h4>{streamer.fullName}</h4>
@@ -103,6 +113,11 @@ const UserProfile = () => {
             </div>
           </div>
           <div className="social">
+            {actions.includes("edit") && (
+              <div className="edit" onClick={() => setEditBio(true)}>
+                <CiEdit />
+              </div>
+            )}
             <div className="social-links">
               <Link to="/">
                 <FaFacebook size={20} color="#eee" />
@@ -121,13 +136,10 @@ const UserProfile = () => {
               </Link>
             </div>
             <div className="bio">
-              <p>
-               {user?.bio || 'Tell us about yourself'}
-              </p>
-             {actions.includes('edit') && <div className="edit" onClick={() => setEditBio(true)}>
-                <CiEdit />
-              </div>}
-              {actions.includes('edit') && editBio && <EditUserBio userBio={user?.bio} setEditBio={setEditBio}/>}
+              <p>{streamer?.bio?streamer.bio:isOwner?"Tell us about yourself":""}</p>
+              {actions.includes("edit") && editBio && (
+                <EditUserBio streamer={streamer} setStreamer={setStreamer} setEditBio={setEditBio} />
+              )}
             </div>
             <div className="user-infos">
               <div>
@@ -147,15 +159,6 @@ const UserProfile = () => {
                 <p>100 Upcoming events</p>
               </div>
             </div>
-            {/* <div>
-            {actions?.includes('create') && <button>Create</button>}
-            {actions?.includes('edit') && <button>Edit</button>}
-            {actions?.includes('delete') && <button>Delete</button>}
-            {actions?.includes('follow') && <button>Follow</button>}
-            {actions?.includes('unfollow') && <button>Unfollow</button>}
-            {actions?.includes('RSVP') && <button>RSVP</button>}
-            {actions?.includes('unRSVP') && <button>UnRSVP</button>}
-          </div> */}
           </div>
         </div>
       </div>
@@ -193,26 +196,31 @@ const UserProfile = () => {
                 )}
               </div>
               {isOwner && (
-                <Link to={"/events/schedule"}>
+                <Link onClick={(e) => {
+                  e.preventDefault();
+                  setCreateEvent(true);
+                  setEventEditMode(false);
+                  setSelectedEvent({});
+                }} to={"/events/schedule"}>
                   <MdCreate />
                 </Link>
-              )}
+              )
+              }
+           
             </div>
           </div>
           {isLoading && <Loader />}
           <div className="events-list">
-            {streamer.events?.length === 0 ? (
+            {userSreamsAndEvents?.length === 0 ? (
               <p>No events available</p>
             ) : (
-              streamer.events?.map((event: any) => (
+              userSreamsAndEvents?.map((event: any) => (
                 <div key={event._id}>
                   <div className="event-info">
                     <img src={TechImage} alt="profile-pic" />
                   </div>
                   <div className="info">
-                    <p>
-                      {event.date} - {event.time}
-                    </p>
+                    <p>{formatDate(event.date)}  <span>{event.isOnline?"Stream":"Event"}</span></p>
                     <h4>
                       {event.title.length > 30
                         ? event.title.slice(0, 30) + "..."
@@ -227,7 +235,11 @@ const UserProfile = () => {
                   {isOwner ? (
                     <div className="event-buttons">
                       <Link to={"/"}>Delete</Link>
-                      <Link to={`/events/${event._id}`}>Edit</Link>
+                      <Link onClick={(e) => {
+                        e.preventDefault();
+                        setEventEditMode(true);
+                        setSelectedEvent(event);
+                      }} to={`/events/${event._id}`}>Edit</Link>
                       <Link to={`/streames/${event._id}`}>Details</Link>
                     </div>
                   ) : (
@@ -279,7 +291,6 @@ const Container = styled.div`
       }
 
       .profileInfo {
-        /* background-color: orange; */
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -291,7 +302,39 @@ const Container = styled.div`
           height: 140px;
           border-radius: 50%;
           overflow: hidden;
-          /* height: auto; */
+         position: relative;
+         cursor: pointer;
+
+         .camera{
+          background-color: #00000091;
+          backdrop-filter: blur(10px);
+          padding: .5rem 0;
+          color: #fff;
+          position: absolute;
+          left: 0;
+          width: 100%;
+          display: grid;
+          place-items: center;
+          font-size:2rem;
+          bottom: 0;
+          transform: translateY(100%);
+
+         }
+
+
+         &:hover{
+            .camera{
+              transform: translateY(0);
+
+            }
+          }
+  
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+         }
 
           img {
             width: 100%;
@@ -341,6 +384,16 @@ const Container = styled.div`
           }
         }
 
+        .profile-info{
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          > * {
+            margin: 0;
+          }
+        }
+
         > * {
           margin: 0;
           display: flex;
@@ -357,6 +410,14 @@ const Container = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        .edit {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          font-size: 1.5rem;
+          cursor: pointer;
+        }
 
         > a {
           position: absolute;
@@ -385,11 +446,6 @@ const Container = styled.div`
           position: relative;
           padding: 0 1rem;
           display: flex;
-
-          .edit {
-            font-size: 1.5rem;
-            cursor: pointer;
-          }
         }
 
         .user-infos {
@@ -421,8 +477,7 @@ const Container = styled.div`
         }
       }
     }
-  }
-
+  
   .evets {
     .header {
       display: flex;
@@ -552,6 +607,13 @@ const Container = styled.div`
           display: flex;
           align-items: center;
           gap: 0.5rem;
+
+          span{
+            background-color: #625e5946;
+            padding: .2rem .5rem;
+            border-radius: 5px;
+            color: #ffffff92;
+          }
         }
       }
 

@@ -16,7 +16,7 @@ export class StreamService {
   }
 
   // Create a new stream
-  public async createStream(userId: string, data: IEvent) {
+  public async createStream(userId: string, data: IEvent): Promise<IEvent> {
     // set the owner of the stream.
     const session = await startSession();
     try {
@@ -32,6 +32,7 @@ export class StreamService {
 
       await user.save({ session });
       await newStream.save({ session });
+      return newStream;
     } catch (error) {
       await session.abortTransaction();
       throw error;

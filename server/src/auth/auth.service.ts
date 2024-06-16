@@ -10,10 +10,6 @@ import logger from "../logger";
 // Define a secret key for JWT token generation
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
-// interface token {
-//   value: string
-// }
-
 /**
  * Service responsible for user authentication and authorization.
  */
@@ -38,7 +34,6 @@ export class AuthService {
    * @throws If registration fails.
    */
   async register(userData: Partial<IUser>): Promise<string> {
-    console.log("user data is: ", userData);
     try {
       // Example: Check if user already exists in the database
       const existingUser = await this.userService.userFindByEmail(

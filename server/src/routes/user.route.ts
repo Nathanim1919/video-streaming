@@ -8,6 +8,7 @@ const userController = new UserController();
 // User routes
 router.get('/',verifyJWT, [userController.userFindAll.bind(userController)]);
 router.get('/:id',verifyJWT, [userController.userFindById.bind(userController)]);
+router.patch('/:id',verifyJWT, [userController.userUpdate.bind(userController)]);
 router.post('/:id/follow', verifyJWT, [userController.userFollow.bind(userController)]);
 router.post('/:id/unfollow',verifyJWT, [userController.userUnfollow.bind(userController)]);
 

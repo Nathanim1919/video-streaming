@@ -12,6 +12,7 @@ export interface Streamer {
     fullName: string;
     username: string;
     email: string;
+    bio: string;
     profession: string;
     followers: string[];
     following: string[];

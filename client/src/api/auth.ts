@@ -1,4 +1,5 @@
 import { RegisterInterface } from "../interfaces/authContext";
+import { UserInterface } from "../interfaces/user";
 import apiClient from "./config";
 
 
@@ -18,6 +19,10 @@ const registerUser = (data: RegisterInterface) => {
     return apiClient.post("/auth/register", data);
 };
 
+
+const updateUserData = (id: string, data:Partial<UserInterface>) => {
+    return apiClient.patch(`/users/${id}`, data);
+}
 const logoutUser = () => {
     return apiClient.post("/auth/logout");
 };
@@ -54,5 +59,6 @@ export {
     handleFollow,
     handleUnFollow,
     fetchStreamer,
-    getUserData
+    getUserData,
+    updateUserData
 }

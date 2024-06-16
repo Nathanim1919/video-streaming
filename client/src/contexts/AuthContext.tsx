@@ -47,7 +47,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       async () => await authApi.registerUser(data),
       setIsLoading,
       () => {
-        alert('Account created successfully! Go ahead and login.');
         navigate('/login');
       },
       alert

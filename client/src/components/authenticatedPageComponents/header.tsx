@@ -96,8 +96,10 @@ const Conatiner = styled.div`
             }
 
 
-            .options{
-                /* display: none; */
+            div.options{
+                display: flex;
+                width: 200px;
+                flex-direction: column;
                 position: absolute;
                 background-color: #212020;
                 color: #9c9595;

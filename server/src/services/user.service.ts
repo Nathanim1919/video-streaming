@@ -2,6 +2,7 @@ import IUser from "../interfaces/user.interface";
 import { User } from "../models/user.model";
 import { Request, Response } from "express";
 import logger from "../logger";
+import bcrypt from "bcrypt";
 
 interface RequestWithUser extends Request {
   user: IUser;
@@ -29,7 +30,7 @@ export class UserService {
 
   // this is a function that is responsible for finding a user by id
   async userFindById(id: string): Promise<IUser | null> {
-    const user = await User.findById(id).populate("events");
+    const user = await User.findById(id).populate("events").populate("streams");
     // set the user in the cache
     return user;
   }
@@ -45,6 +46,12 @@ export class UserService {
     id: string,
     userData: Partial<IUser>
   ): Promise<IUser | null> {
+    // hash the password if it is present before updating
+    if (userData.password) {
+      const hashedPassword = await bcrypt.hash(userData.password as string, 10);
+      userData.password = hashedPassword;
+    }
+   
     const updatedUser = await User.findByIdAndUpdate(id, userData, {
       new: true,
     });

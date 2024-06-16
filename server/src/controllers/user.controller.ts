@@ -82,15 +82,15 @@ export class UserController {
     return newUser;
   }
 
-  async userUpdate(
-    id: string,
-    userData: Partial<IUser>
-  ): Promise<IUser | null> {
-    const updatedUser = await this.userService.userUpdate(id, userData);
+
+  userUpdate = asyncHandler(async (req: RequestWithUser, res): Promise<void> => {
+    const updatedUser = await this.userService.userUpdate(req.user._id as string, req.body);
     // update the user in the cache or set it if it doesn't exist
-    await this.cacheClient.set(`user:${id}`, JSON.stringify(updatedUser));
-    return updatedUser;
-  }
+    await this.cacheClient.set(`user:${req.user._id}`, JSON.stringify(updatedUser));
+    res.json(
+      new ApiResponse(200, updatedUser, "User updated successfully")
+    );
+  });
 
   async userDelete(id: string): Promise<IUser | null> {
     const deletedUser = await this.userService.userDelete(id);

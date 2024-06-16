@@ -3,40 +3,73 @@ import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 import { IoMdClose } from "react-icons/io";
+import { authApi } from "../../api";
+import { requestHandler } from "../../utils";
 
 // props for the EditUserBio component
 export interface EditUserBioProps {
-    userBio: string;
-    setEditBio: (editBio: boolean) => void;
+  setStreamer: (streamer: any) => void;
+  setEditBio: (editBio: boolean) => void;
+  streamer: any;
+}
+
+interface MyObject {
+  [key: string]: MyObject | string;
 }
 
 
-export const EditUserBio: React.FC<EditUserBioProps> = ({userBio, setEditBio}) => {
+
+export const EditUserBio: React.FC<EditUserBioProps> = ({
+  setEditBio,
+  setStreamer,
+  streamer,
+}) => {
   const { user } = useAuth();
-  const [bio, setBio] = useState(user?.bio);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [userData, setUserData] = useState({
+    fullName: streamer?.fullName,
+    username: streamer?.username,
+    profession: streamer?.profession,
+    bio: streamer?.bio,
+    password: "",
+  });
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+  };
 
   const handleBioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const inputValue = e.target.value;
     if (inputValue.length <= 200) {
-      setBio(inputValue);
+      setUserData({ ...userData, bio: inputValue });
     }
   };
 
+  function removeEmpty(obj: MyObject) {
+    Object.keys(obj).forEach((key) => {
+      if (obj[key] && typeof obj[key] === "object") removeEmpty(obj[key] as MyObject);
+      else if (obj[key] === "") delete obj[key];
+    });
+  }
+
+ 
+
   const handleSave = async () => {
     try {
+      removeEmpty(userData);
       await requestHandler(
-        async () => await authApi.updateUserBio(bio),
+        async () => await authApi.updateUserData(user?._id as string, userData),
         setLoading,
         (response) => {
-          console.log(response);
-          toast.success(response.data.message);
+          setEditBio(false);
+          setStreamer(response.data);
         },
-        (error) => {
+        (error: string) => {
           console.log(error);
-          toast.error(error.response.data.message);
+          toast.error("Error Occured, Please try again");
         }
       );
     } catch (error) {
@@ -49,22 +82,35 @@ export const EditUserBio: React.FC<EditUserBioProps> = ({userBio, setEditBio}) =
     <Conatiner className="edit-bio">
       <div className="box">
         <div className="header">
-            <h2>Edit Bio</h2>
-            <IoMdClose onClick={() => setEditBio(false)} size={30} color="#fff" />
+          <h2>Edit My Info</h2>
+          <IoMdClose onClick={() => setEditBio(false)} size={30} color="#fff" />
+        </div>
+        <div className="editFullname">
+          <input onChange={handleOnChange} name="fullName" type="text" placeholder={user?.fullName} value={userData.fullName}/>
+        </div>
+        <div className="editusername">
+          <input onChange={handleOnChange}  name="username" type="text" placeholder={user?.username} value={userData.username}/>
+        </div>
+        <div  className="editProfession">
+          <input onChange={handleOnChange} name="profession" type="text" placeholder={user?.profession} value={userData.profession}/>
+        </div>
+        <div  className="editpassword">
+          <input onChange={handleOnChange} name="password" type="password" placeholder="Enter new password" value={userData.password}/>
         </div>
         <div className="bioTextArea">
           <textarea
-            value={bio}
+            name="bio"
             onChange={handleBioChange}
+            value={userData.bio}
             placeholder="Tell us about yourself"
           ></textarea>
-          <div className="footer">
-            <p>Characters left: {bio?.length}/200</p>
-            <button onClick={handleSave}>Save</button>
-          </div>
+        </div>
+        <div className="footer">
+          <p>Characters left: {userData.bio?.length}/200</p>
+          <button onClick={handleSave}>Save</button>
         </div>
       </div>
-<ToastContainer />
+      {/* <ToastContainer /> */}
     </Conatiner>
   );
 };
@@ -78,23 +124,47 @@ const Conatiner = styled.div`
   place-items: center;
   top: 0;
   left: 0;
-  background-color: #00000056;
+  background-color: #00000093;
   backdrop-filter: blur(5px);
 
-  .header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    >*:nth-child(2){
-        cursor: pointer;
-    }
-  }
-
   > div {
-    padding: 20px;
+    position: relative;
     border-radius: 10px;
-    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .4rem;
+    width: 300px;
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      > *:nth-child(2) {
+        cursor: pointer;
+      }
+    }
+
+    > div {      
+      position: relative; 
+      width: 100%;
+      /* padding: 1rem; */
+      /* background-color: #7d1919; */
+
+      input,
+      textarea {
+        position: relative;
+        width: 100%;
+        padding:1rem;
+        background-color: #201f1fbf;
+        color: #fff;
+        font-family: inherit;
+        outline: none;
+        border: none;
+        font-family: inherit;
+        border-left: 5px solid red;
+      }
+    }
 
     .edit-bio {
       width: 100%;
@@ -104,38 +174,21 @@ const Conatiner = styled.div`
       padding: 20px;
     }
 
-    .bioTextArea {
-      width: 100%;
+    .footer {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 20px;
-
-      .footer{
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        margin-top: 10px;
-      }
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 10px;
     }
 
     textarea {
-      width: 100%;
       height: 100px;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      border: 1px solid #6e0606;
-      background-color: #000;
-      color: #fff;
-      font-family: inherit;
       resize: none;
-      outline: none;
     }
 
     button {
       padding: 10px 20px;
-      background-color: #000;
+      background-color: #a50808;
       color: #fff;
       border: none;
       border-radius: 5px;

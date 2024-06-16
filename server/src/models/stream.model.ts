@@ -3,11 +3,10 @@ import mongoose, { Schema, Document } from "mongoose";
 import StreamOrEventSchema from "./streamOrEvent.model";
 
 
-const StreamSchema = new Schema<IEvent>({
-    
+const StreamSchema = new Schema<IEvent>({ 
     isOnline: {
         type: Boolean,
-        default: false
+        default: true
     },
 });
 
