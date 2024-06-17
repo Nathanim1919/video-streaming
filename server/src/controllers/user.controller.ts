@@ -10,6 +10,7 @@ import logger from "../logger";
 
 interface RequestWithUser extends Request {
   user: IUser;
+  file?: any;
 }
 
 /*
@@ -117,6 +118,18 @@ export class UserController {
     }
   );
 
+  uploadProfilePicture = asyncHandler(async (req: RequestWithUser, res) => {
+    const updatedUser = await this.userService.uploadProfilePicture(
+      req.user._id as string,
+      req.file.filename
+    );
+    // update the user in the cache or set it if it doesn't exist
+    await this.cacheClient.set(`user:${req.user._id}`, JSON.stringify(updatedUser));
+    res.json(
+      new ApiResponse(200, updatedUser, "Profile picture uploaded successfully")
+    );
+  });
+
   userFindAll = asyncHandler(
     async (req: RequestWithUser, res): Promise<void> => {
       // Get all from cache
@@ -136,4 +149,6 @@ export class UserController {
       }
     }
   );
+
+  
 }

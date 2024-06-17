@@ -66,6 +66,14 @@ const UserSchema = new Schema<IUser>({
         type: Map,
         of: String
     },
+    profilePicture:{
+        public_id:{
+            type:String
+        },
+        url:{
+            type:String
+        }
+    },
 }, {timestamps:true});
 
 

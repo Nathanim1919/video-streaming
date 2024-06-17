@@ -17,6 +17,10 @@ interface IUser extends Document{
     rating: number;
     refreshToken?: string;
     socialMedia?: { [key: string]: string };
+    profilePicture?: {
+      public_id: string;
+      url: string;
+    }
   }
   
   // Export the User interface

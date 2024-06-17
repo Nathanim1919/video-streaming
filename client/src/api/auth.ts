@@ -49,6 +49,10 @@ const handleUnFollow = (id: string) => {
 
 }
 
+const uploadProfile = (data: FormData) => {
+    return apiClient.post("/users/upload", data);
+}
+
 
 // Export all the API functions
 export {
@@ -60,5 +64,6 @@ export {
     handleUnFollow,
     fetchStreamer,
     getUserData,
-    updateUserData
+    updateUserData,
+    uploadProfile
 }

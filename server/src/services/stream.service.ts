@@ -7,12 +7,12 @@ import mongoose, {startSession } from "mongoose";
 export class StreamService {
   // Get all streams
   public async getStreams() {
-    return await streamModel.find();
+    return await streamModel.find().populate("owner");
   }
 
   // Get a single stream
   public async getStreamById(id: string) {
-    return await streamModel.findById(id);
+    return await streamModel.findById(id).populate("owner");
   }
 
   // Create a new stream

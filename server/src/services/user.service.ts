@@ -3,13 +3,12 @@ import { User } from "../models/user.model";
 import { Request, Response } from "express";
 import logger from "../logger";
 import bcrypt from "bcrypt";
-
+import cloudinary from "../utils/cloudinary";
 interface RequestWithUser extends Request {
   user: IUser;
 }
 
 export class UserService {
-
   // this is a function that is responsible for finding all users
   async userFindAll(
     req: RequestWithUser,
@@ -51,7 +50,7 @@ export class UserService {
       const hashedPassword = await bcrypt.hash(userData.password as string, 10);
       userData.password = hashedPassword;
     }
-   
+
     const updatedUser = await User.findByIdAndUpdate(id, userData, {
       new: true,
     });
@@ -156,6 +155,25 @@ export class UserService {
     if (user) {
       user.events.push(eventId);
       await user.save();
+    }
+    return user;
+  }
+
+  async uploadProfilePicture(
+    id: string,
+    profilePicture: string
+  ): Promise<IUser | null> {
+    const user = await User.findById(id);
+    if (user) {
+      // upload the profile picture to cloudinary
+      const result = await cloudinary.uploader.upload(profilePicture, {
+        folder: "profile-pictures",
+      });
+
+      user.profilePicture = {
+        public_id: result.public_id,
+        url: result.url,
+      };
     }
     return user;
   }

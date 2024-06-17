@@ -23,11 +23,12 @@ import Loader from "./Loader";
 import { IoIosOptions } from "react-icons/io";
 import { UserInterface } from "../interfaces/user";
 import { CiEdit } from "react-icons/ci";
-import { MdDelete } from "react-icons/md";
+// import { MdDelete } from "react-icons/md";
 import { IoCameraOutline } from "react-icons/io5";
 import { MdCreate } from "react-icons/md";
 import { EditUserBio } from "./profile/editBio";
 import { CreateEventForm } from "./CreateEventForm";
+import { UploadProfileImage } from "./profile/uploadProfileImage";
 
 const UserProfile = () => {
   const { user } = useAuth();
@@ -43,6 +44,7 @@ const UserProfile = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [openOptions, setOpenOptions] = React.useState(false);
   const [userSreamsAndEvents, setUserStreamsAndEvents] = React.useState<any[]>([]);
+  const [uploadProfile, setUploadProfile] = React.useState(true);
   const [isFollow, setIsFollow] = React.useState(
     streamer?.followers?.includes(user!._id)
   );
@@ -54,6 +56,7 @@ const UserProfile = () => {
     setIsLoading,
     setUserFollowers
   );
+
 
   useEffect(() => {
     async function fetchData() {
@@ -86,12 +89,13 @@ const UserProfile = () => {
   return (
     <Container>
        {(createEvent || eventEditMode )&& <CreateEventForm eventEditMode={eventEditMode} setEventEditMode={setEventEditMode} selectedEvent={selectedEvent}  setCreateEvent={setCreateEvent}/>}
+        {uploadProfile && <UploadProfileImage profilePic={uploadProfile} />}
       <div className="profile">
         <div className="header-info">
           <div className="profileInfo">
             <div className="profile-pic">
               <img src={profilePic} alt="profile-pic" />
-              <div className="camera">
+              <div className="camera" onClick={() => setUploadProfile(true)}>
                 <IoCameraOutline />
               </div>
             </div>
