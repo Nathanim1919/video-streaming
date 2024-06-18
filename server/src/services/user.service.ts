@@ -165,15 +165,26 @@ export class UserService {
   ): Promise<IUser | null> {
     const user = await User.findById(id);
     if (user) {
+      console.log("Profile Picture: ", profilePicture);
       // upload the profile picture to cloudinary
-      const result = await cloudinary.uploader.upload(profilePicture, {
-        folder: "profile-pictures",
-      });
+      try {
+        const result = await cloudinary.uploader.upload(profilePicture, {
+          folder: "profile-pictures",
+        });
 
-      user.profilePicture = {
-        public_id: result.public_id,
-        url: result.url,
-      };
+        // consoles the result of the cloudinary upload
+        console.log("cloudinary result: ", JSON.stringify(result, null, 2));
+        console.log("Public Id: ", result.public_id);
+        user.profilePicture = {
+          public_id: result.public_id,
+          url: result.url,
+        };
+
+        console.log("Saved Url Is: ", user.profilePicture.url);
+        await user.save();
+      } catch (error) {
+        console.error(error);
+      }
     }
     return user;
   }

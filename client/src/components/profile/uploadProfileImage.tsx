@@ -1,58 +1,110 @@
 import styled from "styled-components";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { requestHandler } from "../../utils";
 import { authApi } from "../../api";
+import Loader from "../Loader";
+import { IoMdClose } from "react-icons/io";
 
 interface Props {
   profilePic: string;
+  setUploadProfile: (value: boolean) => void;
 }
 
-export const UploadProfileImage: React.FC<Props> = ({ profilePic }) => {
-  const [userProfilePic, setUserProfilePic] = useState<string | null>(null);
+export const UploadProfileImage: React.FC<Props> = ({
+  setUploadProfile,
+  profilePic,
+}) => {
+  const [userProfilePic, setUserProfilePic] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(profilePic); // Use state to hold the preview URL
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  // use form data to upload image
+  const formData = new FormData();
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleProfilePicUpload = async (e) => {
-    const file = e.target.files[0];
-    setFileToBase64(file);
+  useEffect(() => {
+    // Cleanup URL.createObjectURL
+    return () => {
+      if (imagePreviewUrl) {
+        URL.revokeObjectURL(imagePreviewUrl);
+      }
+    };
+  }, [imagePreviewUrl]);
+
+  const handleProfilePicUpload = async (e: React.ChangeEvent<HTMLInputElement>, file: File) => {
+    // const file = e.target.files && e.target.files[0];
+    e.preventDefault();
+    console.log("Selected Image is: ", file);
+    if (file) {
+      formData.append("profileImage", file);
+      setUserProfilePic(file);
+    }
     await requestHandler(
-      async () => await authApi.uploadProfile(userProfilePic),
+      async () => await authApi.uploadProfile(formData),
       setIsLoading,
-      (data) => console.log(data),
+      (data) => {
+        console.log(data);
+        // setUploadProfile(false);
+        // set progress
+        setUploadProgress(100);
+      },
       (error) => console.log(error)
     );
   };
 
-  const setFileToBase64 = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setUserProfilePic(reader.result as string);
-    };
-    reader.onerror = (error) => {
-      console.log("Error: ", error);
-    };
+  // const setFileToBase64 = (file: File) => {
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(file);
+  //   reader.onloadend = () => {
+  //     setUserProfilePic(reader.result);
+  //   };
+  //   reader.onerror = (error) => {
+  //     console.log("Error: ", error);
+  //   };
+  // };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      setUserProfilePic(file);
+      const fileUrl = URL.createObjectURL(file);
+      setImagePreviewUrl(fileUrl); // Set the created URL for preview
+    }
   };
 
   return (
     <Container>
       <div className="conatnier">
-        <h1>Upload Profile Image</h1>
+        <div className="header">
+          <h1>Upload Profile Image</h1>
+          <div className="close" onClick={() => setUploadProfile(false)}>
+            <IoMdClose />
+          </div>
+        </div>
         <div className="content">
           <div className="image">
-            <img src={profilePic || userProfilePic} alt="profile" />
+            <img src={imagePreviewUrl || profilePic} alt="profile" />
           </div>
           <div className="form">
-            <form>
+            <form
+              encType="multipart/form-data"
+              onSubmit={(e) =>
+                userProfilePic && handleProfilePicUpload(e, userProfilePic)
+              }
+            >
               <label htmlFor="profilePic">Browse Image</label>
               <input
                 type="file"
                 hidden
                 id="profilePic"
-                onChange={(e) => setUserProfilePic(e.target.files[0])}
-                name="profilePic"
+                onChange={handleFileChange}
+                name="profileImage"
               />
-              <button onClick={}>Upload</button>
+              <button type="submit">Upload</button>{" "}
             </form>
+           {isLoading && <div className="progress">
+              <h2>Uploading....</h2>
+            </div>}
           </div>
         </div>
       </div>
@@ -78,6 +130,32 @@ const Container = styled.div`
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 0 10px #00000040;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h1 {
+        color: #f3f3f3;
+        font-size: 1.3rem;
+      }
+
+      .close {
+        cursor: pointer;
+        color: #f3f3f3;
+        font-size: 1.5rem;
+        width: 30px;
+        height: 30px;
+        display: grid;
+        place-items: center;
+        background-color: #333;
+        border-radius: 50%;
+      }
+    }
 
     .content {
       display: flex;
@@ -87,6 +165,19 @@ const Container = styled.div`
 
       @media screen and (max-width: 800px) {
         flex-direction: column;
+      }
+
+      .progress {
+        width: 100%;
+        height: 10px;
+        background-color: #f3f3f3;
+        border-radius: 5px;
+        overflow: hidden;
+
+        .inner {
+          height: 100%;
+          background-color: blue;
+        }
       }
 
       .image {
@@ -111,8 +202,12 @@ const Container = styled.div`
         width: 50%;
         height: 100%;
         display: flex;
-        justify-content: center;
-        align-items: center;
+        flex-direction: column;
+
+        > * {
+          margin: 1rem 0;
+          width: 100%;
+        }
 
         form {
           display: flex;

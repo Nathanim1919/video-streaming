@@ -57,6 +57,7 @@ export class AuthController {
   register = async (req: Request, res: Response): Promise<void> => {
     try {
       const registrationMessage =  await this.authService.register(req.body as Partial<IUser>);
+      
       res.status(201).json({ message: registrationMessage });
     } catch (error) {
       res.status(400).json({ error: error.message });

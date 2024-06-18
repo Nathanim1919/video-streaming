@@ -50,6 +50,7 @@ const handleUnFollow = (id: string) => {
 }
 
 const uploadProfile = (data: FormData) => {
+    console.log("Selected Image is: ",data);
     return apiClient.post("/users/upload", data);
 }
 

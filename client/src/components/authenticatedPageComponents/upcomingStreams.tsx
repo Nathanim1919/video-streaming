@@ -27,7 +27,7 @@ export const UpcomingStreams: React.FC = () => {
     }, [])
 
     const {isAuthenticated} = useAuth();
-    console.log(upcomingEvents);
+  
 
     return (
         <Container>
@@ -43,7 +43,7 @@ export const UpcomingStreams: React.FC = () => {
                                 <div className='header'>
                                     <div className="profile">
                                         <div className='profilePic'>
-                                        <img src={profilePic} alt="profile" />
+                                        <img src={event.owner?.profilePicture.url} alt="profile" />
                                         </div>
                                         <div className='profileInfo'>
                                             <h3>{event.owner?.fullName}</h3>

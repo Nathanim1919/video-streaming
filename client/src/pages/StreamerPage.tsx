@@ -18,6 +18,10 @@ export interface Streamer {
     following: string[];
     events: string[];
     rating: number;
+    profilePicture: {
+        public_id: string;
+        url: string;
+    };
 }
 
 

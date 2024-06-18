@@ -7,8 +7,9 @@ import { CacheClient } from "../config/redisClient";
 
 import { Request } from "express";
 import logger from "../logger";
+import path from "path";
 
-interface RequestWithUser extends Request {
+export interface RequestWithUser extends Request {
   user: IUser;
   file?: any;
 }
@@ -118,11 +119,14 @@ export class UserController {
     }
   );
 
-  uploadProfilePicture = asyncHandler(async (req: RequestWithUser, res) => {
+  uploadProfileImage = asyncHandler(async (req: RequestWithUser, res) => {
+    console.log("The requested file path is: ",req.file.path);
+    const absolutePath = path.resolve(req.file.path);
     const updatedUser = await this.userService.uploadProfilePicture(
       req.user._id as string,
-      req.file.filename
+      absolutePath
     );
+    console.log("The updated user is: ", updatedUser);
     // update the user in the cache or set it if it doesn't exist
     await this.cacheClient.set(`user:${req.user._id}`, JSON.stringify(updatedUser));
     res.json(

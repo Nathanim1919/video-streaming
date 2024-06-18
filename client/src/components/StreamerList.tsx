@@ -31,7 +31,7 @@ const StreamerList: React.FC<StreamerListProps> = ({streamer}) => {
         <Card>
             <div className="header">
                 <div className="profilePic">
-                    <img src={ProfilePic} alt="profile-pic"/>
+                    <img src={streamer?.profilePicture?.url} alt="profile-pic"/>
                 </div>
                 <div className="streamerInfo">
                     <h4>{streamer.email}</h4>

@@ -11,7 +11,6 @@ import { MdOutlineWatchLater } from "react-icons/md";
 import { MdOutlineStarRate } from "react-icons/md";
 import { LuGhost } from "react-icons/lu";
 import TechImage from "/home/live3.jpg";
-import profilePic from "/image/profile.jpg";
 import { formatDate, requestHandler } from "../utils";
 import { authApi } from "../api";
 import { useParams } from "react-router-dom";
@@ -44,7 +43,7 @@ const UserProfile = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [openOptions, setOpenOptions] = React.useState(false);
   const [userSreamsAndEvents, setUserStreamsAndEvents] = React.useState<any[]>([]);
-  const [uploadProfile, setUploadProfile] = React.useState(true);
+  const [uploadProfile, setUploadProfile] = React.useState(false);
   const [isFollow, setIsFollow] = React.useState(
     streamer?.followers?.includes(user!._id)
   );
@@ -84,17 +83,15 @@ const UserProfile = () => {
       fetchData();
       }, [id, user]);
 
-      console.log(streamer);
-
   return (
     <Container>
        {(createEvent || eventEditMode )&& <CreateEventForm eventEditMode={eventEditMode} setEventEditMode={setEventEditMode} selectedEvent={selectedEvent}  setCreateEvent={setCreateEvent}/>}
-        {uploadProfile && <UploadProfileImage profilePic={uploadProfile} />}
+        {uploadProfile && <UploadProfileImage setUploadProfile={setUploadProfile} profilePic={streamer?.profilePicture?.url} />}
       <div className="profile">
         <div className="header-info">
           <div className="profileInfo">
             <div className="profile-pic">
-              <img src={profilePic} alt="profile-pic" />
+              <img src={streamer.profilePicture?.url} alt="profile-pic" />
               <div className="camera" onClick={() => setUploadProfile(true)}>
                 <IoCameraOutline />
               </div>
@@ -218,7 +215,7 @@ const UserProfile = () => {
             {userSreamsAndEvents?.length === 0 ? (
               <p>No events available</p>
             ) : (
-              userSreamsAndEvents?.map((event: any) => (
+              userSreamsAndEvents?.map((event:any) => (
                 <div key={event._id}>
                   <div className="event-info">
                     <img src={TechImage} alt="profile-pic" />
@@ -226,12 +223,12 @@ const UserProfile = () => {
                   <div className="info">
                     <p>{formatDate(event.date)}  <span>{event.isOnline?"Stream":"Event"}</span></p>
                     <h4>
-                      {event.title.length > 30
+                      {event.title?.length > 30
                         ? event.title.slice(0, 30) + "..."
                         : event.title}
                     </h4>
                     <p>
-                      {event.description.length > 100
+                      {event.description?.length > 100
                         ? event.description.slice(0, 100) + "..."
                         : event.description}
                     </p>
