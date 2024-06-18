@@ -17,7 +17,7 @@ export const Events = () => {
                 async () => eventApi.getEvents(),
                 setIsLoading,
                 (res) => {
-                    setEvents(res.data);
+                    setEvents(res.data as Event[]);
                 },
                 alert
             );
@@ -51,7 +51,7 @@ export const Events = () => {
                              </div>
                              <div className="host">
                                  <div className="image">
-                                     <img src={Image} alt="" />
+                                     <img src={event.owner.profilePicture?.url} alt="" />
                                  </div>
                                  <div className="pro">
                                      <h2>{event.owner.fullName}</h2>

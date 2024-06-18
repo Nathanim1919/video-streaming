@@ -111,7 +111,7 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
           </div>
           <div className='streamer'>
               <div className='profilePic'>
-                  <img src={StreamImage} alt='Streamer' />
+                  <img src={stream.owner.profilePicture.url} alt='Streamer' />
               </div>
               <div className='streamerInfo'>
                   <h4>{stream.owner?.username}</h4>

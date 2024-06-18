@@ -1,3 +1,4 @@
+import { Event } from "./event";
 export interface UserInterface {
     _id: string;
     avatar:string;
@@ -8,11 +9,15 @@ export interface UserInterface {
     createdAt: string;
     updatedAt: string;
     rvps:string[];
-    streams:string[];
+    streams:Event[];
     followers:string[];
     following:string[];
     bio:string;
     location:string;
-    events:string[];
+    events:Event[];
     rating: number;
+    profilePicture: {
+        public_id: string;
+        url: string;
+    };
 }

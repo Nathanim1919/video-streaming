@@ -28,6 +28,13 @@ import { MdCreate } from "react-icons/md";
 import { EditUserBio } from "./profile/editBio";
 import { CreateEventForm } from "./CreateEventForm";
 import { UploadProfileImage } from "./profile/uploadProfileImage";
+import { Event } from "../interfaces/event";
+
+enum FilterType {
+  All = "All",
+  Stream = "Stream",
+  Event = "Event",
+}
 
 const UserProfile = () => {
   const { user } = useAuth();
@@ -42,7 +49,9 @@ const UserProfile = () => {
   const [isOwner, setIsOwner] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [openOptions, setOpenOptions] = React.useState(false);
-  const [userSreamsAndEvents, setUserStreamsAndEvents] = React.useState<any[]>([]);
+  const [userSreamsAndEvents, setUserStreamsAndEvents] = React.useState<any[]>(
+    []
+  );
   const [uploadProfile, setUploadProfile] = React.useState(false);
   const [isFollow, setIsFollow] = React.useState(
     streamer?.followers?.includes(user!._id)
@@ -56,6 +65,21 @@ const UserProfile = () => {
     setUserFollowers
   );
 
+  const filterEventsAndStreams = (data: Event[], filter: FilterType) => {
+    const filteredData =  data.filter((item: Event) => {
+      switch (filter) {
+        case FilterType.All:
+          return true;
+        case FilterType.Stream:
+          return item.isOnline;
+        case FilterType.Event:
+          return !item.isOnline;
+        default:
+          return true;
+      }
+    });
+    setUserStreamsAndEvents(filteredData);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -69,7 +93,8 @@ const UserProfile = () => {
             isOwner: boolean;
           };
           setStreamer(data);
-          setUserStreamsAndEvents([...data.events, ...data.streams]);
+          // setUserStreamsAndEvents([...data.events, ...data.streams]);
+          filterEventsAndStreams([...data.events, ...data.streams], FilterType.All);
           setIsFollow(data?.followers?.includes(user!._id));
           setUserFollowers(data?.followers?.length);
           setActions(actions);
@@ -79,22 +104,36 @@ const UserProfile = () => {
           console.log(error);
         }
       );
-      }
-      fetchData();
-      }, [id, user]);
+    }
+    fetchData();
+  }, [id, user]);
 
   return (
     <Container>
-       {(createEvent || eventEditMode )&& <CreateEventForm eventEditMode={eventEditMode} setEventEditMode={setEventEditMode} selectedEvent={selectedEvent}  setCreateEvent={setCreateEvent}/>}
-        {uploadProfile && <UploadProfileImage setUploadProfile={setUploadProfile} profilePic={streamer?.profilePicture?.url} />}
+      {(createEvent || eventEditMode) && (
+        <CreateEventForm
+          eventEditMode={eventEditMode}
+          setEventEditMode={setEventEditMode}
+          selectedEvent={selectedEvent}
+          setCreateEvent={setCreateEvent}
+        />
+      )}
+      {uploadProfile && (
+        <UploadProfileImage
+          setUploadProfile={setUploadProfile}
+          profilePic={streamer?.profilePicture?.url}
+        />
+      )}
       <div className="profile">
         <div className="header-info">
           <div className="profileInfo">
             <div className="profile-pic">
               <img src={streamer.profilePicture?.url} alt="profile-pic" />
-              <div className="camera" onClick={() => setUploadProfile(true)}>
-                <IoCameraOutline />
-              </div>
+              {isOwner && (
+                <div className="camera" onClick={() => setUploadProfile(true)}>
+                  <IoCameraOutline />
+                </div>
+              )}
             </div>
             <div className="profile-info">
               <h4>{streamer.fullName}</h4>
@@ -137,9 +176,19 @@ const UserProfile = () => {
               </Link>
             </div>
             <div className="bio">
-              <p>{streamer?.bio?streamer.bio:isOwner?"Tell us about yourself":""}</p>
+              <p>
+                {streamer?.bio
+                  ? streamer.bio
+                  : isOwner
+                  ? "Tell us about yourself"
+                  : ""}
+              </p>
               {actions.includes("edit") && editBio && (
-                <EditUserBio streamer={streamer} setStreamer={setStreamer} setEditBio={setEditBio} />
+                <EditUserBio
+                  streamer={streamer}
+                  setStreamer={setStreamer}
+                  setEditBio={setEditBio}
+                />
               )}
             </div>
             <div className="user-infos">
@@ -176,38 +225,45 @@ const UserProfile = () => {
                 {openOptions && (
                   <div>
                     <Link
-                      onClick={() => setOpenOptions(false)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setOpenOptions(false);
+                        filterEventsAndStreams(userSreamsAndEvents, FilterType.All);
+                      }}
                       to={"/eventsAndStreams/all"}
                     >
                       All
                     </Link>
-                    <Link onClick={() => setOpenOptions(false)} to={"/streams"}>
+                    <Link onClick={(e) => {
+                        e.preventDefault();
+                        setOpenOptions(false);
+                        filterEventsAndStreams(userSreamsAndEvents, FilterType.Stream);
+                      }} to={"/streams"}>
                       Streams
                     </Link>
-                    <Link onClick={() => setOpenOptions(false)} to={"/events"}>
-                      Events
-                    </Link>
-                    <Link
-                      onClick={() => setOpenOptions(false)}
-                      to={"/events/past"}
-                    >
+                    <Link onClick={(e) => {
+                        e.preventDefault();
+                        setOpenOptions(false);
+                        filterEventsAndStreams(userSreamsAndEvents, FilterType.Event);
+                      }} to={"/events"}>
                       Events
                     </Link>
                   </div>
                 )}
               </div>
               {isOwner && (
-                <Link onClick={(e) => {
-                  e.preventDefault();
-                  setCreateEvent(true);
-                  setEventEditMode(false);
-                  setSelectedEvent({});
-                }} to={"/events/schedule"}>
+                <Link
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCreateEvent(true);
+                    setEventEditMode(false);
+                    setSelectedEvent({});
+                  }}
+                  to={"/events/schedule"}
+                >
                   <MdCreate />
                 </Link>
-              )
-              }
-           
+              )}
             </div>
           </div>
           {isLoading && <Loader />}
@@ -215,20 +271,23 @@ const UserProfile = () => {
             {userSreamsAndEvents?.length === 0 ? (
               <p>No events available</p>
             ) : (
-              userSreamsAndEvents?.map((event:any) => (
+              userSreamsAndEvents?.map((event) => (
                 <div key={event._id}>
                   <div className="event-info">
                     <img src={TechImage} alt="profile-pic" />
                   </div>
                   <div className="info">
-                    <p>{formatDate(event.date)}  <span>{event.isOnline?"Stream":"Event"}</span></p>
+                    <p>
+                      {formatDate(event.date)}{" "}
+                      <span>{event.isOnline ? "Stream" : "Event"}</span>
+                    </p>
                     <h4>
-                      {event.title?.length > 30
+                      {event.title.length > 30
                         ? event.title.slice(0, 30) + "..."
                         : event.title}
                     </h4>
                     <p>
-                      {event.description?.length > 100
+                      {event.description.length > 100
                         ? event.description.slice(0, 100) + "..."
                         : event.description}
                     </p>
@@ -236,11 +295,16 @@ const UserProfile = () => {
                   {isOwner ? (
                     <div className="event-buttons">
                       <Link to={"/"}>Delete</Link>
-                      <Link onClick={(e) => {
-                        e.preventDefault();
-                        setEventEditMode(true);
-                        setSelectedEvent(event);
-                      }} to={`/events/${event._id}`}>Edit</Link>
+                      <Link
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setEventEditMode(true);
+                          setSelectedEvent(event);
+                        }}
+                        to={`/events/${event._id}`}
+                      >
+                        Edit
+                      </Link>
                       <Link to={`/streames/${event._id}`}>Details</Link>
                     </div>
                   ) : (
@@ -303,39 +367,29 @@ const Container = styled.div`
           height: 140px;
           border-radius: 50%;
           overflow: hidden;
-         position: relative;
-         cursor: pointer;
+          position: relative;
+          cursor: pointer;
 
-         .camera{
-          background-color: #00000091;
-          backdrop-filter: blur(10px);
-          padding: .5rem 0;
-          color: #fff;
-          position: absolute;
-          left: 0;
-          width: 100%;
-          display: grid;
-          place-items: center;
-          font-size:2rem;
-          bottom: 0;
-          transform: translateY(100%);
+          .camera {
+            background-color: #00000091;
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 0;
+            color: #fff;
+            position: absolute;
+            left: 0;
+            width: 100%;
+            display: grid;
+            place-items: center;
+            font-size: 2rem;
+            bottom: 0;
+            transform: translateY(100%);
+          }
 
-         }
-
-
-         &:hover{
-            .camera{
+          &:hover {
+            .camera {
               transform: translateY(0);
-
             }
           }
-  
-            img {
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
-            }
-         }
 
           img {
             width: 100%;
@@ -344,141 +398,148 @@ const Container = styled.div`
           }
         }
 
-        p {
-          font-size: 0.8rem;
-          color: #ab9f9f;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
         }
+      }
 
-        button {
-          margin-top: 0.5rem;
-          padding: 0.4rem 1rem;
-          border: none;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 0.3rem;
-          background-color: #007bff;
-          color: #fff;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          font-family: inherit;
-          position: relative;
-          overflow: hidden;
-          display: flex;
-          align-items: center;
-          transition: all 0.3s ease-in-out;
+      p {
+        font-size: 0.8rem;
+        color: #ab9f9f;
+      }
 
-          .spinner {
-            > *:nth-child(1) {
-              animation: spin 1s linear infinite;
-            }
+      button {
+        margin-top: 0.5rem;
+        padding: 0.4rem 1rem;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.3rem;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: inherit;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease-in-out;
 
-            @keyframes spin {
-              0% {
-                transform: rotate(0deg);
-              }
-              100% {
-                transform: rotate(360deg);
-              }
-            }
+        .spinner {
+          > *:nth-child(1) {
+            animation: spin 1s linear infinite;
           }
-        }
 
-        .profile-info{
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-
-          > * {
-            margin: 0;
-          }
-        }
-
-        > * {
-          margin: 0;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-
-          > * {
-            margin: 0;
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
           }
         }
       }
 
-      .social {
+      .profile-info {
         display: flex;
         flex-direction: column;
         align-items: center;
 
-        .edit {
-          position: absolute;
-          top: 1rem;
-          right: 1rem;
-          font-size: 1.5rem;
-          cursor: pointer;
+        > * {
+          margin: 0;
         }
+      }
 
-        > a {
-          position: absolute;
-          top: 0;
-          right: 0;
-          color: #fff;
-          font-size: 2rem;
+      > * {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        > * {
+          margin: 0;
         }
+      }
+    }
 
-        .social-links {
+    .social {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .edit {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      > a {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #fff;
+        font-size: 2rem;
+      }
+
+      .social-links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+
+        a {
+          font-size: 1rem;
+          color: #413f3f;
+        }
+      }
+      .bio {
+        width: 60%;
+        font-size: 0.8rem;
+        font-weight: 100;
+        color: #ab9f9f;
+        position: relative;
+        padding: 0 1rem;
+        display: flex;
+      }
+
+      .user-infos {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+
+        div {
+          border-radius: 10px;
           display: flex;
-          justify-content: center;
+          flex: 1;
+          flex-direction: column;
           align-items: center;
-          gap: 1rem;
+          gap: 0.5rem;
+          color: #dacbcb;
+          background-color: #000;
+          padding: 0.2rem 1rem;
 
-          a {
-            font-size: 1rem;
-            color: #413f3f;
+          > *:nth-child(1) {
+            font-size: 2rem;
           }
-        }
-        .bio {
-          width: 60%;
-          font-size: 0.8rem;
-          font-weight: 100;
-          color: #ab9f9f;
-          position: relative;
-          padding: 0 1rem;
-          display: flex;
-        }
 
-        .user-infos {
-          display: flex;
-          justify-content: space-between;
-          gap: 1rem;
-          flex-wrap: wrap;
-
-          div {
-            border-radius: 10px;
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            color: #dacbcb;
-            background-color: #000;
-            padding: 0.2rem 1rem;
-
-            > *:nth-child(1) {
-              font-size: 2rem;
-            }
-
-            p {
-              font-size: 0.8rem;
-              text-align: center;
-            }
+          p {
+            font-size: 0.8rem;
+            text-align: center;
           }
         }
       }
     }
-  
+  }
+
   .evets {
     .header {
       display: flex;
@@ -609,9 +670,9 @@ const Container = styled.div`
           align-items: center;
           gap: 0.5rem;
 
-          span{
+          span {
             background-color: #625e5946;
-            padding: .2rem .5rem;
+            padding: 0.2rem 0.5rem;
             border-radius: 5px;
             color: #ffffff92;
           }

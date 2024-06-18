@@ -179,8 +179,6 @@ export class UserService {
           public_id: result.public_id,
           url: result.url,
         };
-
-        console.log("Saved Url Is: ", user.profilePicture.url);
         await user.save();
       } catch (error) {
         console.error(error);

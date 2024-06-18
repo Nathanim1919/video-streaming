@@ -1,3 +1,5 @@
+import { UserInterface } from "./user";
+
 export type ScheduleItem = {
   time: string;
   activity: string;
@@ -15,7 +17,7 @@ export type Event = {
   description: string;
   date: string;
   time: string;
-  owner: string;
+  owner: UserInterface;
   location?: string;
   price: number;
   capacity: number;
@@ -29,4 +31,5 @@ export type Event = {
   schedule: ScheduleItem[];
   socialLinks: SocialLink[];
   attendees: string[];
+  
 };
