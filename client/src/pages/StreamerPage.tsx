@@ -73,13 +73,13 @@ const StreamerPage = () => {
 export default StreamerPage;
 
 const Container = styled.div`
-    background-color: #181818;
+    /* background-color: #181818; */
     display: flex;
     flex-direction: column;
     gap: 1rem;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
     color: #fff;
     width: 100vw;

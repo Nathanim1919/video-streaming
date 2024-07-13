@@ -55,6 +55,9 @@ export class StreamService {
   public async rsvpStream(id: string, userId: string) {
     const session = await startSession();
     try {
+      console.log("loggedUser: ", userId);
+      console.log("Rsvped Event Id: ", id);
+      
       session.startTransaction();
       const user = await User.findById(userId).session(session);
       const stream = await streamModel.findById(id).session(session);

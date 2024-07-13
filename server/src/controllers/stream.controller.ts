@@ -94,6 +94,8 @@ export class StreamController {
 
   rsvpStream = asyncHandler(
     async (req: RequestWithUser, res: Response): Promise<void> => {
+      console.log("loggedUser: ",req.user);
+      console.log("Rsvped Event Id: ",req.params.id);
       const rsvp = await this.streamService.rsvpStream(
         req.params.id,
         req.user?._id as string

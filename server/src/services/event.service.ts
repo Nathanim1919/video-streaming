@@ -9,6 +9,7 @@ import QRCode from "qrcode";
 import IRsvp from "../interfaces/rsvp.interface";
 import RSVP from "../models/rsvp.model";
 import { CacheClient } from "../config/redisClient";
+import streamModel from "../models/stream.model";
 
 export class EventService {
   // instance of the CacheClient class
@@ -94,7 +95,9 @@ export class EventService {
   // RSVP to an event
   async rsvp(eventId: string, user: any): Promise<IRsvp | IEvent> {
     // Check if the event exists
-    const event = await EventModel.findById(eventId);
+    const event = await streamModel.findById(eventId);
+    logger.info("Event found: ", event);
+    // logger.info(event);
 
     if (event.attendees.includes(user._id)) {
       throw new Error("You have already RSVP'd to this event");
