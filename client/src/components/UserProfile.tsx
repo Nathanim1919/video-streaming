@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
@@ -65,8 +65,14 @@ const UserProfile = () => {
     setUserFollowers
   );
 
+  const fileInputRef = useRef(null);
+
+  const handleLabelClick = () => {
+    fileInputRef.current.click();
+  };
+
   const filterEventsAndStreams = (data: Event[], filter: FilterType) => {
-    const filteredData =  data.filter((item: Event) => {
+    const filteredData = data.filter((item: Event) => {
       switch (filter) {
         case FilterType.All:
           return true;
@@ -94,7 +100,10 @@ const UserProfile = () => {
           };
           setStreamer(data);
           // setUserStreamsAndEvents([...data.events, ...data.streams]);
-          filterEventsAndStreams([...data.events, ...data.streams], FilterType.All);
+          filterEventsAndStreams(
+            [...data.events, ...data.streams],
+            FilterType.All
+          );
           setIsFollow(data?.followers?.includes(user!._id));
           setUserFollowers(data?.followers?.length);
           setActions(actions);
@@ -228,24 +237,39 @@ const UserProfile = () => {
                       onClick={(e) => {
                         e.preventDefault();
                         setOpenOptions(false);
-                        filterEventsAndStreams(userSreamsAndEvents, FilterType.All);
+                        filterEventsAndStreams(
+                          userSreamsAndEvents,
+                          FilterType.All
+                        );
                       }}
                       to={"/eventsAndStreams/all"}
                     >
                       All
                     </Link>
-                    <Link onClick={(e) => {
+                    <Link
+                      onClick={(e) => {
                         e.preventDefault();
                         setOpenOptions(false);
-                        filterEventsAndStreams(userSreamsAndEvents, FilterType.Stream);
-                      }} to={"/streams"}>
+                        filterEventsAndStreams(
+                          userSreamsAndEvents,
+                          FilterType.Stream
+                        );
+                      }}
+                      to={"/streams"}
+                    >
                       Streams
                     </Link>
-                    <Link onClick={(e) => {
+                    <Link
+                      onClick={(e) => {
                         e.preventDefault();
                         setOpenOptions(false);
-                        filterEventsAndStreams(userSreamsAndEvents, FilterType.Event);
-                      }} to={"/events"}>
+                        filterEventsAndStreams(
+                          userSreamsAndEvents,
+                          FilterType.Event
+                        );
+                      }}
+                      to={"/events"}
+                    >
                       Events
                     </Link>
                   </div>
@@ -274,6 +298,23 @@ const UserProfile = () => {
               userSreamsAndEvents?.map((event) => (
                 <div key={event._id}>
                   <div className="event-info">
+                    {isOwner && (
+                      <form>
+                        <input
+                          ref={fileInputRef}
+                          name="file"
+                          type="file"
+                          hidden
+                        />
+                        <label
+                          htmlFor="file"
+                          className="editIcon"
+                          onClick={handleLabelClick}
+                        >
+                          <CiEdit />
+                        </label>
+                      </form>
+                    )}
                     <img src={TechImage} alt="profile-pic" />
                   </div>
                   <div className="info">
@@ -650,6 +691,21 @@ const Container = styled.div`
       max-width: 300px;
       cursor: pointer;
       border-radius: 10px;
+      position: relative;
+
+      .editIcon {
+        position: absolute;
+        display: flex;
+        justify-content: flex-end;
+        padding: 0.5rem;
+        color: #fff;
+        font-size: 1.5rem;
+        cursor: pointer;
+        top: 0;
+        right: 0;
+        font-size: 1.4rem;
+        z-index: 20;
+      }
 
       &:hover {
         .event-info {

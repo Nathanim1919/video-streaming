@@ -52,12 +52,6 @@ const StreamerPage = () => {
     return (
         isLoading ? <Loader /> : (
             <Container>
-                <div className='topheader'>
-                    <div className='back'>
-                        <Link to="/"><IoArrowBackOutline size={30} color='#fff' /></Link>
-                    </div>
-                    <p>Connect with your favorite streamers</p>
-                </div>
                 <div className="streamer-list">
                     {streamers.length === 0 ? <p>No streamers available</p> :
                         streamers.map((streamer: Streamer) => (
@@ -73,7 +67,6 @@ const StreamerPage = () => {
 export default StreamerPage;
 
 const Container = styled.div`
-    /* background-color: #181818; */
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -88,26 +81,6 @@ const Container = styled.div`
 
     @media screen and (max-width:800px){
         width: 95vw;
-    }
-
-    
-    .topheader{
-        position: sticky;
-        display: flex;
-        justify-content: center;
-        top: 0;
-        /* background-color: #000000; */
-        width: 100%;
-        .back{
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-      
-        p{
-            font-size: 1.5rem;
-            justify-self: end;
-        }
     }
 
 

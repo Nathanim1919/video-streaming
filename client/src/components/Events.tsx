@@ -62,7 +62,7 @@ export const Events = () => {
               </div>
             </div>
             <div className="actionBtns">
-              <Link to={"/"} className="learnMore">
+              <Link to={`/events/${event._id}`} className="learnMore">
                 Learn More
               </Link>
               <Link to={"/"} className="getTicket">

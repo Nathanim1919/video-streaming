@@ -13,7 +13,6 @@ import { IStream } from '../interfaces/stream.interface';
 
 interface StreamListItemProps {
   stream: IStream;
-  
 }
 
 const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {

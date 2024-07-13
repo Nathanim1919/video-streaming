@@ -135,7 +135,14 @@ const App = () => {
         path='/streames/:eventId' 
         element={
         <PrivateRouteWithHeader>
-          <EventDetailPage/>
+          <EventDetailPage type={"stream"}/>
+        </PrivateRouteWithHeader>
+      }/>
+      <Route 
+        path='/events/:eventId' 
+        element={
+        <PrivateRouteWithHeader>
+          <EventDetailPage type={"event"}/>
         </PrivateRouteWithHeader>
       }/>
       <Route path="*" element={<p>404 Not found</p>} />

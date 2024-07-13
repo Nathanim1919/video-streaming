@@ -48,9 +48,17 @@ export class EventService {
 
   // Get a single event
   async getEvent(eventId: string): Promise<IEvent> {
+    console.log(
+      "############# Event-ID: ###################################",
+      eventId
+    );
     const event = await EventModel.findById(eventId)
       .populate("owner")
       .populate("attendees");
+    console.log(
+      "############# Event: ###################################",
+      event
+    );
     return event;
   }
 
@@ -85,7 +93,6 @@ export class EventService {
 
   // Get live events
   async getLiveEvents(): Promise<IEvent[]> {
-
     const events = await EventModel.find({ status: "live" })
       .populate("owner")
       .populate("attendees");
@@ -376,7 +383,6 @@ export class EventService {
   }
 
   async getUpcomingEvents(user: any): Promise<IEvent[]> {
-   
     const today = new Date();
 
     // Get the IDs of the users that the current user is following
