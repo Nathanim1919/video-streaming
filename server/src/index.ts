@@ -18,6 +18,7 @@ import eventRouter from "./routes/event.route";
 import authRouter from "./routes/auth.route";
 import userRouter from "./routes/user.route";
 import streamRouter from "./routes/stream.route";
+import searchRouter from "./routes/search.route";
 
 const app = express();
 const cookieSecret = process.env.JWT_SECRET
@@ -61,13 +62,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/events", eventRouter);
 app.use("/api/v1/stream", streamRouter);
-// app.use(
-//   "/api/uploadthing",
-//   createRouteHandler({
-//     router: uploadRouter,
-//     config: { ... },
-//   }),
-// )
+app.use('/api/v1/search', searchRouter);
 
 // With this line
 app.listen(3000, () => {

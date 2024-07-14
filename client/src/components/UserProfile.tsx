@@ -323,12 +323,12 @@ const UserProfile = () => {
                       <span>{event.isOnline ? "Stream" : "Event"}</span>
                     </p>
                     <h4>
-                      {event.title.length > 30
+                      {(event?.title?.length) > 30
                         ? event.title.slice(0, 30) + "..."
                         : event.title}
                     </h4>
                     <p>
-                      {event.description.length > 100
+                      {(event?.description?.length) > 100
                         ? event.description.slice(0, 100) + "..."
                         : event.description}
                     </p>

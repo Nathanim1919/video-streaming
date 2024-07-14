@@ -94,6 +94,11 @@ const Container = styled.div`
     justify-content: center;
 
 
+    p{
+      color: #757373;
+    }
+
+
     >*{
       margin: 0;
     }

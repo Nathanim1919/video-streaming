@@ -16,6 +16,8 @@ import { formatDate, requestHandler } from "../utils";
 import { streamApi } from "../api";
 import { CountDown } from "./CountDown";
 import { Speakers } from "./Speackers";
+import { getStream } from "../api/stream";
+import { getEvent } from "../api/event";
 
 interface EventDetailData {
   _id: string;
@@ -37,12 +39,12 @@ interface EventDetailData {
   ];
 }
 
-// interface EventDetailProps {
-//     eventId: string;
-//     event: EventDetailData;
-// }
+interface EventDetailProps {
+  type: "stream" | "event";
+}
 
-const EventDetail = () => {
+
+const EventDetail: React.FC<EventDetailProps> = ({type}) => {
   const { user } = useAuth();
   const { eventId } = useParams();
 
@@ -61,11 +63,12 @@ const EventDetail = () => {
 
   useEffect(() => {
     const fetchEventDetail = async () => {
+      const endPoint = type === 'stream' ? getStream : getEvent;
       await requestHandler(
-        async () => streamApi.getStream(eventId!),
+        async () => await endPoint(eventId!),
         setIsLoading,
         (res) => {
-          console.log(res.data.data);
+          console.log(res.data);
           setEvent(res.data as EventDetailData);
         },
         (error) => {
@@ -76,6 +79,10 @@ const EventDetail = () => {
 
     fetchEventDetail();
   }, []);
+
+
+
+  console.log("The event deails are: ",event);
 
   return isLoading ? (
     <Loader />

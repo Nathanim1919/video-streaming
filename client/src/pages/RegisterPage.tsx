@@ -55,10 +55,9 @@ const RegisterPage: React.FC = () => {
         <p>Virtual Streaming App</p>
       </div>
       <div className="per-org">
-        {/* <p>Register as a</p> */}
         <div className="btns">
-          <button className={isPersonal?'active':""} onClick={()=>setIsPersonal(true)}><GrRadialSelected/>Personal</button>
-          <button className={!isPersonal?'active':""} onClick={() => setIsPersonal(false)}><GrRadialSelected/>Organisation</button>
+          <button className={isPersonal?'active':""} onClick={()=>setIsPersonal(true)}><GrRadialSelected/>Create Personal Account</button>
+          <button className={!isPersonal?'active':""} onClick={() => setIsPersonal(false)}><GrRadialSelected/>Create Organisation Account</button>
         </div>
       </div>
      {isPersonal? <div className='form'>
@@ -152,6 +151,9 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
 
+    p{
+      color: #8d8a8a;
+    }
 
     >*{
       margin: 0;

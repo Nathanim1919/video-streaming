@@ -6,6 +6,7 @@ import { FaSearch } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import { RiMenu4Line } from "react-icons/ri";
+import { SearchPage } from "../../pages/searchPage";
 
 
 // Header component
@@ -13,6 +14,7 @@ export const Header = () => {
   const { logout, user } = useAuth();
   const [showOptions, setShowOptions] = React.useState(false);
   const [showNavBar, setShowNavBar] = React.useState(false);
+  const [intiateSearch, setIntiateSearch] = React.useState(false);
 
   // handle logout
   const handleLogout = async () => {
@@ -51,7 +53,7 @@ export const Header = () => {
         <li className="menuIcon" onClick={() => setShowNavBar(true)}>
           <RiMenu4Line />
         </li>
-        <li>
+        <li onClick={() => setIntiateSearch(true)}>
           <FaSearch />
         </li>
         <div className="account">
@@ -88,6 +90,9 @@ export const Header = () => {
           )}
         </div>
       </div>
+      {intiateSearch && (
+        <SearchPage setIntiateSearch={setIntiateSearch}/>
+      )}
     </Conatiner>
   );
 };

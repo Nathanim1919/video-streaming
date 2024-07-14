@@ -76,7 +76,8 @@ export class EventController {
       );
 
       if (existsInCache) {
-        const event = await this.cacheClient.get(`event:${req.params.eventId}`);
+        let event = await this.cacheClient.get(`event:${req.params.eventId}`);
+        event = JSON.parse(event);
         res.json(new ApiResponse(200, event, "Event fetched successfully"));
       } else {
         // get from the database if it does not exist in the cache
