@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useEffect, useRef } from "react";
 import styled from "styled-components";
 import PlaceHolderImage from "../assets/react.svg";
 import { searchApi } from "../api";
@@ -32,6 +32,21 @@ export const SearchPage: React.FC = ({setIntiateSearch}) => {
   const [displayStreames, setDisplayStreames] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        setIntiateSearch(false); // Assuming this function hides the component
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setIntiateSearch]);
+
   const handleSearch = async (query: string) => {
     await requestHandler(
       async () => await searchApi.search(query),
@@ -46,7 +61,7 @@ export const SearchPage: React.FC = ({setIntiateSearch}) => {
   };
 
   return (
-    <SearchConaier>
+    <SearchConaier ref={searchContainerRef}>
       <div className="searchInput">
         <input
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
