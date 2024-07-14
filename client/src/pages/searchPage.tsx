@@ -5,6 +5,9 @@ import { searchApi } from "../api";
 import { requestHandler } from "../utils";
 import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
+import { CiStreamOn } from "react-icons/ci";
+import { MdEvent } from "react-icons/md";
+import { FaRegUser } from "react-icons/fa";
 
 // the searchResult type, it will be an array of arrqy of objects
 interface searchResult {
@@ -15,10 +18,10 @@ interface searchResult {
 }
 
 interface searchPageProps {
-    setIntiateSearch: (value: boolean) => void;
+  setIntiateSearch: (value: boolean) => void;
 }
 
-export const SearchPage: React.FC = ({setIntiateSearch}) => {
+export const SearchPage: React.FC = ({ setIntiateSearch }) => {
   const [searchResults, setSearchResults] = React.useState<searchResult>({
     events: [],
     streamers: [],
@@ -31,12 +34,15 @@ export const SearchPage: React.FC = ({setIntiateSearch}) => {
   const [displayOrganisations, setDisplayOrganisations] = React.useState(false);
   const [displayStreames, setDisplayStreames] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-
   const searchContainerRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target as Node)
+      ) {
         setIntiateSearch(false); // Assuming this function hides the component
       }
     };
@@ -46,6 +52,7 @@ export const SearchPage: React.FC = ({setIntiateSearch}) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setIntiateSearch]);
+
 
   const handleSearch = async (query: string) => {
     await requestHandler(
@@ -111,10 +118,16 @@ export const SearchPage: React.FC = ({setIntiateSearch}) => {
         ) : (
           <div className="result">
             <div className="events">
-              <h3>Events</h3>
+              <h3>
+                <MdEvent />
+                Events
+              </h3>
               {searchResults.events?.length === 0 && <p>No events found</p>}
               {searchResults.events?.map((event: any) => (
-                <div className="event">
+                <Link
+                  onClick={() => setIntiateSearch(false)}
+                  to={`/events/${event._id}`}
+                >
                   <div className="coverImage">
                     <img src={PlaceHolderImage} alt="" />
                   </div>
@@ -122,33 +135,50 @@ export const SearchPage: React.FC = ({setIntiateSearch}) => {
                     <h4>{event.title}</h4>
                     <p>{event.date}</p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
             <div className="events">
-              <h3>Streames</h3>
+              <h3>
+                <CiStreamOn />
+                Streames
+              </h3>
               {searchResults.streames?.length === 0 && <p>No streames found</p>}
               {searchResults.streames?.map((stream: any) => (
-                <div className="event">
+                <Link
+                  onClick={() => setIntiateSearch(false)}
+                  to={`/streames/${stream._id}`}
+                  className="event"
+                >
                   <div className="coverImage">
-                    <img src={PlaceHolderImage} alt="" />
+                    <img
+                      src="https://www.istockphoto.com/photo/group-of-people-applauding-gm1496377580-519066036?utm_source=pixabay&utm_medium=affiliate&utm_campaign=SRP_image_sponsored&utm_content=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Fevents%2F&utm_term=events"
+                      alt=""
+                    />
                   </div>
                   <div className="info">
                     <h4>{stream.title}</h4>
                     <p>{stream.date}</p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
             <div className="user">
-              <h3>Peoples</h3>
+              <h3>
+                <FaRegUser />
+                Peoples
+              </h3>
               {searchResults.streamers?.length === 0 && (
                 <p>No streamers found</p>
               )}
               {searchResults.streamers?.map((streamer: any) => (
-                <Link onClick={()=>setIntiateSearch(false)} to={`/streamers/${streamer._id}`} className="stream">
+                <Link
+                  onClick={() => setIntiateSearch(false)}
+                  to={`/streamers/${streamer._id}`}
+                  className="stream"
+                >
                   <div className="coverImage">
-                    <img src={PlaceHolderImage} alt="" />
+                    <img src={streamer.profilePicture?.url} alt="" />
                   </div>
                   <div className="info">
                     <h4>{streamer.fullName}</h4>
@@ -183,11 +213,11 @@ export const SearchPage: React.FC = ({setIntiateSearch}) => {
 
 const SearchConaier = styled.div`
   width: 70vw;
-  max-height: 90vh;
+  height: 99vh;
   overflow: hidden;
   overflow-y: auto;
   position: fixed;
-  top: 4rem;
+  top: 1rem;
   background-color: #000;
   display: flex;
   flex-direction: column;
@@ -265,16 +295,14 @@ const SearchConaier = styled.div`
         border-bottom: 1px solid #501919;
         padding: 1rem;
 
-        .event,
-        .stream,
-        .organisation,
-        .user {
+       a {
           background-color: #2a1313;
           display: flex;
           gap: 1rem;
           padding: 1rem;
           border-radius: 10px;
           cursor: pointer;
+          text-decoration: none;
 
           &:hover {
             background-color: #501919;
@@ -297,7 +325,7 @@ const SearchConaier = styled.div`
             flex-direction: column;
             h4 {
               color: #fff;
-              font-size: 1.2rem;
+              font-size: 1rem;
               margin: 0;
             }
             p {

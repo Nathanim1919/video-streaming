@@ -29,6 +29,7 @@ import { EditUserBio } from "./profile/editBio";
 import { CreateEventForm } from "./CreateEventForm";
 import { UploadProfileImage } from "./profile/uploadProfileImage";
 import { Event } from "../interfaces/event";
+import { personalSearch } from "../api/search";
 
 enum FilterType {
   All = "All",
@@ -69,6 +70,20 @@ const UserProfile = () => {
 
   const handleLabelClick = () => {
     fileInputRef.current.click();
+  };
+
+  const handleSearch = async (query: string) => {
+    console.log("Search query Parameter: ", query);
+    await requestHandler(
+      async () => await personalSearch(query),
+      setIsLoading,
+      (response) => {
+        setUserStreamsAndEvents(response.data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   const filterEventsAndStreams = (data: Event[], filter: FilterType) => {
@@ -226,7 +241,13 @@ const UserProfile = () => {
           <div className="header">
             <h3>Scheduled Events</h3>
             <div className="search">
-              <input type="text" placeholder="Search Events, Streams..." />
+              <input
+                type="text"
+                placeholder="Search Events, Streams..."
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleSearch(e.target.value)
+                }
+              />
             </div>
             <div className="div">
               <div className="options">
@@ -323,12 +344,12 @@ const UserProfile = () => {
                       <span>{event.isOnline ? "Stream" : "Event"}</span>
                     </p>
                     <h4>
-                      {(event?.title?.length) > 30
+                      {event?.title?.length > 30
                         ? event.title.slice(0, 30) + "..."
                         : event.title}
                     </h4>
                     <p>
-                      {(event?.description?.length) > 100
+                      {event?.description?.length > 100
                         ? event.description.slice(0, 100) + "..."
                         : event.description}
                     </p>
