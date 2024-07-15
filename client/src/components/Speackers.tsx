@@ -1,8 +1,13 @@
 import styled from "styled-components"
 import Image from '/home/bg.jpg'
 import ProImage from '/home/live.jpeg'
+import { Event } from "../interfaces/event"
 
-export const Speakers: React.FC = () => {
+interface SpeakerProps {
+    event: Event
+}
+
+export const Speakers: React.FC<SpeakerProps> = ({event}) => {
     return (
         <Container>
             <div className="header-info">
@@ -14,11 +19,11 @@ export const Speakers: React.FC = () => {
                     <h1>Hosted By</h1>
                     <div className="host">
                         <div className="image">
-                            <img src={Image} alt="host" />
+                            <img src={event?.owner?.profilePicture?.url} alt="host" />
                         </div>
                         <div className="infos">
-                            <h2>John Doe</h2>
-                            <p>CEO, Google</p>
+                            <h2>Host By: {event?.owner?.fullName}</h2>
+                            <p>{event?.owner?.profession}</p>
                         </div>
                     </div>
                 </div>
@@ -79,13 +84,13 @@ const Container = styled.div`
 
 
     .header-info{
-        padding: 1rem;
-        /* text-align: center; */
+        padding: 1rem 0;
+        text-align: center;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-        max-width: 50%;
+        /* max-width: 50%; */
         margin: auto;
 
 
@@ -122,6 +127,7 @@ const Container = styled.div`
                 justify-content: center;
                 align-items: center;
                 gap: 1rem;
+                position: relative;
 
                 .image{
                     width: 100%;
@@ -131,6 +137,7 @@ const Container = styled.div`
                     img{
                         width: 100%;
                         height: 100%;
+                        filter: brightness(20%);
                         object-fit: cover;
                     }
                 }
@@ -141,9 +148,17 @@ const Container = styled.div`
                     justify-content: center;
                     align-items: center;
                     position: absolute;
+                    bottom: 1rem;
+                    right: 1rem;
 
                     h2{
                         font-size: 1.5rem;
+                        margin: 0;
+                    }
+
+                    p{
+                        font-size: 1rem;
+                        margin: 0;
                     }
                 }
             }

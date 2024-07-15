@@ -29,7 +29,7 @@ export const UpcomingStreams: React.FC = () => {
     const {isAuthenticated} = useAuth();
   
 
-    return (
+    return (upcomingEvents?.length > 0) &&  (
         <Container>
             <div className="header">
         <h1>Upcoming Events</h1>

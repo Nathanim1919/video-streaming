@@ -82,7 +82,6 @@ const EventDetail: React.FC<EventDetailProps> = ({type}) => {
 
 
 
-  console.log("The event deails are: ",event);
 
   return isLoading ? (
     <Loader />
@@ -107,7 +106,7 @@ const EventDetail: React.FC<EventDetailProps> = ({type}) => {
         </div>
         <CountDown event={event} />
       </div>
-      <Speakers />
+      <Speakers event={event}/>
       <div className="eventInfos">
         <div className="descriptions">
           <div className="desc">

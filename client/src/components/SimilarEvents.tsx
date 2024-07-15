@@ -159,7 +159,7 @@ export const SimplarEvents: React.FC = () => {
           <div className="event" key={index}>
             <div className="date">
               <p>{even.date}</p>
-              <h2>17</h2>
+              <h3>17</h3>
             </div>
             <div className="image">
               <img src={even.image} alt="" />
@@ -210,6 +210,7 @@ const EventsContainer = styled.div`
     gap: 2rem;
     color: #fff;
     border-top: 1px solid #494a4a;
+    padding: 1rem;
     padding-top: 2rem;
     position: sticky;
     top: 0%;
@@ -223,6 +224,15 @@ const EventsContainer = styled.div`
         justify-content: space-around;
         align-items: center;
         position: relative;
+        cursor: pointer;
+        padding: 1rem 0;
+        border: 1px solid transparent;
+
+        &:hover {
+            background-color: #0000007d;
+            border-radius: 10px;
+            border: 1px solid #a53636;
+        }
 
 
         @media screen and (max-width: 768px){
@@ -250,9 +260,9 @@ const EventsContainer = styled.div`
             p {
                 margin: 0;
             }
-            h2 {
+            h3 {
                 margin: 0;
-                font-family: 4rem;
+                font-size: 2.3rem;
             }
         }
 
@@ -276,7 +286,7 @@ const EventsContainer = styled.div`
 
         .desc {
             h2 {
-                font-size: 1rem;
+                /* font-size: 1rem; */
                 margin: 0;
             }
             p {
@@ -290,11 +300,17 @@ const EventsContainer = styled.div`
         .btns {
             button {
                 background-color: transparent;
-
                 color: #fff;
                 padding: .7rem 2rem;
                 border: 1px solid rgb(92, 92, 96);
                 border-radius: 50px;
+                font-family: inherit;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: red;
+                    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+                }
             }
         }
     }

@@ -6,6 +6,8 @@ import { TopStreamers } from "../components/authenticatedPageComponents/topTream
 import { CreateStream } from "../components/authenticatedPageComponents/createStreamCall";
 import { TopStreams } from "../components/authenticatedPageComponents/TopStreames";
 import Footer from "../components/authenticatedPageComponents/footer";
+import { motion } from "framer-motion"
+
 const AuthenticatedPage = () => {
     return (
         <Conatiner>

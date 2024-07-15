@@ -59,8 +59,9 @@ export const TopStreams = () => {
         isLoading ? <Loader /> :
         <Container>
             <div className="header">
-            <h1>Top <span>3</span> Streams of the Week</h1>
+            {streams.length > 0 && <h1>Top <span>3</span> Streams of the Week</h1>}
             </div>
+            {streams.length > 0 && 
             <StreamContainer>
                 <div className='streams'>
             { streams.map((stream: Stream, index) => {
@@ -98,6 +99,7 @@ export const TopStreams = () => {
             })}
             </div>
             </StreamContainer>
+}
             <div className='call-to-action'>
                 <h1>Join the ranks of the elite streamers </h1>
                 <p>Sign up for Streamers today and start building your community!</p>
