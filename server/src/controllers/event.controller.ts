@@ -310,4 +310,17 @@ export class EventController {
       );
     }
   );
+
+  // Add a guest to an event
+  addGuest = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      console.log("Inside the controller, i got this event id: ", req.params.id);
+      const event = await this.eventService.addGuest(
+        req.params.id,
+        req.body
+      );
+      console.log(event)
+      res.json(new ApiResponse(200, event, "Guest added successfully"));
+    }
+  )
 }

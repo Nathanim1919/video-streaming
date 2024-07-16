@@ -1,3 +1,4 @@
+import { APISuccessResponseInterface } from "../interfaces/api";
 import apiClient from "./config";
 
 interface PageinationParams {
@@ -61,6 +62,11 @@ const getLiveEvents = () => {
   return apiClient.get("/events/live-events");
 };
 
+const addGuest = (id: string, data: { name: string; profession: string })=> {
+  alert(`addGuest to eventID of: ${id}`);
+  return apiClient.post(`/events/${id}/add-guest`, data);
+}
+
 export {
   createEvent,
   getEvents,
@@ -72,4 +78,5 @@ export {
   getRsvpEvents,
   getTopEvents,
   getLiveEvents,
+  addGuest
 };

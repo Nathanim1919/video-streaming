@@ -18,6 +18,7 @@ import { CountDown } from "./CountDown";
 import { Speakers } from "./Speackers";
 import { getStream } from "../api/stream";
 import { getEvent } from "../api/event";
+import { AddGuests } from "./addGuests";
 
 interface EventDetailData {
   _id: string;
@@ -87,6 +88,7 @@ const EventDetail: React.FC<EventDetailProps> = ({type}) => {
     <Loader />
   ) : (
     <Container>
+      
       <div className="header">
         <div className="heroText">
           <h1>{event.title}</h1>

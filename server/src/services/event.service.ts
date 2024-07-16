@@ -48,17 +48,9 @@ export class EventService {
 
   // Get a single event
   async getEvent(eventId: string): Promise<IEvent> {
-    console.log(
-      "############# Event-ID: ###################################",
-      eventId
-    );
     const event = await EventModel.findById(eventId)
       .populate("owner")
       .populate("attendees");
-    console.log(
-      "############# Event: ###################################",
-      event
-    );
     return event;
   }
 
@@ -425,6 +417,27 @@ export class EventService {
       return rsvp;
     } catch (error) {
       return error;
+    }
+  }
+
+  async addGuest(eventId: string, data: { name: string; profession: string }) {
+    try {
+      console.log("#############################: Event id is: ", eventId);
+      console.log("#############################: Data is: ", data);
+      const event = await EventModel.findOne({ _id: eventId });
+      if (!event) {
+        throw new Error("Event not found");
+      }
+
+      event.guests.push(data);
+      await event.save();
+      return event;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Unknown error has occurred");
+      }
     }
   }
 }

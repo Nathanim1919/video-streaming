@@ -19,7 +19,7 @@ interface IEvent {
     createdAt: Date;
     updatedAt: Date;
     duration: number;
-    guests: {name: string, profession: string, imageUrl: string}[];
+    guests: {name: string, profession: string}[];
     specialInstructions: string;
     schedule: { time: string; activity: string }[];
     socialLinks: { platform: string; url: string }[];

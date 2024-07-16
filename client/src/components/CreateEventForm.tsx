@@ -37,6 +37,18 @@ const Container = styled.div`
   justify-content: center;
   backdrop-filter: blur(5px);
   color: #fff;
+  animation: animate 0.5s ease;
+
+
+  @keyframes animate {
+    from {
+      transform: translateY(20%);
+    }
+    to {
+      transform: translateY(0%);
+    }
+    
+  }
 
   .header {
     padding: 1rem;
@@ -209,6 +221,11 @@ const initialScheduleItem: ScheduleItem = {
   activity: "",
 };
 
+const initialGuest = {
+  name: "",
+  profession: "",
+};
+
 const initialSocialLink: SocialLink = {
   platform: "",
   url: "",
@@ -243,7 +260,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     isOpenForRsvp: "off",
     tags: [],
     duration: 0,
-    guests: [],
+    guests: [initialGuest],
     specialInstructions: "",
     schedule: [initialScheduleItem],
     socialLinks: [initialSocialLink],
@@ -340,23 +357,25 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     }));
   };
 
-  const handleGuestChange = (
+ const handleGuestChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    const { value } = e.target;
+    const { name, value } = e.target;
     const updatedGuests = [...event.guests];
-    updatedGuests[index] = value;
+    updatedGuests[index][name] = value;
     setEvent((prevState) => ({
       ...prevState,
       guests: updatedGuests,
     }));
-  };
+  }
 
   const handleAddGuest = () => {
+    const lastGuest = event.guests[event.schedule.length - 1];
+    if (!lastGuest.name || !lastGuest.profession) return;
     setEvent((prevState) => ({
       ...prevState,
-      guests: [...prevState.guests, ""],
+      guests: [...prevState.guests, initialGuest],
     }));
   };
 
@@ -377,46 +396,47 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
           onClick={() => {
             setCreateEvent(false);
             setEventEditMode(false);
-            }}
-          />
-          </div>
-          <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="title">Event Title</label>
-            <input
+          }}
+        />
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="title">Event Title</label>
+          <input
             type="text"
             id="title"
             name="title"
             value={selectedEvent?.title || event.title}
             onChange={handleInputOnChange}
             disabled={loading}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Event Description</label>
-            <textarea
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="description">Event Description</label>
+          <textarea
             id="description"
             name="description"
             value={selectedEvent?.description || event.description}
             onChange={handleInputOnChange}
             disabled={loading}
-            ></textarea>
-          </div>
-          <div className="form-group">
-            <label htmlFor="rsvp">IsOnline Event</label>
-            <select
+          ></textarea>
+        </div>
+        <div className="form-group">
+          <label htmlFor="rsvp">IsOnline Event</label>
+          <select
             id="rsvp"
             name="isOnline"
             value={selectedEvent?.isOnline || event.isOnline}
             onChange={handleInputOnChange}
             disabled={loading}
-            >
+          >
             <option value="true">Yes, It is</option>
             <option value="false">No, It is not</option>
-            </select>
-          </div>
-          {((eventEditMode && !selectedEvent?.isOnline) || (!eventEditMode && !event.isOnline) ) && (
-            <div className="form-group">
+          </select>
+        </div>
+        {((eventEditMode && !selectedEvent?.isOnline) ||
+          (!eventEditMode && !event.isOnline)) && (
+          <div className="form-group">
             <label htmlFor="location">Location</label>
             <input
               type="text"
@@ -505,7 +525,9 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
           <textarea
             id="specialInstructions"
             name="specialInstructions"
-            value={selectedEvent?.specialInstructions || event.specialInstructions}
+            value={
+              selectedEvent?.specialInstructions || event.specialInstructions
+            }
             onChange={handleInputOnChange}
             disabled={loading}
           ></textarea>
@@ -603,35 +625,81 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
             <h3>Guest List</h3>
             <FaPlus className="add-guest" onClick={handleAddGuest} />
           </div>
-          {selectedEvent?.guests || event.guests.map((guest, index) => (
-            <div key={index} className="guest-card">
-              <div className="form-group">
-                <label htmlFor={`guest-${index}`}>Guest</label>
-                <input
-                  type="text"
-                  id={`guest-${index}`}
-                  name="guest"
-                  value={guest}
-                  onChange={(e) => handleGuestChange(e, index)}
-                  placeholder="Guest Name"
-                  disabled={loading}
-                />
-              </div>
-              <div className="btns">
-                <button
-                  type="button"
-                  className="delete"
-                  onClick={() => handleDeleteGuest(index)}
-                  disabled={loading}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
+          {selectedEvent?.guests?.map((guest, index) => (
+  <div key={index} className="guest-card">
+    <div className="form-group">
+      <label htmlFor={`guest-${index}`}>Guest Name</label>
+      <input
+        type="text"
+        id={`guest-${index}`}
+        name={`guest-${index}`}
+        value={guest.name}
+        onChange={(e) => handleGuestChange(e, index)}
+        placeholder="Guest Name"
+        disabled={loading}
+      />
+      <label htmlFor={`guest-profession-${index}`}>Guest Profession</label>
+      <input
+        type="text"
+        id={`guest-profession-${index}`}
+        name={`guest-profession-${index}`}
+        value={guest.profession}
+        onChange={(e) => handleGuestChange(e, index)}
+        placeholder="Guest profession"
+        disabled={loading}
+      />
+    </div>
+    <div className="btns">
+      <button
+        type="button"
+        className="delete"
+        onClick={() => handleDeleteGuest(index)}
+        disabled={loading}
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+)) || event.guests.map((guest, index) => (
+  <div key={index} className="guest-card">
+    <div className="form-group">
+      <label htmlFor={`guest-${index}`}>Guest Name</label>
+      <input
+        type="text"
+        id={`guest-${index}`}
+        name={`guest-${index}`}
+        value={guest.name}
+        onChange={(e) => handleGuestChange(e, index)}
+        placeholder="Guest Name"
+        disabled={loading}
+      />
+      <label htmlFor={`guest-profession-${index}`}>Guest Profession</label>
+      <input
+        type="text"
+        id={`guest-profession-${index}`}
+        name={`guest-profession-${index}`}
+        value={guest.profession}
+        onChange={(e) => handleGuestChange(e, index)}
+        placeholder="Guest profession"
+        disabled={loading}
+      />
+    </div>
+    <div className="btns">
+      <button
+        type="button"
+        className="delete"
+        onClick={() => handleDeleteGuest(index)}
+        disabled={loading}
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+))}
         </div>
         <button type="submit" disabled={loading}>
-          {loading && <ImSpinner9 className="spinner" />}{eventEditMode?"Update":"Create"}
+          {loading && <ImSpinner9 className="spinner" />}
+          {eventEditMode ? "Update" : "Create"}
         </button>
       </form>
     </Container>

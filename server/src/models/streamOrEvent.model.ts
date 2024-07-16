@@ -1,115 +1,133 @@
 import IEvent from "../interfaces/event.interface";
 import mongoose, { Schema, Document } from "mongoose";
 
-
-const StreamOrEventSchema = new Schema<IEvent>({
+const StreamOrEventSchema = new Schema<IEvent>(
+  {
     owner: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
     title: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     description: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     location: {
-        type: String,
+      type: String,
     },
     image: {
-        type: String,
-        // required: true
+      type: String,
+      // required: true
     },
     date: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
-    attendees: [{
+    attendees: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'User'
-    }],
+        ref: "User",
+      },
+    ],
     isOpenForRsvp: {
-        type: String,
-        default: 'off',
-        enum: ['on', 'off']
+      type: String,
+      default: "off",
+      enum: ["on", "off"],
     },
     status: {
-        type: String,
-        default: 'scheduled',
-        enum: ['scheduled', 'live', 'completed', 'cancelled', 'postponed', 'full']
+      type: String,
+      default: "scheduled",
+      enum: [
+        "scheduled",
+        "live",
+        "completed",
+        "cancelled",
+        "postponed",
+        "full",
+      ],
     },
     eventType: {
-        type: String,
-        default: 'meetup',
-        enum: ['meetup', 'webinar', 'seminar', 'workshop', 'conference', 'hackathon','party','other']
+      type: String,
+      default: "meetup",
+      enum: [
+        "meetup",
+        "webinar",
+        "seminar",
+        "workshop",
+        "conference",
+        "hackathon",
+        "party",
+        "other",
+      ],
     },
     capacity: {
-        type: Number,
-        default: 100
+      type: Number,
+      default: 100,
     },
     price: {
-        type: Number,
-        default: 0
+      type: Number,
+      default: 0,
     },
     isOnline: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false,
     },
     tags: {
-        type: [String],
-        default: []
+      type: [String],
+      default: [],
     },
     duration: {
-        type: Number,
-        default: 1,
+      type: Number,
+      default: 1,
     },
-    guests: [{
+    guests: [
+      {
         name: {
-            type: String,
-            required: false
+          type: String,
+          required: false,
         },
         profession: {
-            type: String,
-            required: false
+          type: String,
+          required: false,
         },
-        imageUrl: {
-            type: String,
-            required: false
-        }
-    }],
+      },
+    ],
 
     specialInstructions: {
-        type: String,
-        default: ''
+      type: String,
+      default: "",
     },
 
-    schedule: [{
+    schedule: [
+      {
         time: {
-            type: String,
-            required: false
+          type: String,
+          required: false,
         },
         activity: {
-            type: String,
-            required: false
-        }
-    }],
+          type: String,
+          required: false,
+        },
+      },
+    ],
 
-    socialLinks: [{
+    socialLinks: [
+      {
         platform: {
-            type: String,
-            required: false
+          type: String,
+          required: false,
         },
         url: {
-            type: String,
-            required: false
-        }
-    }],
-}, { timestamps: true });
-
+          type: String,
+          required: false,
+        },
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
 export default StreamOrEventSchema;
-
-
-// Path: server/src/models/user.model.ts

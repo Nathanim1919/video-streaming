@@ -11,6 +11,11 @@ export type SocialLink = {
   url: string;
 };
 
+export type guest = {
+  name: string;
+  profession: string;
+}
+
 export type Event = {
   _id: string;
   title: string;
@@ -26,7 +31,7 @@ export type Event = {
   isOpenForRsvp: string;
   tags: string[];
   duration: 0,
-  guests: string[];
+  guests: guest[];
   specialInstructions: string;
   schedule: ScheduleItem[];
   socialLinks: SocialLink[];
