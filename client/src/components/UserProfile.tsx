@@ -367,12 +367,12 @@ const UserProfile = () => {
                       >
                         Edit
                       </Link>
-                      <Link to={`/streames/${event._id}`}>Details</Link>
+                      {!event.isOnline?<Link to={`/events/${event._id}`}>Details</Link>: <Link to={`/streames/${event._id}`}>Details</Link>}
                     </div>
                   ) : (
                     <div className="event-buttons">
                       <Link to={"/"}>RSVP</Link>
-                      <Link to={`/events/${event._id}`}>Details</Link>
+                      {!event.isOnline?<Link to={`/events/${event._id}`}>Details</Link>: <Link to={`/streames/${event._id}`}>Details</Link>}
                     </div>
                   )}
                 </div>

@@ -63,7 +63,6 @@ const getLiveEvents = () => {
 };
 
 const addGuest = (id: string, data: { name: string; profession: string })=> {
-  alert(`addGuest to eventID of: ${id}`);
   return apiClient.post(`/events/${id}/add-guest`, data);
 }
 

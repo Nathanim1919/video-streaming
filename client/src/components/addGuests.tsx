@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { requestHandler } from "../utils";
 import { IoMdClose } from "react-icons/io";
-import { APISuccessResponseInterface } from "../interfaces/api";
 import { addGuest } from "../api/event";
+import { addStreamGuest } from "../api/stream";
+
 
 interface AddGuestsProps {
   placeHolders: {
@@ -13,7 +14,7 @@ interface AddGuestsProps {
   title: string;
   eventId: string;
   setIntiateAddGuest: (value: boolean) => void;
-  api: (eventId: string, data: { name: string; profession: string }) => Promise<APISuccessResponseInterface>;
+  isOnline: boolean
 }
 
 export const AddGuests: React.FC<AddGuestsProps> = ({
@@ -21,14 +22,16 @@ export const AddGuests: React.FC<AddGuestsProps> = ({
   title,
   setIntiateAddGuest,
   eventId,
+  isOnline
 }) => {
   const [name, setName] = React.useState("");
   const [profession, setProfession] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
 
     const addGuestHandler = async () => {
+      const endPoint = isOnline?addStreamGuest:addGuest;
       await requestHandler(
-          async () => await addGuest(eventId, { name, profession }),
+          async () => await endPoint(eventId, { name, profession }),
           setIsLoading,
           (res) => {
               console.log(res.data);

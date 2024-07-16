@@ -16,5 +16,9 @@ const getStream = (id: string) => {
     return apiClient.get(`/stream/${id}`);
 };
 
+const addStreamGuest = (id: string, data: { name: string; profession: string })=> {
+  return apiClient.post(`/stream/${id}/add-guest`, data);
+}
+
 // Export the API functions
-export { createStream, getStreams, updateStream, getStream };
+export { createStream, getStreams, updateStream, getStream, addStreamGuest };

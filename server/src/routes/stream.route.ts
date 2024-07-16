@@ -35,5 +35,9 @@ router.post("/:id/rsvp", verifyJWT, [
   streamController.rsvpStream.bind(streamController),
 ]);
 
+router.post("/:id/add-guest", verifyJWT, [
+  streamController.addGuest.bind(streamController)
+])
+
 // Export the router
 export default router;

@@ -85,4 +85,24 @@ export class StreamService {
       session.endSession();
     }
   }
+
+
+  public async addGuest(eventId: string, data: { name: string; profession: string }) {
+    try {
+      const event = await streamModel.findOne({ _id: eventId });
+      if (!event) {
+        throw new Error("Event not found");
+      }
+
+      event.guests.push(data);
+      await event.save();
+      return event;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Unknown error has occurred");
+      }
+    }
+  }
 }

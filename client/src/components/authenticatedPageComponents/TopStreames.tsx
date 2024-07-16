@@ -49,7 +49,7 @@ export const TopStreams = () => {
     const handleRsvpClick = async (eventId: string) => {
         if(isAuthenticated()){
             // await handleRsvp(eventId);
-            navigate(`/streames/${eventId}`)
+            navigate(`/events/${eventId}`)
         }else{
             navigate('/login')
         }
@@ -59,7 +59,7 @@ export const TopStreams = () => {
         isLoading ? <Loader /> :
         <Container>
             <div className="header">
-            {streams.length > 0 && <h1>Top <span>3</span> Streams of the Week</h1>}
+            {streams.length > 0 && <h1>Top <span>{streams.length}</span> Streams of the Week</h1>}
             </div>
             {streams.length > 0 && 
             <StreamContainer>

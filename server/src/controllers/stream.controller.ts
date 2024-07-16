@@ -106,4 +106,17 @@ export class StreamController {
       res.json(new ApiResponse(200, rsvp, "RSVP successful"));
     }
   );
+
+   // Add a guest to an event
+   addGuest = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      console.log("Inside the controller, i got this event id: ", req.params.id);
+      const event = await this.streamService.addGuest(
+        req.params.id,
+        req.body
+      );
+      console.log(event)
+      res.json(new ApiResponse(200, event, "Guest added successfully"));
+    }
+  )
 }

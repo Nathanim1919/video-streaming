@@ -13,12 +13,15 @@ import {
 } from "react-icons/fa6";
 import { SimplarEvents } from "../components/SimilarEvents";
 import { formatDate, requestHandler } from "../utils";
-import { streamApi } from "../api";
 import { CountDown } from "./CountDown";
 import { Speakers } from "./Speackers";
 import { getStream } from "../api/stream";
 import { getEvent } from "../api/event";
-import { AddGuests } from "./addGuests";
+import { FaStar } from "react-icons/fa";
+import { IoMdTimer } from "react-icons/io";
+import { GrSchedules } from "react-icons/gr";
+
+
 
 interface EventDetailData {
   _id: string;
@@ -30,6 +33,7 @@ interface EventDetailData {
   location: string;
   eventType: string;
   rsvp: string;
+  specialInstructions: string;
   eventInformations: [
     {
       title: string;
@@ -44,8 +48,7 @@ interface EventDetailProps {
   type: "stream" | "event";
 }
 
-
-const EventDetail: React.FC<EventDetailProps> = ({type}) => {
+const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
   const { user } = useAuth();
   const { eventId } = useParams();
 
@@ -64,7 +67,7 @@ const EventDetail: React.FC<EventDetailProps> = ({type}) => {
 
   useEffect(() => {
     const fetchEventDetail = async () => {
-      const endPoint = type === 'stream' ? getStream : getEvent;
+      const endPoint = type === "stream" ? getStream : getEvent;
       await requestHandler(
         async () => await endPoint(eventId!),
         setIsLoading,
@@ -81,14 +84,10 @@ const EventDetail: React.FC<EventDetailProps> = ({type}) => {
     fetchEventDetail();
   }, []);
 
-
-
-
   return isLoading ? (
     <Loader />
   ) : (
     <Container>
-      
       <div className="header">
         <div className="heroText">
           <h1>{event.title}</h1>
@@ -108,23 +107,43 @@ const EventDetail: React.FC<EventDetailProps> = ({type}) => {
         </div>
         <CountDown event={event} />
       </div>
-      <Speakers event={event}/>
+      <Speakers event={event} />
       <div className="eventInfos">
-        <div className="descriptions">
-          <div className="desc">
-            <h2>Description</h2>
-            <p>{event.description}</p>
-          </div>
-          <div className="hours">
-            <h2>Hours</h2>
-            <p>12:00 PM - 2:00 PM</p>
-          </div>
-          <div className="contactOrganizer">
-            <h2>Contact Organizer</h2>
-            <p>
-              For questions about this event, please contact the organizer at{" "}
-              <a href="mailto:org@gmail.com">Org Email</a>
-            </p>
+        <div className="schedules">
+          <h2><GrSchedules/>Event Schedule</h2>
+          <div className="scheduleList">
+            <div className="schedule">
+              <h3><IoMdTimer/>10:00am - 10:30am</h3>
+              <p>Introduction about python</p>
+            </div>
+            <div className="schedule">
+              <h3><IoMdTimer/>10:30am - 11:00am</h3>
+              <p>Python Basics Exerice</p>
+            </div>
+            <div className="schedule">
+              <h3><IoMdTimer/>11:00am - 11:30am</h3>
+              <p>Break</p>
+            </div>
+            <div className="schedule">
+              <h3><IoMdTimer/>11:30am - 12:00pm</h3>
+              <p>Python Intermediate Exerice</p>
+            </div>
+            <div className="schedule">
+              <h3><IoMdTimer/>12:00pm - 12:30pm</h3>
+              <p>Python Advance Exerice</p>
+            </div>
+            <div className="schedule">
+              <h3><IoMdTimer/>12:30pm - 1:00pm</h3>
+              <p>Q&A</p>
+            </div>
+            <div className="schedule">
+              <h3><IoMdTimer/>1:00pm - 1:30pm</h3>
+              <p>Networking</p>
+            </div>
+            <div className="schedule">
+              <h3><IoMdTimer/>1:30pm - 2:00pm</h3>
+              <p>End of Event</p>
+            </div>
           </div>
         </div>
         <div className="locationsTags">
@@ -175,6 +194,13 @@ const EventDetail: React.FC<EventDetailProps> = ({type}) => {
           </div>
         </div>
       </div>
+      <div className="specialInstructionBox">
+        <h2>
+          <FaStar />
+          Special Instruction
+        </h2>
+        <p>{event?.specialInstructions}</p>
+      </div>
       <SimplarEvents />
     </Container>
   );
@@ -186,6 +212,33 @@ const Container = styled.div`
   width: 100%;
   display: grid;
   place-items: center;
+
+  .specialInstructionBox {
+    background-color: #171717;
+    width: 80%;
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    align-items: flex-start;
+
+    h2 {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      align-self: center;
+      margin-bottom: 1rem;
+
+      svg {
+        color: gold;
+      }
+    }
+
+    > * {
+      margin: 0;
+      color: #fff;
+    }
+  }
 
   .counter {
     width: 80%;
@@ -279,30 +332,52 @@ const Container = styled.div`
   }
   .eventInfos {
     width: 80%;
+    
     margin: 0 auto;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     justify-content: center;
     gap: 2rem;
     color: #fff;
     margin-top: 3rem;
     padding-bottom: 2rem;
+    /* background-color: red; */
 
     @media screen and (max-width: 800px) {
       flex-direction: column;
     }
 
-    .desc {
-      max-width: 60%;
+    .schedules{
+      background-color: #171717;
 
-      @media screen and (max-width: 800px) {
-        max-width: 100%;
+      h2{
+        padding: 1rem;
+        background-color: #333;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: .4rem;
       }
-      h2 {
-        font-size: 1.5rem;
-      }
-      p {
-        font-size: 0.8rem;
-        color: #dcd5d5;
+      
+
+      .schedule{
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        border-bottom: 1px solid #3b3939;
+
+        h3{
+          margin: 0;
+          display: flex;
+          align-items: center;
+          gap: .4rem;
+        }
+
+        p{
+          margin: 0;
+          color: #5f5c5c;
+          font-size: .8rem;
+        }
       }
     }
 

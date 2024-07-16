@@ -4,8 +4,7 @@ import { Event } from "../interfaces/event";
 import { useState } from "react";
 import { AddGuests } from "./addGuests";
 import { FaPlus } from "react-icons/fa";
-
-
+import { useAuth } from "../contexts/AuthContext";
 
 interface SpeakerProps {
   event: Event;
@@ -13,10 +12,12 @@ interface SpeakerProps {
 
 export const Speakers: React.FC<SpeakerProps> = ({ event }) => {
   const [intiateAddGuest, setIntiateAddGuest] = useState(false);
+  const { user } = useAuth();
   return (
     <Container>
       {intiateAddGuest && (
         <AddGuests
+          isOnline={event.isOnline}
           eventId={event._id}
           setIntiateAddGuest={setIntiateAddGuest}
           title="Guest"
@@ -59,12 +60,14 @@ export const Speakers: React.FC<SpeakerProps> = ({ event }) => {
               </div>
             </div>
           ))}
-          <div className="addGuest" onClick={() => setIntiateAddGuest(true)}>
-            <div className="icon">
-              <FaPlus />
+          {event?.owner?._id === user?._id && (
+            <div className="addGuest" onClick={() => setIntiateAddGuest(true)}>
+              <div className="icon">
+                <FaPlus />
+              </div>
+              <p>Add Guest</p>
             </div>
-            <p>Add Guest</p>
-          </div>
+          )}
         </div>
       </div>
     </Container>
@@ -77,6 +80,7 @@ const Container = styled.div`
   display: grid;
   padding: 3rem 1rem;
   margin-top: 3rem;
+  width: 80%;
 
   .addGuest {
     background-color: #4b1b1b;
@@ -89,19 +93,19 @@ const Container = styled.div`
     flex: 1;
     padding: 1rem;
     position: relative;
-    cursor: pointer; 
+    cursor: pointer;
     border-radius: 10px;
 
-    .icon{
-        font-size: 2rem;
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        text-align: center;
-        color: #000;
-        background-color: #fff;
-        display: grid;
-        place-items: center;
+    .icon {
+      font-size: 2rem;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      text-align: center;
+      color: #000;
+      background-color: #fff;
+      display: grid;
+      place-items: center;
     }
   }
 
