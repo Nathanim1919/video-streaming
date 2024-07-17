@@ -20,6 +20,9 @@ import { getEvent } from "../api/event";
 import { FaStar } from "react-icons/fa";
 import { IoMdTimer } from "react-icons/io";
 import { GrSchedules } from "react-icons/gr";
+import { CiEdit } from "react-icons/ci";
+import { UserInterface } from "../interfaces/user";
+
 
 
 
@@ -29,6 +32,7 @@ interface EventDetailData {
   title: string;
   description: string;
   date: string;
+  owner: UserInterface;
   time: string;
   location: string;
   eventType: string;
@@ -57,6 +61,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
   const [isRsvp, setIsRsvp] = useState(
     user ? event?.attendees?.includes(user._id) : false
   );
+  const [isOwner, setIsOwner] = useState(event?.owner?._id === user?._id);
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const { handleRsvp, handleRemoveRsvp, checkRsvpStatus } = useRsvp(
     eventId!,
@@ -84,6 +89,10 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
     fetchEventDetail();
   }, []);
 
+  useEffect(() => {
+    setIsOwner(event?.owner?._id === user?._id);
+  }, [event, user]);
+
   return isLoading ? (
     <Loader />
   ) : (
@@ -110,7 +119,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
       <Speakers event={event} />
       <div className="eventInfos">
         <div className="schedules">
-          <h2><GrSchedules/>Event Schedule</h2>
+          <h2><h4><GrSchedules/>Event Schedule</h4>{isOwner && <span><CiEdit/></span>}</h2>
           <div className="scheduleList">
             <div className="schedule">
               <h3><IoMdTimer/>10:00am - 10:30am</h3>
@@ -196,8 +205,11 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
       </div>
       <div className="specialInstructionBox">
         <h2>
-          <FaStar />
-          Special Instruction
+          <h3><FaStar />
+          Special Instruction</h3>
+          {isOwner && <button>
+            <CiEdit/>
+          </button>}
         </h2>
         <p>{event?.specialInstructions}</p>
       </div>
@@ -216,22 +228,43 @@ const Container = styled.div`
   .specialInstructionBox {
     background-color: #171717;
     width: 80%;
-    padding: 4rem 2rem;
     display: flex;
     flex-direction: column;
     border-radius: 1rem;
     align-items: flex-start;
 
     h2 {
+      background-color: red;
       display: flex;
+      width: 100%;
       align-items: center;
+      justify-content: space-between;
       gap: 1rem;
       align-self: center;
       margin-bottom: 1rem;
 
-      svg {
-        color: gold;
+      h3{
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        padding:.3rem 1rem;
       }
+
+      button{
+        justify-self: flex-end;
+        background-color: transparent;
+        color: #fff;
+        cursor: pointer;
+        margin-right: 1rem;
+        outline: none;
+        border: none;
+        font-size: 2rem;
+      }
+    }
+
+    p {
+      padding: 1rem;
+      color: #fff;
     }
 
     > * {
@@ -350,13 +383,23 @@ const Container = styled.div`
     .schedules{
       background-color: #171717;
 
-      h2{
-        padding: 1rem;
-        background-color: #333;
+
+      >*{
         margin: 0;
+        color: #fff;
+        padding: 0 1rem;
+      }
+
+      h2{
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: .4rem;
+        background-color: red;
+
+        h4{
+          display: flex;
+          gap: .4rem;
+        }
       }
       
 
