@@ -22,9 +22,7 @@ import { IoMdTimer } from "react-icons/io";
 import { GrSchedules } from "react-icons/gr";
 import { CiEdit } from "react-icons/ci";
 import { UserInterface } from "../interfaces/user";
-
-
-
+import { ScheduleManagment } from "./scheduleManagment";
 
 interface EventDetailData {
   _id: string;
@@ -57,6 +55,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
   const { eventId } = useParams();
 
   const [isLoading, setIsLoading] = React.useState(false);
+  const [manageSchedule, setManageSchedule] = React.useState(false);
   const [event, setEvent] = useState({} as EventDetailData);
   const [isRsvp, setIsRsvp] = useState(
     user ? event?.attendees?.includes(user._id) : false
@@ -117,40 +116,79 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
         <CountDown event={event} />
       </div>
       <Speakers event={event} />
+    {manageSchedule &&  <ScheduleManagment
+        event={event}
+        manageSchedule={manageSchedule}
+        setManageSchedule={setManageSchedule}
+      />}
       <div className="eventInfos">
         <div className="schedules">
-          <h2><h4><GrSchedules/>Event Schedule</h4>{isOwner && <span><CiEdit/></span>}</h2>
+          <h2>
+            <h4>
+              <GrSchedules />
+              Event Schedule
+            </h4>
+            {isOwner && (
+              <span onClick={() => setManageSchedule(true)}>
+                <CiEdit />
+              </span>
+            )}
+          </h2>
           <div className="scheduleList">
             <div className="schedule">
-              <h3><IoMdTimer/>10:00am - 10:30am</h3>
+              <h3>
+                <IoMdTimer />
+                10:00am - 10:30am
+              </h3>
               <p>Introduction about python</p>
             </div>
             <div className="schedule">
-              <h3><IoMdTimer/>10:30am - 11:00am</h3>
+              <h3>
+                <IoMdTimer />
+                10:30am - 11:00am
+              </h3>
               <p>Python Basics Exerice</p>
             </div>
             <div className="schedule">
-              <h3><IoMdTimer/>11:00am - 11:30am</h3>
+              <h3>
+                <IoMdTimer />
+                11:00am - 11:30am
+              </h3>
               <p>Break</p>
             </div>
             <div className="schedule">
-              <h3><IoMdTimer/>11:30am - 12:00pm</h3>
+              <h3>
+                <IoMdTimer />
+                11:30am - 12:00pm
+              </h3>
               <p>Python Intermediate Exerice</p>
             </div>
             <div className="schedule">
-              <h3><IoMdTimer/>12:00pm - 12:30pm</h3>
+              <h3>
+                <IoMdTimer />
+                12:00pm - 12:30pm
+              </h3>
               <p>Python Advance Exerice</p>
             </div>
             <div className="schedule">
-              <h3><IoMdTimer/>12:30pm - 1:00pm</h3>
+              <h3>
+                <IoMdTimer />
+                12:30pm - 1:00pm
+              </h3>
               <p>Q&A</p>
             </div>
             <div className="schedule">
-              <h3><IoMdTimer/>1:00pm - 1:30pm</h3>
+              <h3>
+                <IoMdTimer />
+                1:00pm - 1:30pm
+              </h3>
               <p>Networking</p>
             </div>
             <div className="schedule">
-              <h3><IoMdTimer/>1:30pm - 2:00pm</h3>
+              <h3>
+                <IoMdTimer />
+                1:30pm - 2:00pm
+              </h3>
               <p>End of Event</p>
             </div>
           </div>
@@ -205,11 +243,15 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
       </div>
       <div className="specialInstructionBox">
         <h2>
-          <h3><FaStar />
-          Special Instruction</h3>
-          {isOwner && <button>
-            <CiEdit/>
-          </button>}
+          <h3>
+            <FaStar />
+            Special Instruction
+          </h3>
+          {isOwner && (
+            <button>
+              <CiEdit />
+            </button>
+          )}
         </h2>
         <p>{event?.specialInstructions}</p>
       </div>
@@ -230,11 +272,10 @@ const Container = styled.div`
     width: 80%;
     display: flex;
     flex-direction: column;
-    border-radius: 1rem;
     align-items: flex-start;
 
     h2 {
-      background-color: red;
+      background-color: #d42d2d;
       display: flex;
       width: 100%;
       align-items: center;
@@ -243,14 +284,14 @@ const Container = styled.div`
       align-self: center;
       margin-bottom: 1rem;
 
-      h3{
+      h3 {
         display: flex;
         align-items: center;
-        gap: .5rem;
-        padding:.3rem 1rem;
+        gap: 0.5rem;
+        padding: 0.3rem 1rem;
       }
 
-      button{
+      button {
         justify-self: flex-end;
         background-color: transparent;
         color: #fff;
@@ -365,7 +406,7 @@ const Container = styled.div`
   }
   .eventInfos {
     width: 80%;
-    
+
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -380,46 +421,44 @@ const Container = styled.div`
       flex-direction: column;
     }
 
-    .schedules{
+    .schedules {
       background-color: #171717;
 
-
-      >*{
+      > * {
         margin: 0;
         color: #fff;
         padding: 0 1rem;
       }
 
-      h2{
+      h2 {
         display: flex;
         justify-content: space-between;
         align-items: center;
         background-color: red;
 
-        h4{
+        h4 {
           display: flex;
-          gap: .4rem;
+          gap: 0.4rem;
         }
       }
-      
 
-      .schedule{
+      .schedule {
         display: flex;
         flex-direction: column;
         padding: 1rem;
         border-bottom: 1px solid #3b3939;
 
-        h3{
+        h3 {
           margin: 0;
           display: flex;
           align-items: center;
-          gap: .4rem;
+          gap: 0.4rem;
         }
 
-        p{
+        p {
           margin: 0;
           color: #5f5c5c;
-          font-size: .8rem;
+          font-size: 0.8rem;
         }
       }
     }
