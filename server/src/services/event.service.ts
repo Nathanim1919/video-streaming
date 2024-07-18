@@ -422,8 +422,6 @@ export class EventService {
 
   async addGuest(eventId: string, data: { name: string; profession: string }) {
     try {
-      console.log("#############################: Event id is: ", eventId);
-      console.log("#############################: Data is: ", data);
       const event = await EventModel.findOne({ _id: eventId });
       if (!event) {
         throw new Error("Event not found");
@@ -432,6 +430,62 @@ export class EventService {
       event.guests.push(data);
       await event.save();
       return event;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Unknown error has occurred");
+      }
+    }
+  }
+
+  addSchedule(eventId: string, data: { time: string; description: string }) {
+    try {
+      return EventModel.findOneAndUpdate(
+        { _id: eventId },
+        { $push: { schedule: data } },
+        { new: true }
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Unknown error has occurred");
+      }
+    }
+  }
+
+  editSchedule(
+    eventId: string,
+    data: { time: string; description: string }
+  ) {
+    try {
+      return EventModel.findOneAndUpdate(
+        { _id: eventId},
+        {
+          $set: {
+            "schedule.$.time": data.time,
+            "schedule.$.description": data.description,
+          },
+        },
+        { new: true }
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Unknown error has occurred");
+      }
+    }
+  }
+
+  deleteSchedule(eventId: string, data: { time: string; description: string }) {
+    try {
+      // return EventModel.findOneAndUpdate(
+      //   { _id: eventId },
+      //   { $pull: { schedule: { _id: scheduleId } } },
+      //   { new: true }
+      // );
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);

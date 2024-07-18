@@ -20,5 +20,9 @@ const addStreamGuest = (id: string, data: { name: string; profession: string })=
   return apiClient.post(`/stream/${id}/add-guest`, data);
 }
 
+const addStreamSchedule = (id: string, data: { time: string; activity: string }) => {
+  return apiClient.post(`/stream/${id}/add-schedule`, data);
+};
+
 // Export the API functions
-export { createStream, getStreams, updateStream, getStream, addStreamGuest };
+export { createStream, getStreams, updateStream, getStream, addStreamGuest, addStreamSchedule };

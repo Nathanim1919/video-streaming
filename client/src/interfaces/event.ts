@@ -3,7 +3,6 @@ import { UserInterface } from "./user";
 export type ScheduleItem = {
   time: string;
   activity: string;
-  [key: string]: string;
 };
 
 export type SocialLink = {

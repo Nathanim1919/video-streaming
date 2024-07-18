@@ -1,9 +1,16 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import styled from "styled-components";
 import { TfiTimer } from "react-icons/tfi";
 import { IoMdClose } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
+import React from "react";
+import { addSchedule } from "../api/event";
+import { addStreamSchedule } from "../api/stream";
+import { requestHandler } from "../utils";
+import {Event} from "../interfaces/event";
+import { FaPlus } from "react-icons/fa";
+
 
 interface ScheduleManagmentProps {
   event: Event;
@@ -16,8 +23,40 @@ export const ScheduleManagment: FC<ScheduleManagmentProps> = ({
   manageSchedule,
   setManageSchedule,
 }) => {
+  const [time, setTime] = useState("");
+  const [activity, setActivity] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleAddSchedule = async () => {
+    const endPoint = event.isOnline ? addStreamSchedule : addSchedule;
+    await requestHandler(
+      async () => await endPoint(event._id, { time, activity }),
+      setIsLoading,
+      (res) => {
+        setActivity("")
+        setTime("")
+        alert(res.message);
+        console.log(res.data);
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+  };
+
+  const handleEditSchedule = async () => {
+    // handle edit schedule
+  };
+
+  const populateSchduleDataForEdit = (item: any, index: number) => {
+     setTime(item.time);
+      setActivity(item.activity);
+      setIsEditing(true);
+  };
+  
   return (
-    <Container>
+    <Container isEditing={isEditing}>
       <div className="scheduleContainer">
         <h1>Schedule Managment</h1>
         <div className="close">
@@ -25,99 +64,44 @@ export const ScheduleManagment: FC<ScheduleManagmentProps> = ({
         </div>
         <div className="container">
           <div className="currentScheduleList">
-            <h2>Current Schedule</h2>
+            {/* <h2>Current Schedule</h2> */}
             <div className="scheduleList">
-              <div className="schedule">
+              {event.schedule.map((item, index) => (<div className="schedule">
                 <div className="Scheduleheader">
                   <h3>
                     <TfiTimer />
-                    10:00am - 11:00am
+                    {item.time}
                   </h3>
                   <div className="actions">
-                    <CiEdit />
+                    <CiEdit onClick={()=>populateSchduleDataForEdit(item, index)}/>
                     <MdDeleteOutline />
                   </div>
                 </div>
-                <p>Introduction to Python</p>
-              </div>
-              <div className="schedule">
-                <div className="Scheduleheader">
-                  <h3>
-                    <TfiTimer />
-                    11:00am - 12:00pm
-                  </h3>
-                  <div className="actions">
-                    <CiEdit />
-                    <MdDeleteOutline />
-                  </div>
-                </div>
-                <p>Introduction to React</p>
-              </div>
-              <div className="schedule">
-                <div className="Scheduleheader">
-                  <h3>
-                    <TfiTimer />
-                    12:00pm - 1:00pm
-                  </h3>
-                  <div className="actions">
-                    <CiEdit />
-                    <MdDeleteOutline />
-                  </div>
-                </div>
-                <p>Introduction to Node.js</p>
-              </div>
-              <div className="schedule">
-                <div className="Scheduleheader">
-                  <h3>
-                    <TfiTimer />
-                    1:00pm - 2:00pm
-                  </h3>
-                  <div className="actions">
-                    <CiEdit />
-                    <MdDeleteOutline />
-                  </div>
-                </div>
-                <p>Introduction to Express.js</p>
-              </div>
-              <div className="schedule">
-                <div className="Scheduleheader">
-                  <h3>
-                    <TfiTimer />
-                    2:00pm - 3:00pm
-                  </h3>
-                  <div className="actions">
-                    <CiEdit />
-                    <MdDeleteOutline />
-                  </div>
-                </div>
-                <p>Introduction to MongoDB</p>
-              </div>
-              <div className="schedule">
-                <div className="Scheduleheader">
-                  <h3>
-                    <TfiTimer />
-                    3:00pm - 4:00pm
-                  </h3>
-                  <div className="actions">
-                    <CiEdit />
-                    <MdDeleteOutline />
-                  </div>
-                </div>
-                <p>Introduction to SQL</p>
-              </div>
+                <p>{item.activity}</p>
+              </div>))}
             </div>
           </div>
           <div className="addNewSchedule">
-            <h2>Add New Schedule</h2>
+            <h2>{!isEditing?"Add New":"Edit"} Schedule</h2>
             <form action="">
-              <input type="text" placeholder="e.g 10:00 AM - 10:30 AM" />
+              <input
+                onChange={(e) => setTime(e.target.value)}
+                type="text"
+                value={time}
+                placeholder="e.g 10:00 AM - 10:30 AM"
+              />
               <textarea
                 name=""
                 rows={7}
+                value={activity}
                 id=""
                 placeholder="Enter Schedule Description"
+                onChange={(e) => setActivity(e.target.value)}
               ></textarea>
-              <button>Add Schedule</button>
+              <div className="btns">
+              <button type="button" onClick={handleAddSchedule}>{isEditing?"Edit":"Add"} Schedule</button>
+               {isEditing && <FaPlus onClick={()=>{setIsEditing(false); setActivity(""); setTime("")}}/>}
+              </div>
             </form>
           </div>
         </div>
@@ -175,7 +159,7 @@ const Container = styled.div`
       padding: 20px;
       font-size: 1.5rem;
       border-bottom: 1px solid #333131;
-      background-color: red;
+      /* background-color: red; */
     }
 
     .container {
@@ -217,7 +201,7 @@ const Container = styled.div`
           flex-direction: column;
           overflow-x: hidden;
 
-          .Scheduleheader{
+          .Scheduleheader {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -238,9 +222,19 @@ const Container = styled.div`
               padding: 0.7rem;
               margin: 0;
               font-size: 1.2rem;
+
+              svg {
+                cursor: pointer;
+                padding: 7px;
+                background-color: #2e2c2c;
+                border-radius: 50%;
+
+                &:hover {
+                  background-color: #3e3c3c;
+                }
+              }
             }
           }
-
 
           p {
             margin: 0;
@@ -268,6 +262,8 @@ const Container = styled.div`
           width: 50%;
           margin: 0 auto;
 
+
+
           input {
             padding: 10px;
             border: none;
@@ -288,10 +284,31 @@ const Container = styled.div`
             color: #fff;
           }
 
+          .btns{
+            display: grid;
+            // lets use isEditing as props
+            grid-template-columns: ${(props) => (props.isEditing ? "1fr .1fr" : "1fr")};
+            align-items: center;
+            gap: .3rem;
+            width: 100%;
+
+            >svg{
+              background-color: #fff;
+              color: #333;
+              padding: 10px;
+              cursor: pointer;
+
+
+              &:hover{
+                background-color: #eee;
+              }
+            }
+          }
+
           button {
             padding: 10px;
             border: none;
-            border-radius: 5px;
+            /* border-radius: 5px; */
             background-color: #d02a2a;
             box-shadow: 0 0 5px #3130301c;
             cursor: pointer;

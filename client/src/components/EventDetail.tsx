@@ -129,7 +129,11 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
               Event Schedule
             </h4>
             {isOwner && (
-              <span onClick={() => setManageSchedule(true)}>
+              <span style={{
+                cursor:"pointer",
+                fontSize:"1.5rem",
+                color:"#fff"
+              }} onClick={() => setManageSchedule(true)}>
                 <CiEdit />
               </span>
             )}

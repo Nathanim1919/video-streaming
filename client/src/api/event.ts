@@ -66,6 +66,10 @@ const addGuest = (id: string, data: { name: string; profession: string })=> {
   return apiClient.post(`/events/${id}/add-guest`, data);
 }
 
+const addSchedule = (id: string, data: { time: string; activity: string }) => {
+  return apiClient.post(`/events/${id}/add-schedule`, data);
+};
+
 export {
   createEvent,
   getEvents,
@@ -77,5 +81,6 @@ export {
   getRsvpEvents,
   getTopEvents,
   getLiveEvents,
-  addGuest
+  addGuest,
+  addSchedule
 };

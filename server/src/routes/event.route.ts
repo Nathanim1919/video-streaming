@@ -48,4 +48,8 @@ router.post("/:id/check-rsvp", verifyJWT, [
   eventController.checkRsvp.bind(eventController),
 ]);
 
+router.post("/:id/add-schedule", verifyJWT, [
+  eventController.addSchedule.bind(eventController),
+]);
+
 export default router;
