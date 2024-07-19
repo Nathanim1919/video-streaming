@@ -127,7 +127,7 @@ export class StreamController {
         req.body
       );
       // save the event in the cache
-      const eventCacheKey = `event:${req.params.id}`;
+      const eventCacheKey = `stream:${req.params.id}`;
       const eventCacheValue = JSON.stringify(event);
       await this.cacheClient.set(eventCacheKey, eventCacheValue);
       res.json(new ApiResponse(200, event, "Schedule added successfully"));
@@ -141,7 +141,22 @@ export class StreamController {
         req.body
       );
       // save the event in the cache
-      const eventCacheKey = `event:${req.params.id}`;
+      const eventCacheKey = `stream:${req.params.id}`;
+      const eventCacheValue = JSON.stringify(event);
+      await this.cacheClient.set(eventCacheKey, eventCacheValue);
+      res.json(new ApiResponse(200, event, "Schedule edited successfully"));
+    }
+  )
+
+  editStreamSpecialInstruction = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const event = await this.streamService.editSpecialInstruction(
+        req.params.id,
+        req.body.data
+      );
+
+      // save the event in the cache
+      const eventCacheKey = `stream:${req.params.id}`;
       const eventCacheValue = JSON.stringify(event);
       await this.cacheClient.set(eventCacheKey, eventCacheValue);
       res.json(new ApiResponse(200, event, "Schedule edited successfully"));

@@ -13,21 +13,42 @@ const updateStream = (id: string, date: Event) => {
 };
 
 const getStream = (id: string) => {
-    return apiClient.get(`/stream/${id}`);
+  return apiClient.get(`/stream/${id}`);
 };
 
-const addStreamGuest = (id: string, data: { name: string; profession: string })=> {
+const addStreamGuest = (
+  id: string,
+  data: { name: string; profession: string }
+) => {
   return apiClient.post(`/stream/${id}/add-guest`, data);
-}
+};
 
-const addStreamSchedule = (id: string, data: { time: string; activity: string }) => {
+const addStreamSchedule = (
+  id: string,
+  data: { time: string; activity: string }
+) => {
   return apiClient.post(`/stream/${id}/add-schedule`, data);
 };
 
-const editStreamSchedule = (id: string, data: { time: string; activity: string }[]) => {
+const editStreamSchedule = (
+  id: string,
+  data: { time: string; activity: string }[]
+) => {
   return apiClient.put(`/stream/${id}/edit-schedule`, data);
-}
+};
 
+const editStreamInstruction = (id: string, data: string) => {
+  return apiClient.put(`/stream/${id}/edit-instruction`, {data});
+};
 
 // Export the API functions
-export { createStream,editStreamSchedule, getStreams, updateStream, getStream, addStreamGuest, addStreamSchedule };
+export {
+  createStream,
+  editStreamSchedule,
+  getStreams,
+  updateStream,
+  getStream,
+  addStreamGuest,
+  addStreamSchedule,
+  editStreamInstruction
+};

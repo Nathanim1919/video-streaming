@@ -452,21 +452,34 @@ export class EventService {
     }
   }
 
-  editSchedule(
-    eventId: string,
-    data: { time: string; description: string }[]
-  ) {
+  editSchedule(eventId: string, data: { time: string; description: string }[]) {
     try {
       return EventModel.findOneAndUpdate(
         { _id: eventId },
         { schedule: data },
         { new: true }
-      )
+      );
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
         throw new Error("Unknown error has occurred");
+      }
+    }
+  }
+
+  editSpecialInstruction(eventId: string, data: string) {
+    try {
+      return EventModel.findOneAndUpdate(
+        { _id: eventId },
+        { specialInstructions: data },
+        { new: true }
+      );
+    } catch (error: any) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Unknown error has occured");
       }
     }
   }

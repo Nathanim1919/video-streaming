@@ -47,5 +47,9 @@ router.put("/:id/edit-schedule", verifyJWT, [
   streamController.editSchedule.bind(streamController)
 ])
 
+router.put("/:id/edit-instruction", verifyJWT, [
+  streamController.editStreamSpecialInstruction.bind(streamController),
+]);
+
 // Export the router
 export default router;

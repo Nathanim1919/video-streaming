@@ -56,4 +56,8 @@ router.put("/:id/edit-schedule", verifyJWT, [
   eventController.editSchedule.bind(eventController),
 ]);
 
+router.put("/:id/edit-instruction", verifyJWT, [
+  eventController.editSpecialInstruction.bind(eventController),
+]);
+
 export default router;

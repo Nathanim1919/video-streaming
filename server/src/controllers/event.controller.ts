@@ -6,6 +6,7 @@ import { Request, Response } from "express";
 import IUser from "../interfaces/user.interface";
 import { CacheClient } from "../config/redisClient";
 import logger from "../logger";
+import { read } from "fs";
 
 interface RequestWithUser extends Request {
   user: IUser;
@@ -345,6 +346,22 @@ export class EventController {
         req.params.id,
         req.body
       );
+      // save the event in the cache
+      const eventCacheKey = `event:${req.params.id}`;
+      const eventCacheValue = JSON.stringify(event);
+      await this.cacheClient.set(eventCacheKey, eventCacheValue);
+      res.json(new ApiResponse(200, event, "Schedule edited successfully"));
+    }
+  )
+
+
+  editSpecialInstruction = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const event = await this.eventService.editSpecialInstruction(
+        req.params.id,
+        req.body.data
+      );
+
       // save the event in the cache
       const eventCacheKey = `event:${req.params.id}`;
       const eventCacheValue = JSON.stringify(event);

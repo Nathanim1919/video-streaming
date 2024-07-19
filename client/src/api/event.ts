@@ -73,6 +73,10 @@ const editSchedule = (id: string, data: { time: string; activity: string }[]) =>
   return apiClient.put(`/events/${id}/edit-schedule`, data);
 };
 
+const editEventInstruction = (id: string, data: string) => {
+  return apiClient.put(`/events/${id}/edit-instruction`, {data});
+}
+
 export {
   createEvent,
   getEvents,
@@ -86,5 +90,6 @@ export {
   getLiveEvents,
   addGuest,
   addSchedule,
-  editSchedule
+  editSchedule,
+  editEventInstruction
 };

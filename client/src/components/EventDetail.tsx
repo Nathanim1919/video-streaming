@@ -15,8 +15,8 @@ import { SimplarEvents } from "../components/SimilarEvents";
 import { formatDate, requestHandler } from "../utils";
 import { CountDown } from "./CountDown";
 import { Speakers } from "./Speackers";
-import { getStream } from "../api/stream";
-import { getEvent } from "../api/event";
+import { getStream, editStreamInstruction } from "../api/stream";
+import { getEvent, editEventInstruction } from "../api/event";
 import { FaStar } from "react-icons/fa";
 import { IoMdTimer } from "react-icons/io";
 import { GrSchedules } from "react-icons/gr";
@@ -37,6 +37,7 @@ interface EventDetailData {
   rsvp: string;
   price: number;
   capacity: number;
+  isOnline: boolean;
   specialInstructions: string;
   eventInformations: [
     {
@@ -65,12 +66,33 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
   );
   const [isOwner, setIsOwner] = useState(event?.owner?._id === user?._id);
   const [qrCodeUrl, setQrCodeUrl] = useState("");
+  const [editSpecialInstrution, setEditSpecialInstruction] = useState(false);
+  const [specialInsrution, setSpecialInstrution] = useState(
+    event.specialInstructions
+  );
   const { handleRsvp, handleRemoveRsvp, checkRsvpStatus } = useRsvp(
     eventId!,
     setIsRsvp,
     setIsLoading,
     setQrCodeUrl
   );
+
+  const handleInstructionEdit = async () => {
+    const endPoint = event.isOnline
+      ? editStreamInstruction
+      : editEventInstruction;
+    await requestHandler(
+      async () => await endPoint(event._id, specialInsrution),
+      setIsLoading,
+      (res) => {
+        event.specialInstructions = specialInsrution;
+        alert(res.message);
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+  };
 
   useEffect(() => {
     const fetchEventDetail = async () => {
@@ -167,7 +189,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
                 width="300"
                 height="250"
                 style={{ border: 0 }}
-                allowFullScreen=""
+                // allowFullScreen=""
                 loading="lazy"
               ></iframe>
               <div className="titles">
@@ -213,12 +235,33 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
             Special Instruction
           </h3>
           {isOwner && (
-            <button>
+            <button onClick={() => setEditSpecialInstruction(true)}>
               <CiEdit />
             </button>
           )}
         </h2>
         <p>{event?.specialInstructions}</p>
+        {editSpecialInstrution && (
+          <form action="">
+            <textarea
+              name=""
+              value={specialInsrution}
+              rows={10}
+              onChange={(e) => setSpecialInstrution(e.target.value)}
+              placeholder="Enter The Special Instruction Here"
+              id=""
+            ></textarea>
+            <div className="btns">
+              <button type="button" onClick={handleInstructionEdit}>save</button>
+              <button
+                type="button"
+                onClick={() => setEditSpecialInstruction(false)}
+              >
+                cancle
+              </button>
+            </div>
+          </form>
+        )}
       </div>
       <SimplarEvents />
     </Container>
@@ -233,11 +276,62 @@ const Container = styled.div`
   place-items: center;
 
   .specialInstructionBox {
+    padding-bottom: 2rem;
     background-color: #171717;
     width: 80%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      animation: 0.4s animate ease-in-out;
+
+      textarea {
+        width: 90%;
+        padding: 1rem;
+        border: none;
+        outline: none;
+        background-color: #000000;
+        resize: none;
+        color: #fff;
+      }
+      @keyframes animate {
+        from {
+          transform: translateY(20px);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+
+      .btns {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        button {
+          padding: 0.6rem 4rem;
+          border: none;
+          border-radius: 35px;
+          background-color: red;
+          color: #fff;
+          cursor: pointer;
+          border: 1px solid #5f5c5c;
+          transition: all 0.3s;
+          &:hover {
+            background-color: #db5151;
+          }
+        }
+
+        button:nth-child(2) {
+          background-color: transparent;
+        }
+      }
+    }
 
     h2 {
       background-color: #d42d2d;

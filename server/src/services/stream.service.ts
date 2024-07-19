@@ -144,4 +144,22 @@ export class StreamService {
       }
     }
   }
+
+  public async editSpecialInstruction(eventId: string, data: string){
+    try {
+      const stream = await streamModel.findOneAndUpdate(
+        {_id: eventId},
+        {specialInstructions: data},
+        {new: true}
+      )
+      return stream;
+    } catch (error) {
+      if (error instanceof Error){
+        throw new Error(error.message);
+      }
+       else {
+        throw new Error("Unknown error has occured");
+       }
+    }
+  }
 }
