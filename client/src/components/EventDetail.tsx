@@ -23,6 +23,11 @@ import { GrSchedules } from "react-icons/gr";
 import { CiEdit } from "react-icons/ci";
 import { UserInterface } from "../interfaces/user";
 import { ScheduleManagment } from "./scheduleManagment";
+import { FaLocationDot } from "react-icons/fa6";
+import { MdOnlinePrediction } from "react-icons/md";
+import { FaHashtag } from "react-icons/fa6";
+
+
 
 interface EventDetailData {
   _id: string;
@@ -35,6 +40,7 @@ interface EventDetailData {
   location: string;
   eventType: string;
   rsvp: string;
+  tags: string[];
   price: number;
   capacity: number;
   isOnline: boolean;
@@ -87,6 +93,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
       (res) => {
         event.specialInstructions = specialInsrution;
         alert(res.message);
+        setEditSpecialInstruction(false);
       },
       (error) => {
         alert(error);
@@ -101,7 +108,6 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
         async () => await endPoint(eventId!),
         setIsLoading,
         (res) => {
-          console.log(res.data);
           setEvent(res.data as EventDetailData);
         },
         (error) => {
@@ -182,8 +188,13 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
         </div>
         <div className="locationsTags">
           <div className="location">
-            <h2>Event Location</h2>
-            <div className="map">
+            <h2><span><FaLocationDot/>Event Location</span><CiEdit/></h2>
+            {event.isOnline?<h1 style={{
+              color: "red",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem",
+            }}><MdOnlinePrediction/>Live</h1>:<div className="map">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.643169423305!2d-122.08431488468163!3d37.42240897982454!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808580a2f9d7d7b5%3A0x7a3b0d9e1a3d8f1b!2sGoogleplex!5e0!3m2!1sen!2sng!4v1634097641901!5m2!1sen!2sng"
                 width="300"
@@ -196,16 +207,13 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
                 <h3>ABC Tech Center</h3>
                 <p>Grand Auditorium (123 Main St., Anytown, CA 12345)</p>
               </div>
-            </div>
+            </div>}
             <div className="tags">
-              <h2>Tags</h2>
+              <h2><span><FaHashtag/>Tags</span>{isOwner&&<CiEdit/>}</h2>
               <div className="tag">
-                <p>Networking</p>
-                <p>Information</p>
-                <p>Growth</p>
-                <p>power</p>
-                <p>Networking</p>
-                <p>Tech</p>
+               {event.tags?.map((tag) => (
+                  <p>{tag}</p>
+               ))}
               </div>
             </div>
             <div className="share">
@@ -334,7 +342,7 @@ const Container = styled.div`
     }
 
     h2 {
-      background-color: #d42d2d;
+      background-color: #2c2b2b;
       display: flex;
       width: 100%;
       align-items: center;
@@ -385,7 +393,6 @@ const Container = styled.div`
     }
 
     > div:nth-child(1) {
-      /* background-color: #333; */
       color: #fff;
       display: flex;
       align-items: center;
@@ -474,7 +481,6 @@ const Container = styled.div`
     color: #fff;
     margin-top: 3rem;
     padding-bottom: 2rem;
-    /* background-color: red; */
 
     @media screen and (max-width: 800px) {
       flex-direction: column;
@@ -482,6 +488,8 @@ const Container = styled.div`
 
     .schedules {
       background-color: #171717;
+      max-height: 700px;
+      overflow-y: auto;
 
       > * {
         margin: 0;
@@ -493,8 +501,9 @@ const Container = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: red;
-
+        position: sticky;
+        top: 0;
+        background-color: #2c2b2b;
         h4 {
           display: flex;
           gap: 0.4rem;
@@ -523,12 +532,54 @@ const Container = styled.div`
     }
 
     .locationsTags {
+
+      .location{
+        background-color: #000;
+
+        h2{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 0.4rem;
+          background-color: #811b1b;
+          padding: 0.5rem;
+
+          span{
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+
+          }
+        }
+        
+
+        
+      }
+
+      .tags{
+        background-color: #000;
+        h2{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 0.4rem;
+          padding: 0.5rem;
+
+          span{
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+          }
+        }
+      }
       .tag {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        justify-content: center;
+        /* justify-content: center; */
         gap: 0.4rem;
+        padding: 1rem;
+        
 
         > * {
           padding: 0.3rem 1rem;
@@ -543,6 +594,7 @@ const Container = styled.div`
           display: flex;
           align-items: center;
           gap: 1rem;
+          padding: 1rem;
 
           > * {
             font-size: 1.5rem;

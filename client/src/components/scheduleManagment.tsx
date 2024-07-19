@@ -180,7 +180,7 @@ const Container = styled.div<ContainerProps>`
 
   .scheduleContainer {
     width: 80%;
-    height: 80%;
+    height: 95%;
     background-color: #212020;
     border-radius: 10px;
     color: #fff;
@@ -229,7 +229,6 @@ const Container = styled.div<ContainerProps>`
           padding: 10px;
           position: sticky;
           top: 0;
-
           background-color: #212020;
           border-bottom: 1px solid #333131;
         }
@@ -265,6 +264,8 @@ const Container = styled.div<ContainerProps>`
               width: 100%;
               padding: 0.7rem;
               margin: 0;
+              color: #c6bebe;
+              font-size: 1rem;
             }
 
             .actions {
