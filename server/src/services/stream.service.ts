@@ -105,4 +105,43 @@ export class StreamService {
       }
     }
   }
+
+  public async addSchedule(eventId: string, data: { time: string; activity: string }) {
+    try {
+      const event = await streamModel.findOne({ _id: eventId });
+      if (!event) {
+        throw new Error("Event not found");
+      }
+
+      event.schedule.push(data);
+      await event.save();
+      return event;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Unknown error has occurred");
+      }
+    }
+  }
+
+
+  public async editSchedule(eventId: string, data: { time: string; activity: string }[]) {
+    try {
+      const event = await streamModel.findOne({ _id: eventId });
+      if (!event) {
+        throw new Error("Event not found");
+      }
+
+      event.schedule = data;
+      await event.save();
+      return event;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Unknown error has occurred");
+      }
+    }
+  }
 }

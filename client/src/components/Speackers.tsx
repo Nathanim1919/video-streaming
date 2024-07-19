@@ -19,6 +19,7 @@ export const Speakers: React.FC<SpeakerProps> = ({ event }) => {
         <AddGuests
           isOnline={event.isOnline}
           eventId={event._id}
+          event={event}
           setIntiateAddGuest={setIntiateAddGuest}
           title="Guest"
           placeHolders={{ name: "Guest", profession: "Profession" }}
@@ -47,19 +48,21 @@ export const Speakers: React.FC<SpeakerProps> = ({ event }) => {
 
         <div className="co-hosts">
           <h1>Our Guests</h1>
-          {event.guests?.map((guest) => (
-            <div className="speak">
-              <div>
-                <div className="image">
-                  <img src={Image} alt="host" />
-                </div>
-                <div className="infos">
-                  <h2>{guest.name}</h2>
-                  <p>{guest.profession}</p>
+          <div className="speackersList">
+            {event.guests?.map((guest) => (
+              <div className="speak">
+                <div>
+                  <div className="image">
+                    <img src={Image} alt="host" />
+                  </div>
+                  <div className="infos">
+                    <h2>{guest.name}</h2>
+                    <p>{guest.profession}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
           {event?.owner?._id === user?._id && (
             <div className="addGuest" onClick={() => setIntiateAddGuest(true)}>
               <div className="icon">
@@ -195,6 +198,12 @@ const Container = styled.div`
       gap: 1rem;
       align-self: flex-end;
       flex: 1;
+
+      .speackersList{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
 
       .speak {
         display: flex;

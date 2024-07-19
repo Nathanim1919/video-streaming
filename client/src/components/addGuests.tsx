@@ -4,6 +4,7 @@ import { requestHandler } from "../utils";
 import { IoMdClose } from "react-icons/io";
 import { addGuest } from "../api/event";
 import { addStreamGuest } from "../api/stream";
+import { Event } from "../interfaces/event";
 
 
 interface AddGuestsProps {
@@ -15,6 +16,7 @@ interface AddGuestsProps {
   eventId: string;
   setIntiateAddGuest: (value: boolean) => void;
   isOnline: boolean
+  event:Event
 }
 
 export const AddGuests: React.FC<AddGuestsProps> = ({
@@ -22,7 +24,8 @@ export const AddGuests: React.FC<AddGuestsProps> = ({
   title,
   setIntiateAddGuest,
   eventId,
-  isOnline
+  isOnline,
+  event
 }) => {
   const [name, setName] = React.useState("");
   const [profession, setProfession] = React.useState("");
@@ -34,8 +37,10 @@ export const AddGuests: React.FC<AddGuestsProps> = ({
           async () => await endPoint(eventId, { name, profession }),
           setIsLoading,
           (res) => {
-              console.log(res.data);
+              event.guests.push({ name, profession });
+              alert(res.message);
               setIntiateAddGuest(false)
+              
           },
           (error) => {
               alert(error);

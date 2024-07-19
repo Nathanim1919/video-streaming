@@ -95,7 +95,6 @@ export class EventService {
   async rsvp(eventId: string, user: any): Promise<IRsvp | IEvent> {
     // Check if the event exists
     const event = await streamModel.findById(eventId);
-    logger.info("Event found: ", event);
     // logger.info(event);
 
     if (event.attendees.includes(user._id)) {
@@ -180,7 +179,6 @@ export class EventService {
     const myEventsCacheKey = `myEvents:${user._id}`;
     const myEventsCacheValue = await this.cacheClient.get(myEventsCacheKey);
     if (myEventsCacheValue) {
-      logger.info("Getting my events from cache");
       return JSON.parse(myEventsCacheValue);
     }
     const events = await EventModel.find({ owner: user._id })
@@ -299,7 +297,6 @@ export class EventService {
   }
 
   async getTopEventsOfTheWeek(): Promise<IEvent[]> {
-    logger.info("Getting top events of the week");
     const today = new Date();
     const weekStart = new Date(today.setDate(today.getDate() - today.getDay()));
     const weekEnd = new Date(
@@ -457,35 +454,14 @@ export class EventService {
 
   editSchedule(
     eventId: string,
-    data: { time: string; description: string }
+    data: { time: string; description: string }[]
   ) {
     try {
       return EventModel.findOneAndUpdate(
-        { _id: eventId},
-        {
-          $set: {
-            "schedule.$.time": data.time,
-            "schedule.$.description": data.description,
-          },
-        },
+        { _id: eventId },
+        { schedule: data },
         { new: true }
-      );
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error("Unknown error has occurred");
-      }
-    }
-  }
-
-  deleteSchedule(eventId: string, data: { time: string; description: string }) {
-    try {
-      // return EventModel.findOneAndUpdate(
-      //   { _id: eventId },
-      //   { $pull: { schedule: { _id: scheduleId } } },
-      //   { new: true }
-      // );
+      )
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);

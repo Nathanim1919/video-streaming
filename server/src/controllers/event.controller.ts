@@ -128,7 +128,6 @@ export class EventController {
       // get from cache if it exits
       const existsInCache = await this.cacheClient.exists("upcomingEvents");
       if (existsInCache) {
-        // logger.info("Getting upcoming events from cache");
         const events = await this.cacheClient.get("upcomingEvents");
         res.json(
           new ApiResponse(
@@ -314,44 +313,43 @@ export class EventController {
   // Add a guest to an event
   addGuest = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      console.log("Inside the controller, i got this event id: ", req.params.id);
       const event = await this.eventService.addGuest(
         req.params.id,
         req.body
       );
-      console.log(event)
+      // save the event in the cache
+      const eventCacheKey = `event:${req.params.id}`;
+      const eventCacheValue = JSON.stringify(event);
+      await this.cacheClient.set(eventCacheKey, eventCacheValue);
       res.json(new ApiResponse(200, event, "Guest added successfully"));
     }
   )
 
   addSchedule = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      console.log("Inside the controller, i got this event id: ", req.params.id);
       const event = await this.eventService.addSchedule(
         req.params.id,
         req.body
       );
+      // save the event in the cache
+      const eventCacheKey = `event:${req.params.id}`;
+      const eventCacheValue = JSON.stringify(event);
+      await this.cacheClient.set(eventCacheKey, eventCacheValue);
       res.json(new ApiResponse(200, event, "Schedule added successfully"));
     }
   )
 
-  // editSchedule = asyncHandler(
-  //   async (req: Request, res: Response): Promise<void> => {
-  //     const event = await this.eventService.editSchedule(
-  //       req.params.id,
-  //       req.body
-  //     );
-  //     res.json(new ApiResponse(200, event, "Schedule edited successfully"));
-  //   }
-  // )
-
-  // deleteSchedule = asyncHandler(
-  //   async (req: Request, res: Response): Promise<void> => {
-  //     const event = await this.eventService.deleteSchedule(
-  //       req.params.id,
-  //       req.body
-  //     );
-  //     res.json(new ApiResponse(200, event, "Schedule deleted successfully"));
-  //   }
-  // )
+  editSchedule = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const event = await this.eventService.editSchedule(
+        req.params.id,
+        req.body
+      );
+      // save the event in the cache
+      const eventCacheKey = `event:${req.params.id}`;
+      const eventCacheValue = JSON.stringify(event);
+      await this.cacheClient.set(eventCacheKey, eventCacheValue);
+      res.json(new ApiResponse(200, event, "Schedule edited successfully"));
+    }
+  )
 }

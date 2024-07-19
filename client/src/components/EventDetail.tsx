@@ -35,6 +35,8 @@ interface EventDetailData {
   location: string;
   eventType: string;
   rsvp: string;
+  price: number;
+  capacity: number;
   specialInstructions: string;
   eventInformations: [
     {
@@ -44,6 +46,7 @@ interface EventDetailData {
       error: string;
     }
   ];
+  schedule: { time: string; activity: string }[];
 }
 
 interface EventDetailProps {
@@ -116,11 +119,13 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
         <CountDown event={event} />
       </div>
       <Speakers event={event} />
-    {manageSchedule &&  <ScheduleManagment
-        event={event}
-        manageSchedule={manageSchedule}
-        setManageSchedule={setManageSchedule}
-      />}
+      {manageSchedule && (
+        <ScheduleManagment
+          event={event}
+          manageSchedule={manageSchedule}
+          setManageSchedule={setManageSchedule}
+        />
+      )}
       <div className="eventInfos">
         <div className="schedules">
           <h2>
@@ -129,72 +134,28 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
               Event Schedule
             </h4>
             {isOwner && (
-              <span style={{
-                cursor:"pointer",
-                fontSize:"1.5rem",
-                color:"#fff"
-              }} onClick={() => setManageSchedule(true)}>
+              <span
+                style={{
+                  cursor: "pointer",
+                  fontSize: "1.5rem",
+                  color: "#fff",
+                }}
+                onClick={() => setManageSchedule(true)}
+              >
                 <CiEdit />
               </span>
             )}
           </h2>
           <div className="scheduleList">
-            <div className="schedule">
-              <h3>
-                <IoMdTimer />
-                10:00am - 10:30am
-              </h3>
-              <p>Introduction about python</p>
-            </div>
-            <div className="schedule">
-              <h3>
-                <IoMdTimer />
-                10:30am - 11:00am
-              </h3>
-              <p>Python Basics Exerice</p>
-            </div>
-            <div className="schedule">
-              <h3>
-                <IoMdTimer />
-                11:00am - 11:30am
-              </h3>
-              <p>Break</p>
-            </div>
-            <div className="schedule">
-              <h3>
-                <IoMdTimer />
-                11:30am - 12:00pm
-              </h3>
-              <p>Python Intermediate Exerice</p>
-            </div>
-            <div className="schedule">
-              <h3>
-                <IoMdTimer />
-                12:00pm - 12:30pm
-              </h3>
-              <p>Python Advance Exerice</p>
-            </div>
-            <div className="schedule">
-              <h3>
-                <IoMdTimer />
-                12:30pm - 1:00pm
-              </h3>
-              <p>Q&A</p>
-            </div>
-            <div className="schedule">
-              <h3>
-                <IoMdTimer />
-                1:00pm - 1:30pm
-              </h3>
-              <p>Networking</p>
-            </div>
-            <div className="schedule">
-              <h3>
-                <IoMdTimer />
-                1:30pm - 2:00pm
-              </h3>
-              <p>End of Event</p>
-            </div>
+            {event.schedule?.map((item) => (
+              <div className="schedule">
+                <h3>
+                  <IoMdTimer />
+                  {item.time}
+                </h3>
+                <p>{item.activity}</p>
+              </div>
+            ))}
           </div>
         </div>
         <div className="locationsTags">

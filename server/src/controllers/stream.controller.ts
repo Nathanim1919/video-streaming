@@ -119,4 +119,32 @@ export class StreamController {
       res.json(new ApiResponse(200, event, "Guest added successfully"));
     }
   )
+
+  addSchedule = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const event = await this.streamService.addSchedule(
+        req.params.id,
+        req.body
+      );
+      // save the event in the cache
+      const eventCacheKey = `event:${req.params.id}`;
+      const eventCacheValue = JSON.stringify(event);
+      await this.cacheClient.set(eventCacheKey, eventCacheValue);
+      res.json(new ApiResponse(200, event, "Schedule added successfully"));
+    }
+  )
+
+  editSchedule = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const event = await this.streamService.editSchedule(
+        req.params.id,
+        req.body
+      );
+      // save the event in the cache
+      const eventCacheKey = `event:${req.params.id}`;
+      const eventCacheValue = JSON.stringify(event);
+      await this.cacheClient.set(eventCacheKey, eventCacheValue);
+      res.json(new ApiResponse(200, event, "Schedule edited successfully"));
+    }
+  )
 }

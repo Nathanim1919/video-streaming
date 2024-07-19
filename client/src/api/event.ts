@@ -1,10 +1,9 @@
-import { APISuccessResponseInterface } from "../interfaces/api";
 import apiClient from "./config";
 
-interface PageinationParams {
-  page: number;
-  limit: number;
-}
+// interface PageinationParams {
+//   page: number;
+//   limit: number;
+// }
 
 const createEvent = (data: {
   title: string;
@@ -70,6 +69,10 @@ const addSchedule = (id: string, data: { time: string; activity: string }) => {
   return apiClient.post(`/events/${id}/add-schedule`, data);
 };
 
+const editSchedule = (id: string, data: { time: string; activity: string }[]) => {
+  return apiClient.put(`/events/${id}/edit-schedule`, data);
+};
+
 export {
   createEvent,
   getEvents,
@@ -82,5 +85,6 @@ export {
   getTopEvents,
   getLiveEvents,
   addGuest,
-  addSchedule
+  addSchedule,
+  editSchedule
 };

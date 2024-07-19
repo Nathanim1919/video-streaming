@@ -24,5 +24,10 @@ const addStreamSchedule = (id: string, data: { time: string; activity: string })
   return apiClient.post(`/stream/${id}/add-schedule`, data);
 };
 
+const editStreamSchedule = (id: string, data: { time: string; activity: string }[]) => {
+  return apiClient.put(`/stream/${id}/edit-schedule`, data);
+}
+
+
 // Export the API functions
-export { createStream, getStreams, updateStream, getStream, addStreamGuest, addStreamSchedule };
+export { createStream,editStreamSchedule, getStreams, updateStream, getStream, addStreamGuest, addStreamSchedule };

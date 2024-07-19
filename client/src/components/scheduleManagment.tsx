@@ -4,13 +4,12 @@ import { TfiTimer } from "react-icons/tfi";
 import { IoMdClose } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
-import React from "react";
-import { addSchedule } from "../api/event";
-import { addStreamSchedule } from "../api/stream";
+import { addSchedule, editSchedule } from "../api/event";
+import { addStreamSchedule, editStreamSchedule } from "../api/stream";
 import { requestHandler } from "../utils";
-import {Event} from "../interfaces/event";
+import { Event } from "../interfaces/event";
 import { FaPlus } from "react-icons/fa";
-
+import Loader from "./Loader";
 
 interface ScheduleManagmentProps {
   event: Event;
@@ -20,11 +19,11 @@ interface ScheduleManagmentProps {
 
 export const ScheduleManagment: FC<ScheduleManagmentProps> = ({
   event,
-  manageSchedule,
   setManageSchedule,
 }) => {
   const [time, setTime] = useState("");
   const [activity, setActivity] = useState("");
+  const [scheduleIndex, setScheduleIndex] = useState(-1);
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -34,10 +33,10 @@ export const ScheduleManagment: FC<ScheduleManagmentProps> = ({
       async () => await endPoint(event._id, { time, activity }),
       setIsLoading,
       (res) => {
-        setActivity("")
-        setTime("")
+        setActivity("");
+        setTime("");
+        event.schedule.push({ time, activity });
         alert(res.message);
-        console.log(res.data);
       },
       (error) => {
         alert(error);
@@ -45,16 +44,37 @@ export const ScheduleManagment: FC<ScheduleManagmentProps> = ({
     );
   };
 
-  const handleEditSchedule = async () => {
-    // handle edit schedule
+  const handleEditSchedule = async (index: number) => {
+    const updatedSchedule = event.schedule.map((schedule, i) => {
+      if (i === index) {
+        return { time, activity };
+      }
+      return schedule;
+    });
+    const endPoint = !event.isOnline ? editSchedule : editStreamSchedule;
+    await requestHandler(
+      async () => await endPoint(event._id, updatedSchedule),
+      setIsLoading,
+      (res) => {
+        event.schedule = updatedSchedule;
+        alert(res.message);
+      },
+      (error) => {
+        alert(error);
+      }
+    );
   };
 
-  const populateSchduleDataForEdit = (item: any, index: number) => {
-     setTime(item.time);
-      setActivity(item.activity);
-      setIsEditing(true);
+  const populateSchduleDataForEdit = (
+    item: { time: string; activity: string },
+    index: number
+  ) => {
+    setTime(item.time);
+    setActivity(item.activity);
+    setIsEditing(true);
+    setScheduleIndex(index);
   };
-  
+
   return (
     <Container isEditing={isEditing}>
       <div className="scheduleContainer">
@@ -63,26 +83,35 @@ export const ScheduleManagment: FC<ScheduleManagmentProps> = ({
           <IoMdClose onClick={() => setManageSchedule(false)} />
         </div>
         <div className="container">
-          <div className="currentScheduleList">
-            {/* <h2>Current Schedule</h2> */}
-            <div className="scheduleList">
-              {event.schedule.map((item, index) => (<div className="schedule">
-                <div className="Scheduleheader">
-                  <h3>
-                    <TfiTimer />
-                    {item.time}
-                  </h3>
-                  <div className="actions">
-                    <CiEdit onClick={()=>populateSchduleDataForEdit(item, index)}/>
-                    <MdDeleteOutline />
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <div className="currentScheduleList">
+              <div className="scheduleList">
+                {event.schedule?.map((item, index) => (
+                  <div className="schedule">
+                    <div className="Scheduleheader">
+                      <h3>
+                        <TfiTimer />
+                        {item.time}
+                      </h3>
+                      <div className="actions">
+                        <CiEdit
+                          onClick={() =>
+                            populateSchduleDataForEdit(item, index)
+                          }
+                        />
+                        <MdDeleteOutline />
+                      </div>
+                    </div>
+                    <p>{item.activity}</p>
                   </div>
-                </div>
-                <p>{item.activity}</p>
-              </div>))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
           <div className="addNewSchedule">
-            <h2>{!isEditing?"Add New":"Edit"} Schedule</h2>
+            <h2>{!isEditing ? "Add New" : "Edit"} Schedule</h2>
             <form action="">
               <input
                 onChange={(e) => setTime(e.target.value)}
@@ -99,8 +128,25 @@ export const ScheduleManagment: FC<ScheduleManagmentProps> = ({
                 onChange={(e) => setActivity(e.target.value)}
               ></textarea>
               <div className="btns">
-              <button type="button" onClick={handleAddSchedule}>{isEditing?"Edit":"Add"} Schedule</button>
-               {isEditing && <FaPlus onClick={()=>{setIsEditing(false); setActivity(""); setTime("")}}/>}
+                <button
+                  type="button"
+                  onClick={
+                    isEditing
+                      ? () => handleEditSchedule(scheduleIndex)
+                      : handleAddSchedule
+                  }
+                >
+                  {isEditing ? "Edit" : "Add"} Schedule
+                </button>
+                {isEditing && (
+                  <FaPlus
+                    onClick={() => {
+                      setIsEditing(false);
+                      setActivity("");
+                      setTime("");
+                    }}
+                  />
+                )}
               </div>
             </form>
           </div>
@@ -110,7 +156,12 @@ export const ScheduleManagment: FC<ScheduleManagmentProps> = ({
   );
 };
 
-const Container = styled.div`
+
+interface ContainerProps {
+  isEditing: boolean;
+}
+
+const Container = styled.div<ContainerProps>`
   position: fixed;
   top: 0;
   left: 0;
@@ -262,8 +313,6 @@ const Container = styled.div`
           width: 50%;
           margin: 0 auto;
 
-
-
           input {
             padding: 10px;
             border: none;
@@ -284,22 +333,22 @@ const Container = styled.div`
             color: #fff;
           }
 
-          .btns{
+          .btns {
             display: grid;
             // lets use isEditing as props
-            grid-template-columns: ${(props) => (props.isEditing ? "1fr .1fr" : "1fr")};
+            grid-template-columns: ${(props) =>
+              props.isEditing ? "1fr .1fr" : "1fr"};
             align-items: center;
-            gap: .3rem;
+            gap: 0.3rem;
             width: 100%;
 
-            >svg{
+            > svg {
               background-color: #fff;
               color: #333;
               padding: 10px;
               cursor: pointer;
 
-
-              &:hover{
+              &:hover {
                 background-color: #eee;
               }
             }

@@ -52,4 +52,8 @@ router.post("/:id/add-schedule", verifyJWT, [
   eventController.addSchedule.bind(eventController),
 ]);
 
+router.put("/:id/edit-schedule", verifyJWT, [
+  eventController.editSchedule.bind(eventController),
+]);
+
 export default router;

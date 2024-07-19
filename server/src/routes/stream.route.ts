@@ -39,5 +39,13 @@ router.post("/:id/add-guest", verifyJWT, [
   streamController.addGuest.bind(streamController)
 ])
 
+router.post("/:id/add-schedule", verifyJWT, [
+  streamController.addSchedule.bind(streamController)
+])
+
+router.put("/:id/edit-schedule", verifyJWT, [
+  streamController.editSchedule.bind(streamController)
+])
+
 // Export the router
 export default router;
