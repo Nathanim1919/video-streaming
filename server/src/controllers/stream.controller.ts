@@ -161,5 +161,19 @@ export class StreamController {
       await this.cacheClient.set(eventCacheKey, eventCacheValue);
       res.json(new ApiResponse(200, event, "Schedule edited successfully"));
     }
+  );
+
+  getSimilartStreamesBasedOnTag = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const events = await this.streamService.getSimilartStreamesBasedOnTag(
+        req.params.id
+      );
+
+      // save the events in the cache
+      const eventCacheKey = `similarEvents:${req.params.id}`;
+      const eventCacheValue = JSON.stringify(events);
+      await this.cacheClient.set(eventCacheKey, eventCacheValue);
+      res.json(new ApiResponse(200, events, "Similar events fetched successfully"));
+    }
   )
 }

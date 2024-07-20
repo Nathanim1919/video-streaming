@@ -38,7 +38,11 @@ const editStreamSchedule = (
 };
 
 const editStreamInstruction = (id: string, data: string) => {
-  return apiClient.put(`/stream/${id}/edit-instruction`, {data});
+  return apiClient.put(`/stream/${id}/edit-instruction`, { data });
+};
+
+const getSimilartStreams = (id: string) => {
+  return apiClient.get(`/stream/${id}/similarStreams`);
 };
 
 // Export the API functions
@@ -50,5 +54,6 @@ export {
   getStream,
   addStreamGuest,
   addStreamSchedule,
-  editStreamInstruction
+  editStreamInstruction,
+  getSimilartStreams,
 };

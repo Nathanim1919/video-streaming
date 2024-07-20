@@ -1,8 +1,7 @@
 import IEvent from "../interfaces/event.interface";
 import streamModel from "../models/stream.model";
 import { User } from "../models/user.model";
-import mongoose, {startSession } from "mongoose";
-
+import mongoose, { startSession } from "mongoose";
 
 export class StreamService {
   // Get all streams
@@ -57,7 +56,7 @@ export class StreamService {
     try {
       console.log("loggedUser: ", userId);
       console.log("Rsvped Event Id: ", id);
-      
+
       session.startTransaction();
       const user = await User.findById(userId).session(session);
       const stream = await streamModel.findById(id).session(session);
@@ -86,8 +85,10 @@ export class StreamService {
     }
   }
 
-
-  public async addGuest(eventId: string, data: { name: string; profession: string }) {
+  public async addGuest(
+    eventId: string,
+    data: { name: string; profession: string }
+  ) {
     try {
       const event = await streamModel.findOne({ _id: eventId });
       if (!event) {
@@ -106,7 +107,10 @@ export class StreamService {
     }
   }
 
-  public async addSchedule(eventId: string, data: { time: string; activity: string }) {
+  public async addSchedule(
+    eventId: string,
+    data: { time: string; activity: string }
+  ) {
     try {
       const event = await streamModel.findOne({ _id: eventId });
       if (!event) {
@@ -125,8 +129,10 @@ export class StreamService {
     }
   }
 
-
-  public async editSchedule(eventId: string, data: { time: string; activity: string }[]) {
+  public async editSchedule(
+    eventId: string,
+    data: { time: string; activity: string }[]
+  ) {
     try {
       const event = await streamModel.findOne({ _id: eventId });
       if (!event) {
@@ -145,21 +151,42 @@ export class StreamService {
     }
   }
 
-  public async editSpecialInstruction(eventId: string, data: string){
+  public async editSpecialInstruction(eventId: string, data: string) {
     try {
       const stream = await streamModel.findOneAndUpdate(
-        {_id: eventId},
-        {specialInstructions: data},
-        {new: true}
-      )
+        { _id: eventId },
+        { specialInstructions: data },
+        { new: true }
+      );
       return stream;
     } catch (error) {
-      if (error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }
-       else {
+      } else {
         throw new Error("Unknown error has occured");
-       }
+      }
+    }
+  }
+
+  public async getSimilartStreamesBasedOnTag(streamId: string) {
+    try {
+      const stream = await streamModel.findOne({ _id: streamId });
+      if (!stream) {
+        throw new Error("Stream not found");
+      }
+
+      const similarStreams = await streamModel.find({
+        tags: { $in: stream.tags },
+        _id: { $ne: streamId },
+      });
+
+      return similarStreams;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Unknown error has occurred");
+      }
     }
   }
 }

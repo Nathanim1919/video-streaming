@@ -51,5 +51,9 @@ router.put("/:id/edit-instruction", verifyJWT, [
   streamController.editStreamSpecialInstruction.bind(streamController),
 ]);
 
+router.get("/:id/similarStreams", verifyJWT, [
+  streamController.getSimilartStreamesBasedOnTag.bind(streamController),
+]);
+
 // Export the router
 export default router;

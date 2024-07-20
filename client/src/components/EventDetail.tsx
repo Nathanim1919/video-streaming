@@ -270,7 +270,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
           </form>
         )}
       </div>
-      <SimplarEvents eventId={event._id} />
+      <SimplarEvents isOnline={event.isOnline} eventId={event._id} />
     </Container>
   );
 };

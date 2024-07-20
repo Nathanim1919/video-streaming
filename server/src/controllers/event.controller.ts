@@ -373,6 +373,25 @@ export class EventController {
 
   getSimilartEventsBasedOnTag = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
+
+      // get from cache if it exits
+      const existsInCache = await this.cacheClient.exists(
+        `similarEvents:${req.params.id}`
+      );
+
+      if (existsInCache) {
+        const events = await this.cacheClient.get(
+          `similarEvents:${req.params.id}`
+        );
+        res.json(
+          new ApiResponse(
+            200,
+            JSON.parse(events),
+            "Similar events fetched successfully"
+          )
+        );
+      }
+      
       const events = await this.eventService.getSimilartEventsBasedOnTag(
         req.params.id
       );

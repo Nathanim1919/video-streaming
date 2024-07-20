@@ -4,21 +4,25 @@ import { requestHandler } from "../utils";
 import { getSimilartEvents } from "../api/event";
 import { useEffect, useState } from "react";
 import { Event } from "../interfaces/event";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Loader from "./Loader";
+import { getSimilartStreams } from "../api/stream";
 
 interface SimplarEventsprops {
   eventId: string;
+  isOnline: boolean;
 }
 
-export const SimplarEvents: React.FC<SimplarEventsprops> = ({ eventId }) => {
+export const SimplarEvents: React.FC<SimplarEventsprops> = ({ eventId, isOnline }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [events, setEvents] = useState<Event[]>([]);
   const navigate = useNavigate();
 
   const handleSimilarEvents = async () => {
+    const endPoints = isOnline?getSimilartStreams:getSimilartEvents;
     await requestHandler(
-      async () => await getSimilartEvents(eventId),
+      async () => await endPoints(eventId),
       setIsLoading,
       (response) => {
         setEvents(response.data as Event[]);
@@ -33,6 +37,7 @@ export const SimplarEvents: React.FC<SimplarEventsprops> = ({ eventId }) => {
 
 
   const displayEventDetail = (id: string) => {
+    if (isOnline) return navigate(`/streames/${id}`);
     navigate(`/events/${id}`);
   };
 
@@ -41,12 +46,13 @@ export const SimplarEvents: React.FC<SimplarEventsprops> = ({ eventId }) => {
   }, [eventId]);
 
   return (
+    events.length === 0 ? <></> :
     <Container className="container">
       <div className="header-info">
         <h1>Other Events you may like</h1>
-        <button>browse all</button>
+        <Link to={isOnline?'streames':'/events'}>browse all</Link>
       </div>
-      <EventsContainer>
+      {isLoading?<Loader/>:<EventsContainer>
         {events?.map((even, index) => (
           <div className="event" key={index}>
             <div className="date">
@@ -54,7 +60,7 @@ export const SimplarEvents: React.FC<SimplarEventsprops> = ({ eventId }) => {
               <h3>17</h3>
             </div>
             <div className="image">
-              <img src="{even.image}" alt="" />
+              <img src={Image} alt="" />
             </div>
             <div className="desc">
               <h2>{even.title}</h2>
@@ -65,7 +71,7 @@ export const SimplarEvents: React.FC<SimplarEventsprops> = ({ eventId }) => {
             </div>
           </div>
         ))}
-      </EventsContainer>
+      </EventsContainer>}
     </Container>
   );
 };
@@ -81,12 +87,20 @@ const Container = styled.div`
     color: #fff;
     width: 80%;
     margin: 0 auto;
-    button {
+    a {
       background-color: transparent;
       color: #fff;
       border: 1px solid #fff;
       padding: 0.7rem 2rem;
       border-radius: 50px;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+
+      &:hover {
+        background-color: red;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+      }
     }
   }
 `;
@@ -94,7 +108,7 @@ const Container = styled.div`
 const EventsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 80vw;
   margin: 0 auto;
   gap: 2rem;
   color: #fff;
