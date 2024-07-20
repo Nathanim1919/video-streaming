@@ -352,7 +352,7 @@ export class EventController {
       await this.cacheClient.set(eventCacheKey, eventCacheValue);
       res.json(new ApiResponse(200, event, "Schedule edited successfully"));
     }
-  )
+  );
 
 
   editSpecialInstruction = asyncHandler(
@@ -367,6 +367,21 @@ export class EventController {
       const eventCacheValue = JSON.stringify(event);
       await this.cacheClient.set(eventCacheKey, eventCacheValue);
       res.json(new ApiResponse(200, event, "Schedule edited successfully"));
+    }
+  );
+
+
+  getSimilartEventsBasedOnTag = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const events = await this.eventService.getSimilartEventsBasedOnTag(
+        req.params.id
+      );
+
+      // save the events in the cache
+      const eventCacheKey = `similarEvents:${req.params.id}`;
+      const eventCacheValue = JSON.stringify(events);
+      await this.cacheClient.set(eventCacheKey, eventCacheValue);
+      res.json(new ApiResponse(200, events, "Similar events fetched successfully"));
     }
   )
 }

@@ -28,7 +28,6 @@ import { MdOnlinePrediction } from "react-icons/md";
 import { FaHashtag } from "react-icons/fa6";
 
 
-
 interface EventDetailData {
   _id: string;
   attendees: string[];
@@ -117,7 +116,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
     };
 
     fetchEventDetail();
-  }, []);
+  }, [eventId]);
 
   useEffect(() => {
     setIsOwner(event?.owner?._id === user?._id);
@@ -188,7 +187,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
         </div>
         <div className="locationsTags">
           <div className="location">
-            <h2><span><FaLocationDot/>Event Location</span><CiEdit/></h2>
+            <h2><span><FaLocationDot/>Event Location</span>{isOwner && <CiEdit/>}</h2>
             {event.isOnline?<h1 style={{
               color: "red",
               display: "flex",
@@ -271,7 +270,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
           </form>
         )}
       </div>
-      <SimplarEvents />
+      <SimplarEvents eventId={event._id} />
     </Container>
   );
 };
@@ -551,9 +550,6 @@ const Container = styled.div`
 
           }
         }
-        
-
-        
       }
 
       .tags{

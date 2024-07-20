@@ -77,6 +77,10 @@ const editEventInstruction = (id: string, data: string) => {
   return apiClient.put(`/events/${id}/edit-instruction`, {data});
 }
 
+const getSimilartEvents = (id: string) => {
+  return apiClient.get(`/events/${id}/similarEvents`);
+}
+
 export {
   createEvent,
   getEvents,
@@ -91,5 +95,6 @@ export {
   addGuest,
   addSchedule,
   editSchedule,
-  editEventInstruction
+  editEventInstruction,
+  getSimilartEvents
 };

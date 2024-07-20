@@ -483,4 +483,30 @@ export class EventService {
       }
     }
   }
+
+  async getSimilartEventsBasedOnTag(eventId: string) {
+    try {
+      const event = await EventModel.findById(eventId);
+      if (!event) {
+        throw new Error("Event not found");
+      }
+
+      const tags = event.tags;
+
+      if (tags.length === 0) {
+        throw new Error("Event has no tags");
+      }
+
+      return EventModel.find({
+        _id: { $ne: eventId },
+        tags: { $in: tags },
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("unknown error has occured");
+      }
+    }
+  }
 }

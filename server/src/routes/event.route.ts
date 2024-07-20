@@ -60,4 +60,8 @@ router.put("/:id/edit-instruction", verifyJWT, [
   eventController.editSpecialInstruction.bind(eventController),
 ]);
 
+router.get("/:id/similarEvents", [
+  eventController.getSimilartEventsBasedOnTag.bind(eventController),
+]);
+
 export default router;
