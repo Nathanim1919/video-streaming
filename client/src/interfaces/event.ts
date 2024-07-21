@@ -16,12 +16,12 @@ export type guest = {
 }
 
 export type Event = {
-  _id: string;
+  _id?: string;
   title: string;
   description: string;
   date: string;
   time: string;
-  owner: UserInterface;
+  owner?: UserInterface;
   location?: string;
   price: number;
   capacity: number;
@@ -37,3 +37,5 @@ export type Event = {
   attendees: string[];
   
 };
+
+

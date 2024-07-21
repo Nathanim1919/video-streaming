@@ -1,6 +1,6 @@
 // Import required modules and types from react and react-router-dom libraries
 import React, { ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 
 
 // Import authentication context for retrieving user and token information
@@ -13,9 +13,12 @@ const PrivateRoute: React.FC<{children: ReactNode}> = ({
 }) => {
     // Access user and token information from the authentication context
     const { user } = useAuth();
+    const navigate = useNavigate();
 
     // Redirect to login page if user is not authenticated
-    if (!user?._id) return <Navigate to="/" />
+    if (!user?._id){
+        navigate('/');
+    }
 
     // Render the child component if user is authenticated
     return children;

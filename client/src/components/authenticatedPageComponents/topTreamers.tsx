@@ -8,9 +8,10 @@ import { useEffect, useState } from "react";
 import { requestHandler } from "../../utils";
 import { authApi } from "../../api";
 import Loader from "../Loader";
+import { UserInterface } from "../../interfaces/user";
 
 export const TopStreamers = () => {
-  const [streamers, setStreamers] = useState([]);
+  const [streamers, setStreamers] = useState<UserInterface[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   // fetch all streamers
@@ -20,7 +21,7 @@ export const TopStreamers = () => {
         async () => await authApi.fetchStreamers(),
         setIsLoading,
         (response) => {
-          setStreamers(response.data);
+          setStreamers(response.data as UserInterface[]);
         },
         (error) => {
           console.log(error);
@@ -53,13 +54,9 @@ export const TopStreamers = () => {
               </div>
               <div className="bio">
                 <p>
-                  As a software engineer, I enjoy building high-quality software
-                  that solves real-world problems. When I'm not coding, you can
-                  find me sharing my development journey on Twitch, where I
-                  stream my code, answer questions, and collaborate with other
-                  developers. I'm passionate about helping others learn and grow
-                  in their careers, and I'm always looking for opportunities to
-                  do so.
+                  {streamer?.bio?.length > 100
+                    ? streamer?.bio?.slice(0, 100) + "..."
+                    : streamer?.bio}
                 </p>
                 <div className="social-link">
                   <Link to={"/facebook"}>

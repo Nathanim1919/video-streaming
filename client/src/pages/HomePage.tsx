@@ -28,11 +28,10 @@ const HomePage = () => {
         </div>
         <div className="header">
           <div className="hero-text-content">
-            <h1>Buy Tix or Host</h1>
-            <h3>Experience live events, both online and in person</h3>
+            <h1>Discover and Host Live Events</h1>
+            {/* <h3>Experience the thrill of live events, both online and in person</h3> */}
             <p>
-              Whether you're a fan of a live event or a host, you can buy
-              tickets or host your own, through DevSphere.
+              Whether you're a fan of live events or a host, you can discover and attend exciting events or host your own through DevSphere.
             </p>
             <button>Get Started</button>
           </div>
@@ -46,8 +45,8 @@ const HomePage = () => {
       </Content>
       <div className="features">
         <div className="inspiration">
-          <h1>Give your attendee a great experiance</h1>
-          <p>With DevSphere, you can give your attendees a great experience.</p>
+          <h1>Give Your Attendees an Unforgettable Experience</h1>
+          <p>With DevSphere, you can provide your attendees with a seamless and memorable experience.</p>
 
           <div className="btns">
             <Link to="/signup">Get Started</Link>
@@ -59,52 +58,48 @@ const HomePage = () => {
           <img src={Icon1} alt="Social Engagement" />
           <h2>Social Engagement</h2>
           <p>
-            Engage with your audience through our social engagement features.
+            Engage and connect with your audience through our powerful social engagement features.
           </p>
         </div>
 
         <div className="eventManagement">
-          <img src={Icon2} alt="Social Engagement" />
+          <img src={Icon2} alt="Event Management" />
           <h2>Event Management</h2>
-          <p>Manage your events with our easy to use event management tools.</p>
+          <p>Effortlessly manage your events with our intuitive event management tools.</p>
         </div>
 
         <div className="ticketScanning">
-          <img src={Icon3} alt="Social Engagement" />
+          <img src={Icon3} alt="Ticket Scanning" />
           <h2>Ticket Scanning</h2>
-          <p>Scan tickets with our easy to use ticket scanning tools.</p>
+          <p>Streamline the ticket scanning process with our user-friendly ticket scanning tools.</p>
         </div>
 
         <div className="securePayment">
-          <img src={Icon1} alt="Social Engagement" />
+          <img src={Icon1} alt="Secure Payment" />
           <h2>Secure Payment</h2>
-          <p>Pay securely with our secure payment system.</p>
+          <p>Ensure secure and hassle-free payments with our robust payment system.</p>
         </div>
       </div>
       <div className="joinCommunity">
-        <h2>Become a Member in Three Easy Steps</h2>
+        <h2>Join Our Community in Three Easy Steps</h2>
         <div className="membership-steps">
           <div>
              <h1>01</h1>
             <h2>Sign Up</h2>
-            <p>Create your account and join our vibrant community.</p>
+            <p>Create your account and become a part of our vibrant community.</p>
           </div>
           <div>
           <h1>02</h1>
             <h2>Schedule Your Event</h2>
             <p>
-              Choose from hosting an online stream or an in-person event.
-              Provide all the necessary details, including date, time, location,
-              and event description.
+              Choose between hosting an online stream or an in-person event. Provide all the necessary details, including date, time, location, and event description.
             </p>
           </div>
           <div>
            <h1>03</h1>
             <h2>Start Earning</h2>
             <p>
-              Once your event is live and tickets are sold, watch your revenue
-              grow. We handle the transactions, so you can focus on delivering
-              an unforgettable experience.
+              Once your event is live and tickets are sold, watch your revenue grow. We handle the transactions, so you can focus on delivering an unforgettable experience.
             </p>
           </div>
         </div>

@@ -21,7 +21,7 @@ interface searchPageProps {
   setIntiateSearch: (value: boolean) => void;
 }
 
-export const SearchPage: React.FC = ({ setIntiateSearch }) => {
+export const SearchPage: React.FC<searchPageProps> = ({ setIntiateSearch }) => {
   const [searchResults, setSearchResults] = React.useState<searchResult>({
     events: [],
     streamers: [],
@@ -43,7 +43,7 @@ export const SearchPage: React.FC = ({ setIntiateSearch }) => {
         searchContainerRef.current &&
         !searchContainerRef.current.contains(event.target as Node)
       ) {
-        setIntiateSearch(false); // Assuming this function hides the component
+        setIntiateSearch(false);
       }
     };
 

@@ -7,6 +7,8 @@ import { MdAccountCircle } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import { RiMenu4Line } from "react-icons/ri";
 import { SearchPage } from "../../pages/searchPage";
+import { IoIosNotificationsOutline } from "react-icons/io";
+
 
 
 // Header component
@@ -88,6 +90,9 @@ export const Header = () => {
               <li onClick={handleLogout}>Logout</li>
             </div>
           )}
+        </div>
+        <div className="notification">
+          <IoIosNotificationsOutline/>
         </div>
       </div>
       {intiateSearch && (
@@ -232,6 +237,16 @@ const Conatiner = styled.div<ContainerProps>`
           }
         }
       }
+    }
+
+    .notification{
+      font-size: 2rem;
+      cursor: pointer;
+      padding: .2rem;
+      border-radius: 50%;
+      background-color: #5c2626;
+      display: grid;
+      place-items: center;
     }
   }
   ul {

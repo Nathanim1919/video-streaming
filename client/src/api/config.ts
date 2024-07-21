@@ -18,7 +18,7 @@ apiClient.interceptors.response.use(
                 return apiClient(error.config);
             } catch (refreshError) {
                 console.error("Failed to refresh access token", refreshError);
-                window.location.href = '/login';
+                // window.location.href = '/';
             }
         }
         return Promise.reject(error);

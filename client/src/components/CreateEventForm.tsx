@@ -15,6 +15,23 @@ import { Event, ScheduleItem, SocialLink } from "../interfaces/event";
 import { requestHandler } from "../utils";
 import { ImSpinner9 } from "react-icons/im";
 
+interface AppEvent {
+  title: string;
+  description: string;
+  date: string;
+  duration: number;
+  price: number;
+  capacity: number;
+  location: string;
+  eventType: string;
+  isOpenForRsvp: string;
+  tags: string[];
+  guests: string[];
+  specialInstructions: string;
+  schedule: { /* structure here */ }[];
+  socialLinks: { /* structure here */ }[];
+}
+
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -246,11 +263,10 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
 }) => {
   const [date, setDate] = useState<dayjs.Dayjs | null>(dayjs());
   const [loading, setLoading] = useState(false);
-  const [event, setEvent] = useState<Event>({
+  const [event, setEvent] = useState<AppEvent>({
     title: "",
     description: "",
     date: "",
-    time: "",
     location: "",
     attendees: [],
     price: 0,
@@ -260,7 +276,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     isOpenForRsvp: "off",
     tags: [],
     duration: 0,
-    guests: [initialGuest],
+    // guests: [initialGuest],
     specialInstructions: "",
     schedule: [initialScheduleItem],
     socialLinks: [initialSocialLink],
@@ -626,41 +642,6 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
             <FaPlus className="add-guest" onClick={handleAddGuest} />
           </div>
           {selectedEvent?.guests?.map((guest, index) => (
-  <div key={index} className="guest-card">
-    <div className="form-group">
-      <label htmlFor={`guest-${index}`}>Guest Name</label>
-      <input
-        type="text"
-        id={`guest-${index}`}
-        name={`guest-${index}`}
-        value={guest.name}
-        onChange={(e) => handleGuestChange(e, index)}
-        placeholder="Guest Name"
-        disabled={loading}
-      />
-      <label htmlFor={`guest-profession-${index}`}>Guest Profession</label>
-      <input
-        type="text"
-        id={`guest-profession-${index}`}
-        name={`guest-profession-${index}`}
-        value={guest.profession}
-        onChange={(e) => handleGuestChange(e, index)}
-        placeholder="Guest profession"
-        disabled={loading}
-      />
-    </div>
-    <div className="btns">
-      <button
-        type="button"
-        className="delete"
-        onClick={() => handleDeleteGuest(index)}
-        disabled={loading}
-      >
-        Delete
-      </button>
-    </div>
-  </div>
-)) || event.guests.map((guest, index) => (
   <div key={index} className="guest-card">
     <div className="form-group">
       <label htmlFor={`guest-${index}`}>Guest Name</label>
