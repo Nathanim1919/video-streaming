@@ -1,5 +1,12 @@
 // Define the structure of the User model
-import { Document } from 'mongoose';
+import { Document, Schema } from 'mongoose';
+
+export interface IBookmark {
+  type: 'Event' | 'Stream',
+  item: Schema.Types.ObjectId
+}
+
+
 interface IUser extends Document{
     _id: string;
     bio: string;
@@ -12,6 +19,7 @@ interface IUser extends Document{
     followers: string[];
     following: string[];
     events: string[];
+    bookmarks: IBookmark[];
     streams: string[];
     rvps: string[];
     rating: number;

@@ -55,6 +55,11 @@ const uploadProfile = (data: FormData) => {
 }
 
 
+const getBookMarks = () => {
+    return apiClient.get("/users/bookmarks");
+};
+
+
 // Export all the API functions
 export {
     loginUser,

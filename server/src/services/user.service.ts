@@ -1,9 +1,10 @@
-import IUser from "../interfaces/user.interface";
+import IUser, { IBookmark } from "../interfaces/user.interface";
 import { User } from "../models/user.model";
 import { Request, Response } from "express";
 import logger from "../logger";
 import bcrypt from "bcrypt";
 import cloudinary from "../utils/cloudinary";
+import IEvent from "../interfaces/event.interface";
 interface RequestWithUser extends Request {
   user: IUser;
 }
@@ -147,6 +148,13 @@ export class UserService {
       await user.save();
     }
     return user;
+  }
+
+  async getBookmarks(id: string): Promise<IBookmark[] | null> {
+    const user = await User.findById(id).populate({
+      path: 'bookmarks.item',
+    });
+    return user?.bookmarks;
   }
 
   // this is a function that is responsible for updating a user's events

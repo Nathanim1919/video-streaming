@@ -18,4 +18,4 @@ StreamSchema.add(StreamOrEventSchema);
 export default mongoose.model('Stream', StreamSchema);
 
 
-// Path: server/src/models/user.model.ts
+// Path: server/src/models/user.model.ts    

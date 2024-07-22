@@ -7,7 +7,9 @@ import { MdAccountCircle } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import { RiMenu4Line } from "react-icons/ri";
 import { SearchPage } from "../../pages/searchPage";
-import { IoIosNotificationsOutline } from "react-icons/io";
+import { IoMdNotifications } from "react-icons/io";
+import { FaBookmark } from "react-icons/fa6";
+
 
 
 
@@ -92,8 +94,11 @@ export const Header = () => {
           )}
         </div>
         <div className="notification">
-          <IoIosNotificationsOutline/>
+          <IoMdNotifications/>
         </div>
+        <Link to={'/bookmarks'} className="bookmarks">
+          <FaBookmark/>
+        </Link>
       </div>
       {intiateSearch && (
         <SearchPage setIntiateSearch={setIntiateSearch}/>
@@ -239,15 +244,19 @@ const Conatiner = styled.div<ContainerProps>`
       }
     }
 
-    .notification{
-      font-size: 2rem;
+    .notification, .bookmarks{
+      font-size: 1.8rem;
       cursor: pointer;
-      padding: .2rem;
-      border-radius: 50%;
-      background-color: #5c2626;
       display: grid;
       place-items: center;
+
+
+      &:hover{
+        color: orange;
+      }
     }
+
+
   }
   ul {
     display: flex;

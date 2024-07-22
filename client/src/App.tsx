@@ -17,6 +17,7 @@ import { OrganizationsList } from './pages/OrgsPage';
 import { RvspList } from './components/RvspList';
 import { LiveNow } from './pages/LiveNow';
 import { CreateEventForm } from './components/CreateEventForm';
+import { BookMarks } from './pages/bookMarks';
 
 
 const App = () => {
@@ -129,6 +130,13 @@ const App = () => {
         element={
         <PrivateRouteWithHeader>
           <OrganizationsList/>
+        </PrivateRouteWithHeader>
+      }/>
+       <Route 
+        path="/bookmarks" 
+        element={
+        <PrivateRouteWithHeader>
+          <BookMarks/>
         </PrivateRouteWithHeader>
       }/>
       <Route 

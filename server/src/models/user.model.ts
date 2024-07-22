@@ -1,7 +1,26 @@
 // Purpose: Define the User model schema and export it as a model.
 import mongoose, {Schema} from 'mongoose'
 import { AvailableSocialLogins, userLoginTypes } from '../../constants';
-import IUser from '../interfaces/user.interface.js';
+import IUser, { IBookmark } from '../interfaces/user.interface.js';
+
+
+// bookmark interface
+
+
+const bookmarkSchema = new Schema<IBookmark>({
+    type:{
+        type: String,
+        required: true,
+        enum: ['Event', 'Stream']
+    },
+    item:{
+        type: Schema.Types.ObjectId,
+        required: true,
+        refPath: 'bookmarks.type'
+    }
+})
+
+
 
 // Define the schema
 const UserSchema = new Schema<IUser>({
@@ -18,6 +37,8 @@ const UserSchema = new Schema<IUser>({
         type:String,
         required:true
     },
+    // the book mark can be an array of event ids or an array of stream ids
+    bookmarks:[bookmarkSchema],
     username:{
         type:String,
         required:true,

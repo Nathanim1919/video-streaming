@@ -134,6 +134,14 @@ export class UserController {
     );
   });
 
+  getBookmarks = asyncHandler(
+    async (req: RequestWithUser, res): Promise<void> => {
+      const bookmarks = await this.userService.getBookmarks(req.user._id);
+      res.json(new ApiResponse(200, bookmarks, "Bookmarks found successfully"));
+    }
+  );
+  
+
   userFindAll = asyncHandler(
     async (req: RequestWithUser, res): Promise<void> => {
       // Get all from cache
