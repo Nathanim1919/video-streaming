@@ -45,6 +45,12 @@ const getSimilartStreams = (id: string) => {
   return apiClient.get(`/stream/${id}/similarStreams`);
 };
 
+
+const bookMarkStream = (id: string) => {
+  return apiClient.post(`/stream/${id}/bookmark`);
+
+}
+
 // Export the API functions
 export {
   createStream,
@@ -56,4 +62,5 @@ export {
   addStreamSchedule,
   editStreamInstruction,
   getSimilartStreams,
+  bookMarkStream
 };

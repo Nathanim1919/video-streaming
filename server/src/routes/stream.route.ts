@@ -55,5 +55,9 @@ router.get("/:id/similarStreams", verifyJWT, [
   streamController.getSimilartStreamesBasedOnTag.bind(streamController),
 ]);
 
+router.post("/:id/bookmark", verifyJWT, [
+  streamController.bookMark.bind(streamController),
+]);
+
 // Export the router
 export default router;

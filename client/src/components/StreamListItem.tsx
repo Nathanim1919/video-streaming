@@ -2,13 +2,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import StreamImage from '/image/join.jpg'
 import { Link } from 'react-router-dom';
-import { formatDate } from '../utils';
+import { formatDate, requestHandler } from '../utils';
 import { useAuth } from '../contexts/AuthContext';
 import { ImSpinner9 } from "react-icons/im";
 import useRsvp from '../customeHook/useRsvp';
-import { FaRegEdit } from "react-icons/fa";
+import { FaBookmark } from "react-icons/fa6";
 import { EventTicket } from './EventTicket';
 import { IStream } from '../interfaces/stream.interface';
+import { bookMarkStream } from '../api/stream';
 
 
 interface StreamListItemProps {
@@ -30,6 +31,20 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
     // Call checkRsvpStatus when the component mounts
     checkRsvpStatus();
   }, [checkRsvpStatus]);
+
+
+  const handleBookmark = async () => {
+    await requestHandler(
+      async () => await bookMarkStream(stream._id),
+      setIsLoading,
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
 
   // Countdown timer 
   useEffect(() => {
@@ -74,20 +89,15 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
     }, [eventDate]);
 
 
-
-
   // Render the component
     return (
       <Container>
         {qrCodeUrl && <EventTicket qrCodeUrl={qrCodeUrl}/>}
         <div className='image'>
           <img src={StreamImage} alt='Stream' />
-          <div className="editImage">
-            <Link to={`/edit/${stream._id}`}><FaRegEdit/></Link>
-          </div>
         </div>
         <div className='info'> 
-          <Link to={`/edit/${stream._id}`}><FaRegEdit/></Link>
+          <Link to={'/'}  className='bookmark' onClick={(e)=>{e.preventDefault();handleBookmark()}}><FaBookmark/></Link>
           <div className="schedule">
             <p>{formatDate(stream?.date)} Eastern centeral time </p>
             <h3>{countdown.days && countdown.days} days to go</h3>
@@ -119,7 +129,7 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
           </div>
          
 
-          <div className='buttons'>
+          <div className='button.bookmarks'>
               <div className="btns">
                 <Link to={'/'} className={isRsvp? 'cancel' : 'rsvp'} 
                   onClick={isRsvp?handleRemoveRsvp:handleRsvp}>{isLoading && <ImSpinner9/>}{isRsvp? 'Cancel My Online RSVP' : 'RSVP to Attend Online'}
@@ -194,6 +204,11 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
           padding: 1rem;
           position: relative;
           gap: 1rem;
+
+          >a.bookmark{
+            padding: .4rem;
+            background: #2d2c2c75;
+          }
 
           .schedule{
            h3{

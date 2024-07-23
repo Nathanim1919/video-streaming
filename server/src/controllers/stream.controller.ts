@@ -1,3 +1,4 @@
+import mongoose, { Schema} from "mongoose";
 import { CacheClient } from "../config/redisClient";
 import { StreamService } from "../services/stream.service";
 import { ApiResponse } from "../utils/ApiResponse";
@@ -66,7 +67,10 @@ export class StreamController {
         req.body
       );
       // save the stream in cache
-      await this.cacheClient.set(`stream:${stream?._id}`, JSON.stringify(stream));
+      await this.cacheClient.set(
+        `stream:${stream?._id}`,
+        JSON.stringify(stream)
+      );
       res.json(new ApiResponse(201, stream, "Stream created successfully"));
     }
   );
@@ -78,7 +82,10 @@ export class StreamController {
         req.body
       );
       // update the stream in cache
-      await this.cacheClient.set(`stream:${req.params.id}`, JSON.stringify(stream));
+      await this.cacheClient.set(
+        `stream:${req.params.id}`,
+        JSON.stringify(stream)
+      );
       res.json(new ApiResponse(200, stream, "Stream updated successfully"));
     }
   );
@@ -94,8 +101,8 @@ export class StreamController {
 
   rsvpStream = asyncHandler(
     async (req: RequestWithUser, res: Response): Promise<void> => {
-      console.log("loggedUser: ",req.user);
-      console.log("Rsvped Event Id: ",req.params.id);
+      console.log("loggedUser: ", req.user);
+      console.log("Rsvped Event Id: ", req.params.id);
       const rsvp = await this.streamService.rsvpStream(
         req.params.id,
         req.user?._id as string
@@ -107,18 +114,19 @@ export class StreamController {
     }
   );
 
-   // Add a guest to an event
-   addGuest = asyncHandler(
+
+  // Add a guest to an event
+  addGuest = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      console.log("Inside the controller, i got this event id: ", req.params.id);
-      const event = await this.streamService.addGuest(
-        req.params.id,
-        req.body
+      console.log(
+        "Inside the controller, i got this event id: ",
+        req.params.id
       );
-      console.log(event)
+      const event = await this.streamService.addGuest(req.params.id, req.body);
+      console.log(event);
       res.json(new ApiResponse(200, event, "Guest added successfully"));
     }
-  )
+  );
 
   addSchedule = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
@@ -132,7 +140,7 @@ export class StreamController {
       await this.cacheClient.set(eventCacheKey, eventCacheValue);
       res.json(new ApiResponse(200, event, "Schedule added successfully"));
     }
-  )
+  );
 
   editSchedule = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
@@ -146,7 +154,7 @@ export class StreamController {
       await this.cacheClient.set(eventCacheKey, eventCacheValue);
       res.json(new ApiResponse(200, event, "Schedule edited successfully"));
     }
-  )
+  );
 
   editStreamSpecialInstruction = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
@@ -173,7 +181,29 @@ export class StreamController {
       const eventCacheKey = `similarEvents:${req.params.id}`;
       const eventCacheValue = JSON.stringify(events);
       await this.cacheClient.set(eventCacheKey, eventCacheValue);
-      res.json(new ApiResponse(200, events, "Similar events fetched successfully"));
+      res.json(
+        new ApiResponse(200, events, "Similar events fetched successfully")
+      );
     }
-  )
+  );
+
+  bookMark = asyncHandler(
+    async (req: RequestWithUser, res: Response): Promise<void> => {
+      try {
+        if (!req.params.id) {
+          throw new Error('Stream ID is required');
+        }
+        const streamId = new Schema.Types.ObjectId(req.params.id);
+        const stream = await this.streamService.bookMark(
+          streamId,
+          req.user?._id as string,
+          'Stream'
+        );
+    
+        res.json(new ApiResponse(200, stream, "Stream Bookmarked successfully"));
+      } catch (error) {
+        res.status(500).json(new ApiResponse(500, null, error.message));
+      }
+    }
+  );
 }

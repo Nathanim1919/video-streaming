@@ -1,7 +1,7 @@
 import IEvent from "../interfaces/event.interface";
 import streamModel from "../models/stream.model";
 import { User } from "../models/user.model";
-import mongoose, { startSession } from "mongoose";
+import mongoose, { ObjectId, Schema, startSession } from "mongoose";
 
 export class StreamService {
   // Get all streams
@@ -164,6 +164,35 @@ export class StreamService {
         throw new Error(error.message);
       } else {
         throw new Error("Unknown error has occured");
+      }
+    }
+  }
+
+  public async bookMark(streamId: Schema.Types.ObjectId, userId: string, type: 'Event' | 'Stream' = 'Stream') {
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      // Ensure the bookmark type is either 'Event' or 'Stream'
+      if (type !== 'Event' && type !== 'Stream') {
+        throw new Error("Invalid bookmark type");
+      }
+
+      const bookmark = {
+        type: type,
+        item: streamId
+      }
+
+      // Save to user's bookmarks
+      user.bookmarks.push(bookmark);
+      await user.save();
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Unknown error has occurred");
       }
     }
   }
