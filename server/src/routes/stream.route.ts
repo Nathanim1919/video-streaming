@@ -59,5 +59,9 @@ router.post("/:id/bookmark", verifyJWT, [
   streamController.bookMark.bind(streamController),
 ]);
 
+router.delete("/:id/bookmark", verifyJWT, [
+  streamController.removeFromBookMark.bind(streamController),
+]);
+
 // Export the router
 export default router;

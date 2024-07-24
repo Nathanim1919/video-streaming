@@ -168,7 +168,11 @@ export class StreamService {
     }
   }
 
-  public async bookMark(streamId: string, userId: string, type: 'Event' | 'Stream' = 'Stream') {
+  public async bookMark(
+    streamId: string,
+    userId: string,
+    type: "Event" | "Stream" = "Stream"
+  ) {
     try {
       const user = await User.findById(userId);
       if (!user) {
@@ -176,17 +180,48 @@ export class StreamService {
       }
 
       // Ensure the bookmark type is either 'Event' or 'Stream'
-      if (type !== 'Event' && type !== 'Stream') {
+      if (type !== "Event" && type !== "Stream") {
         throw new Error("Invalid bookmark type");
       }
 
       const bookmark = {
         type: type,
-        item: new mongoose.Types.ObjectId(streamId)
-      }
+        item: new mongoose.Types.ObjectId(streamId),
+      };
 
       // Save to user's bookmarks
       user.bookmarks.push(bookmark);
+      await user.save();
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Unknown error has occurred");
+      }
+    }
+  }
+
+  public async removeFromBookMark(
+    streamId: string,
+    userId: string,
+    type: "Event" | "Stream" = "Stream"
+  ) {
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      // Ensure the bookmark type is either 'Event' or 'Stream'
+      if (type !== "Event" && type !== "Stream") {
+        throw new Error("Invalid bookmark type");
+      }
+
+      // Remove the bookmark
+      user.bookmarks = user.bookmarks.filter((bookmark) => {
+        return bookmark.item.toString() !== streamId && bookmark.type !== type;
+      });
+
       await user.save();
     } catch (error) {
       if (error instanceof Error) {

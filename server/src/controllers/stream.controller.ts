@@ -214,4 +214,32 @@ export class StreamController {
       }
     }
   );
+
+
+  removeFromBookMark = asyncHandler(
+    async (req: RequestWithUser, res: Response): Promise<void> => {
+      try {
+        if (!req.params.id) {
+          throw new Error('Stream ID is required');
+        }
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+          throw new Error('Invalid Stream ID');
+        }
+        // Use mongoose.Types.ObjectId for creating ObjectId instances
+        const streamId = new mongoose.Types.ObjectId(req.params.id);
+        // Log the string representation of the ObjectId
+        logger.info(`User ${req.user?._id} removed bookmark from stream ${streamId.toString()}`);
+        
+        const stream = await this.streamService.removeFromBookMark(
+          req.params.id,
+          req.user?._id as string,
+          'Stream'
+        );
+    
+        res.json(new ApiResponse(200, stream, "Stream removed from bookmarks successfully"));
+      } catch (error) {
+        res.status(500).json(new ApiResponse(500, null, error.message));
+      }
+    }
+  );
 }
