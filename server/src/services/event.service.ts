@@ -10,6 +10,7 @@ import IRsvp from "../interfaces/rsvp.interface";
 import RSVP from "../models/rsvp.model";
 import { CacheClient } from "../config/redisClient";
 import streamModel from "../models/stream.model";
+import { defaultEventImages } from "../utils/defaultImages";
 
 export class EventService {
   // instance of the CacheClient class
@@ -23,6 +24,9 @@ export class EventService {
   async createEvent(eventData: IEvent, user: IUser): Promise<IEvent> {
     const newEvent = await EventModel.create(eventData);
     // Add the event to the user's events
+
+    newEvent.image = defaultEventImages[eventData.eventType];
+
     const person = await User.findById(user._id);
     if (!person) {
       throw new Error("User not found");
@@ -31,8 +35,6 @@ export class EventService {
     person.events.push(newEvent._id);
     await person.save();
 
-    // Add the user as the owner of the event
-    // newEvent.owner = user._id;
     newEvent.owner = user._id as unknown as mongoose.Types.ObjectId;
     await newEvent.save();
     return newEvent;

@@ -94,7 +94,7 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
       <Container>
         {qrCodeUrl && <EventTicket qrCodeUrl={qrCodeUrl}/>}
         <div className='image'>
-          <img src={StreamImage} alt='Stream' />
+          <img src={stream.image} alt='Stream' />
         </div>
         <div className='info'> 
           <Link to={'/'}  className='bookmark' onClick={(e)=>{e.preventDefault();handleBookmark()}}><FaBookmark/></Link>

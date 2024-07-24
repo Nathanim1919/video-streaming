@@ -60,7 +60,7 @@ export const SimplarEvents: React.FC<SimplarEventsprops> = ({ eventId, isOnline 
               <h3>17</h3>
             </div>
             <div className="image">
-              <img src={Image} alt="" />
+              <img src={even.image} alt="" />
             </div>
             <div className="desc">
               <h2>{even.title}</h2>

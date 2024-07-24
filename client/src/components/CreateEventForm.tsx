@@ -282,6 +282,8 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     socialLinks: [initialSocialLink],
   });
 
+  
+
   const handleInputOnChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -507,6 +509,25 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
           />
         </div>
         <div className="form-group">
+          <label htmlFor="eventType">Event Type</label>
+          <select
+            id="eventType"
+            name="eventType"
+            value={selectedEvent?.eventType || event.eventType}
+            onChange={handleInputOnChange}
+            disabled={loading}
+          >
+            <option value="meetup">Meetup</option>
+            <option value="webinar">Webinar</option>
+            <option value="seminar">Seminar</option>
+            <option value="workshop">Workshop</option>
+            <option value="conference">Conference</option>
+            <option value="hackathon">Hackathon</option>
+            <option value="party">Party</option>
+            <option value="other">Other</option>
+          </select>
+          </div>
+          <div className="form-group">
           <label htmlFor="rsvp">RSVP</label>
           <select
             id="rsvp"

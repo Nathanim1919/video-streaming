@@ -23,6 +23,7 @@ export type Event = {
   time: string;
   owner?: UserInterface;
   location?: string;
+  image: string;
   price: number;
   capacity: number;
   eventType: string;

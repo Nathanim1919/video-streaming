@@ -18,6 +18,7 @@ interface Stream {
     description: string;
     date: string;
     attendees: string[];
+    image: string;
     owner: {
         fullName: string;
         followers: string[];
@@ -69,7 +70,7 @@ export const TopStreams = () => {
                         <Stream key={index}>
                             <div className="container">
                                 <div className='streamer-info'>
-                                    <img src={Image} alt='streamer' />
+                                    <img src={stream.image} alt='streamer' />
                                     <div className="proInfo">
                                         <div>
                                             <img src={Image4}/>

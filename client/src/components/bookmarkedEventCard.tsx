@@ -26,7 +26,7 @@ export const BookMarkedEventCard: React.FC<ContainerProps> = ({
           }
         >
           <div className="eventImage">
-            <img src="https://via.placeholder.com/150" alt="event" />
+            <img src={event.item.image} alt="event" />
           </div>
           <div className="eventDetails">
             <h2>

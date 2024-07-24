@@ -34,7 +34,7 @@ export const Events = () => {
         {events.map((event) => (
           <div className="event">
             <div className="image">
-              <img src={Image} alt="" />
+              <img src={event?.image} alt="" />
               <div className="price">
                 <p>ETH {event.price}</p>
               </div>
@@ -93,7 +93,7 @@ const Conatainer = styled.div`
     width: 80%;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     place-items: center;
     gap: 1rem;
 

@@ -16,6 +16,7 @@ export interface IStream {
   isOnline: boolean;
   tags: string[];
   duration: number;
+  image: string;
   guests: [
     {
       name: string;

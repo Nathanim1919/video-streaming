@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import ProImage from "/home/bg.jpg";
 import styled from "styled-components";
 import Loader from "./Loader";
 import { useAuth } from "../contexts/AuthContext";
@@ -36,6 +35,7 @@ interface EventDetailData {
   date: string;
   owner: UserInterface;
   time: string;
+  image: string
   location: string;
   eventType: string;
   rsvp: string;
@@ -125,7 +125,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
   return isLoading ? (
     <Loader />
   ) : (
-    <Container>
+    <Container image={event.image}>
       <div className="header">
         <div className="heroText">
           <h1>{event.title}</h1>
@@ -277,7 +277,11 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
 
 export default EventDetail;
 
-const Container = styled.div`
+interface ContainerProps {
+  image: string
+}
+
+const Container = styled.div<ContainerProps>`
   width: 100%;
   display: grid;
   place-items: center;
@@ -413,7 +417,7 @@ const Container = styled.div`
   }
   .header {
     width: 100vw;
-    background: linear-gradient(to bottom, #000000bc, #000000), url(${ProImage});
+    background: linear-gradient(to bottom, #000000bc, #000000), url(${(props) => props.image});
     background-size: cover;
     background-position: center;
     padding: 2rem 0;

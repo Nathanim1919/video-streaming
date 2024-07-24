@@ -336,7 +336,7 @@ const UserProfile = () => {
                         </label>
                       </form>
                     )}
-                    <img src={TechImage} alt="profile-pic" />
+                    <img src={event.image} alt="profile-pic" />
                   </div>
                   <div className="info">
                     <p>

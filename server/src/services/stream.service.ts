@@ -2,6 +2,7 @@ import IEvent from "../interfaces/event.interface";
 import streamModel from "../models/stream.model";
 import { User } from "../models/user.model";
 import mongoose, { ObjectId, Schema, startSession } from "mongoose";
+import { defaultEventImages } from "../utils/defaultImages";
 
 export class StreamService {
   // Get all streams
@@ -20,6 +21,9 @@ export class StreamService {
     const session = await startSession();
     try {
       const newStream = await streamModel.create(data);
+
+
+
       const user = await User.findById(userId).session(session);
 
       if (!user) {
@@ -28,6 +32,7 @@ export class StreamService {
 
       user.streams?.push(newStream._id);
       newStream.owner = user._id as unknown as mongoose.Types.ObjectId;
+      newStream.image = defaultEventImages[data.eventType];
 
       await user.save({ session });
       await newStream.save({ session });
