@@ -39,3 +39,8 @@ export type Event = {
 };
 
 
+
+export type IEventForBookMark = {
+  type: string;
+  item: Event;
+};

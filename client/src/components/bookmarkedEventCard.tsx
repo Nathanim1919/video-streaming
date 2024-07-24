@@ -1,16 +1,23 @@
-import { Event } from "../interfaces/event";
+import { Link } from "react-router-dom";
+import {IEventForBookMark } from "../interfaces/event";
 import styled from "styled-components";
 
 
 interface ContainerProps {
-    event: Event;
+    event: IEventForBookMark;
 }
 
 
-export const BookMarkedEventCard: React.FC<ContainerProps> = ({ event }: { event: Event }) => {
+const handleRemove = (id: string) => {
+  
+};
+
+
+export const BookMarkedEventCard: React.FC<ContainerProps> = ({ event }: { event: IEventForBookMark }) => {
     console.log(event);
     return (
         <Container className="bookMarkedEventCard">
+            <Link to={!event.item?.isOnline?`/event/${event.item?._id}`:`/streames/${event.item?._id}`}>
             <div className="eventImage">
                 <img src="https://via.placeholder.com/150" alt="event" />
             </div>
@@ -21,6 +28,7 @@ export const BookMarkedEventCard: React.FC<ContainerProps> = ({ event }: { event
                 <p>{event.item?.time}</p>
             </div>
             <button>remove</button>
+            </Link>
         </Container>
     );
 };
@@ -28,6 +36,8 @@ export const BookMarkedEventCard: React.FC<ContainerProps> = ({ event }: { event
 
 
 const Container = styled.div`
+a{
+    text-decoration: none;
     display: flex;
     justify-content: space-between;
     padding: 1rem 0;
@@ -38,12 +48,14 @@ const Container = styled.div`
     padding:.5rem 1rem;
     cursor: pointer;
     transition: background .3s;
+    border-left: 4px solid transparent;
     
 
 
     &:hover {
-        background: #2b2828;
+        background: #1c1c1c;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border-left: 4px solid #a72d2d;
 
     }
    
@@ -102,6 +114,6 @@ const Container = styled.div`
             border: 1px solid #fff;
         }
     }
-
+}
 
 `;

@@ -51,6 +51,10 @@ const bookMarkStream = (id: string) => {
 
 }
 
+const removeFromBookMark = (id: string) => {
+  return apiClient.delete(`/stream/${id}/bookmark`);
+};
+
 // Export the API functions
 export {
   createStream,
@@ -62,5 +66,6 @@ export {
   addStreamSchedule,
   editStreamInstruction,
   getSimilartStreams,
-  bookMarkStream
+  bookMarkStream,
+  removeFromBookMark
 };
