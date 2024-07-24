@@ -43,7 +43,7 @@ export class UserController {
     async (req: RequestWithUser, res): Promise<void> => {
       // Step 1: Get the user ID from the request parameters
       const { id } = req.params;
-  
+
       let user;
       // Step 2: Check if the user data is in the cache
       const userExists = await this.cacheClient.exists(`user:${id}`);
@@ -56,22 +56,16 @@ export class UserController {
         user = await this.userService.userFindById(id);
         await this.cacheClient.set(`user:${id}`, JSON.stringify(user));
       }
-  
+
       // Step 3: Determine if the current user is the owner of the profile
       const isOwner = req.user._id.toString() === id.toString();
-  
+
       // Step 4: Get the actions based on the user's role
       const actions = this.getActions(isOwner);
-  
+
       // Step 5: Send the response with the user data and actions
       res.json(
-        new ApiResponse(
-          200,
-          user,
-          "User found successfully",
-          actions,
-          isOwner
-        )
+        new ApiResponse(200, user, "User found successfully", actions, isOwner)
       );
     }
   );
@@ -84,15 +78,20 @@ export class UserController {
     return newUser;
   }
 
-
-  userUpdate = asyncHandler(async (req: RequestWithUser, res): Promise<void> => {
-    const updatedUser = await this.userService.userUpdate(req.user._id as string, req.body);
-    // update the user in the cache or set it if it doesn't exist
-    await this.cacheClient.set(`user:${req.user._id}`, JSON.stringify(updatedUser));
-    res.json(
-      new ApiResponse(200, updatedUser, "User updated successfully")
-    );
-  });
+  userUpdate = asyncHandler(
+    async (req: RequestWithUser, res): Promise<void> => {
+      const updatedUser = await this.userService.userUpdate(
+        req.user._id as string,
+        req.body
+      );
+      // update the user in the cache or set it if it doesn't exist
+      await this.cacheClient.set(
+        `user:${req.user._id}`,
+        JSON.stringify(updatedUser)
+      );
+      res.json(new ApiResponse(200, updatedUser, "User updated successfully"));
+    }
+  );
 
   async userDelete(id: string): Promise<IUser | null> {
     const deletedUser = await this.userService.userDelete(id);
@@ -120,7 +119,7 @@ export class UserController {
   );
 
   uploadProfileImage = asyncHandler(async (req: RequestWithUser, res) => {
-    console.log("The requested file path is: ",req.file.path);
+    console.log("The requested file path is: ", req.file.path);
     const absolutePath = path.resolve(req.file.path);
     const updatedUser = await this.userService.uploadProfilePicture(
       req.user._id as string,
@@ -128,7 +127,10 @@ export class UserController {
     );
     console.log("The updated user is: ", updatedUser);
     // update the user in the cache or set it if it doesn't exist
-    await this.cacheClient.set(`user:${req.user._id}`, JSON.stringify(updatedUser));
+    await this.cacheClient.set(
+      `user:${req.user._id}`,
+      JSON.stringify(updatedUser)
+    );
     res.json(
       new ApiResponse(200, updatedUser, "Profile picture uploaded successfully")
     );
@@ -136,11 +138,11 @@ export class UserController {
 
   getBookmarks = asyncHandler(
     async (req: RequestWithUser, res): Promise<void> => {
+      logger.info("Getting bookmarks for user: ", req.user._id);
       const bookmarks = await this.userService.getBookmarks(req.user._id);
       res.json(new ApiResponse(200, bookmarks, "Bookmarks found successfully"));
     }
   );
-  
 
   userFindAll = asyncHandler(
     async (req: RequestWithUser, res): Promise<void> => {
@@ -161,6 +163,4 @@ export class UserController {
       }
     }
   );
-
-  
 }

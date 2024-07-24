@@ -168,7 +168,7 @@ export class StreamService {
     }
   }
 
-  public async bookMark(streamId: Schema.Types.ObjectId, userId: string, type: 'Event' | 'Stream' = 'Stream') {
+  public async bookMark(streamId: string, userId: string, type: 'Event' | 'Stream' = 'Stream') {
     try {
       const user = await User.findById(userId);
       if (!user) {
@@ -182,7 +182,7 @@ export class StreamService {
 
       const bookmark = {
         type: type,
-        item: streamId
+        item: new mongoose.Types.ObjectId(streamId)
       }
 
       // Save to user's bookmarks

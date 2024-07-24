@@ -1,9 +1,10 @@
-import mongoose, { Schema} from "mongoose";
+import mongoose, { Mongoose, Schema} from "mongoose";
 import { CacheClient } from "../config/redisClient";
 import { StreamService } from "../services/stream.service";
 import { ApiResponse } from "../utils/ApiResponse";
 import { asyncHandler } from "../utils/asyncHandler";
 import { Request, Response } from "express";
+import logger from "../logger";
 
 // Extend Request interface to include user property
 interface RequestWithUser extends Request {
@@ -193,9 +194,16 @@ export class StreamController {
         if (!req.params.id) {
           throw new Error('Stream ID is required');
         }
-        const streamId = new Schema.Types.ObjectId(req.params.id);
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+          throw new Error('Invalid Stream ID');
+        }
+        // Use mongoose.Types.ObjectId for creating ObjectId instances
+        const streamId = new mongoose.Types.ObjectId(req.params.id);
+        // Log the string representation of the ObjectId
+        logger.info(`User ${req.user?._id} bookmarked stream ${streamId.toString()}`);
+        
         const stream = await this.streamService.bookMark(
-          streamId,
+          req.params.id,
           req.user?._id as string,
           'Stream'
         );

@@ -5,6 +5,7 @@ import logger from "../logger";
 import bcrypt from "bcrypt";
 import cloudinary from "../utils/cloudinary";
 import IEvent from "../interfaces/event.interface";
+import mongoose from "mongoose";
 interface RequestWithUser extends Request {
   user: IUser;
 }
@@ -151,7 +152,8 @@ export class UserService {
   }
 
   async getBookmarks(id: string): Promise<IBookmark[] | null> {
-    const user = await User.findById(id).populate({
+    logger.info("Getting bookmarks for user with id: ", id);
+    const user = await User.findById(new mongoose.Types.ObjectId(id)).populate({
       path: 'bookmarks.item',
     });
     return user?.bookmarks;

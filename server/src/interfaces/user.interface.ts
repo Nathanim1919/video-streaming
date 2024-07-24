@@ -1,9 +1,9 @@
 // Define the structure of the User model
-import { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IBookmark {
   type: 'Event' | 'Stream',
-  item: Schema.Types.ObjectId
+  item: mongoose.Types.ObjectId
 }
 
 

@@ -93,7 +93,8 @@ const Conatainer = styled.div`
     width: 80%;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    place-items: center;
     gap: 1rem;
 
     .event {
@@ -101,7 +102,7 @@ const Conatainer = styled.div`
       color: #fff;
       border-radius: 10px;
       overflow: hidden;
-      max-width: 300px;
+      /* max-width: 300px; */
 
       .image {
         max-height: 200px;
