@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -10,12 +10,12 @@ const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  // useEffect(() => {
     // Redirect to home page if user is authenticated
     if (user?._id) {
       navigate('/me');
     }
-  }, [user, navigate]);
+
 
   // Render the child component if user is not authenticated
   return <>{children}</>;

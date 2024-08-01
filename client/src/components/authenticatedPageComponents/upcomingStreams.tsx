@@ -7,11 +7,11 @@ import { GrFormNextLink } from "react-icons/gr";
 import { formatDate, requestHandler } from '../../utils';
 import { getUpcomingEvents } from '../../api/event';
 import Loader from '../Loader';
-import { Event } from '../../interfaces/event';
+import { IEvent } from '../../interfaces/event';
 
 
 export const UpcomingStreams: React.FC = () => {
-    const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
+    const [upcomingEvents, setUpcomingEvents] = useState<IEvent[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ export const UpcomingStreams: React.FC = () => {
             await requestHandler(
                 async () => getUpcomingEvents(),
                 setIsLoading,
-                (data) => setUpcomingEvents(data.data as Event[]),
+                (data) => setUpcomingEvents(data.data as IEvent[]),
                 (error) => console.log(error)
             )
         }

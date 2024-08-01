@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Loader from "./Loader";
 import { useAuth } from "../contexts/AuthContext";
-import useRsvp from "../customeHook/useRsvp";
+// import useRsvp from "../customeHook/useRsvp";
 import {
   FaFacebook,
   FaInstagram,
@@ -20,40 +20,41 @@ import { FaStar } from "react-icons/fa";
 import { IoMdTimer } from "react-icons/io";
 import { GrSchedules } from "react-icons/gr";
 import { CiEdit } from "react-icons/ci";
-import { UserInterface } from "../interfaces/user";
+// import { UserInterface } from "../interfaces/user";
 import { ScheduleManagment } from "./scheduleManagment";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOnlinePrediction } from "react-icons/md";
 import { FaHashtag } from "react-icons/fa6";
+import { IEvent } from "../interfaces/event";
 
 
-interface EventDetailData {
-  _id: string;
-  attendees: string[];
-  title: string;
-  description: string;
-  date: string;
-  owner: UserInterface;
-  time: string;
-  image: string
-  location: string;
-  eventType: string;
-  rsvp: string;
-  tags: string[];
-  price: number;
-  capacity: number;
-  isOnline: boolean;
-  specialInstructions: string;
-  eventInformations: [
-    {
-      title: string;
-      description: string;
-      saved: boolean;
-      error: string;
-    }
-  ];
-  schedule: { time: string; activity: string }[];
-}
+// interface EventDetailData {
+//   _id: string;
+//   attendees: string[];
+//   title: string;
+//   description: string;
+//   date: string;
+//   owner: UserInterface;
+//   time: string;
+//   image: string
+//   location: string;
+//   eventType: string;
+//   rsvp: string;
+//   tags: string[];
+//   price: number;
+//   capacity: number;
+//   isOnline: boolean;
+//   specialInstructions: string;
+//   eventInformations: [
+//     {
+//       title: string;
+//       description: string;
+//       saved: boolean;
+//       error: string;
+//     }
+//   ];
+//   schedule: { time: string; activity: string }[];
+// }
 
 interface EventDetailProps {
   type: "stream" | "event";
@@ -65,7 +66,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [manageSchedule, setManageSchedule] = React.useState(false);
-  const [event, setEvent] = useState({} as EventDetailData);
+  const [event, setEvent] = useState<IEvent>({} as IEvent);
   // const [isRsvp, setIsRsvp] = useState(
   //   user ? event?.attendees?.includes(user._id) : false
   // );
@@ -87,7 +88,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
       ? editStreamInstruction
       : editEventInstruction;
     await requestHandler(
-      async () => await endPoint(event._id, specialInsrution),
+      async () => await endPoint(event._id??"", specialInsrution),
       setIsLoading,
       (res) => {
         event.specialInstructions = specialInsrution;
@@ -107,7 +108,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
         async () => await endPoint(eventId!),
         setIsLoading,
         (res) => {
-          setEvent(res.data as EventDetailData);
+          setEvent(res.data as IEvent);
         },
         (error) => {
           alert(error);
@@ -125,7 +126,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
   return isLoading ? (
     <Loader />
   ) : (
-    <Container image={event.image}>
+    <Container image={event.image as string}>
       <div className="header">
         <div className="heroText">
           <h1>{event.title}</h1>
@@ -269,7 +270,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
           </form>
         )}
       </div>
-      <SimplarEvents isOnline={event.isOnline} eventId={event._id} />
+      <SimplarEvents isOnline={event.isOnline} eventId={event._id??""} />
     </Container>
   );
 };

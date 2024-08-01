@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { IoMdClose } from "react-icons/io";
 import { authApi } from "../../api";
 import { requestHandler } from "../../utils";
-import { UserInterface } from "../../interfaces/user";
+// import { UserInterface } from "../../interfaces/user";
 import { Streamer } from "../../pages/StreamerPage";
 
 // props for the EditUserBio component
@@ -66,7 +66,7 @@ export const EditUserBio: React.FC<EditUserBioProps> = ({
         null,
         (response) => {
           setEditBio(false);
-          setStreamer(response.data as UserInterface);
+          setStreamer(response.data as Streamer);
         },
         (error: string) => {
           console.log(error);

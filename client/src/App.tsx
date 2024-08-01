@@ -16,7 +16,7 @@ import { EventsPage } from './pages/EventsPage';
 import { OrganizationsList } from './pages/OrgsPage';
 import { RvspList } from './components/RvspList';
 import { LiveNow } from './pages/LiveNow';
-import { CreateEventForm } from './components/CreateEventForm';
+// import { CreateEventForm } from './components/CreateEventForm';
 import { BookMarks } from './pages/bookMarks';
 
 
@@ -79,14 +79,14 @@ const App = () => {
           </PrivateRouteWithHeader>
         }
       />
-       <Route 
+       {/* <Route 
         path="/events/schedule" 
         element={
           <PrivateRouteWithHeader>
             <CreateEventForm/>
           </PrivateRouteWithHeader>
         }
-      />
+      /> */}
         <Route 
         path="/account" 
         element={

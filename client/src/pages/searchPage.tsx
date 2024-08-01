@@ -8,13 +8,15 @@ import { Link } from "react-router-dom";
 import { CiStreamOn } from "react-icons/ci";
 import { MdEvent } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
+import { IEvent } from "../interfaces/event";
+import { Streamer } from "./StreamerPage";
 
 // the searchResult type, it will be an array of arrqy of objects
 interface searchResult {
-  events?: Array<object>;
-  streamers?: Array<object>;
+  events?: IEvent[];
+  streamers?: Streamer[];
   organisations?: Array<object>;
-  streames?: Array<object>;
+  streames?: IEvent[];
 }
 
 interface searchPageProps {
@@ -28,11 +30,11 @@ export const SearchPage: React.FC<searchPageProps> = ({ setIntiateSearch }) => {
     organisations: [],
     streames: [],
   });
-  const [displayAll, setDisplayAll] = React.useState(true);
-  const [displayEvents, setDisplayEvents] = React.useState(false);
-  const [displayStreamers, setDisplayStreamers] = React.useState(false);
-  const [displayOrganisations, setDisplayOrganisations] = React.useState(false);
-  const [displayStreames, setDisplayStreames] = React.useState(false);
+  // const [displayAll, setDisplayAll] = React.useState(true);
+  // const [displayEvents, setDisplayEvents] = React.useState(false);
+  // const [displayStreamers, setDisplayStreamers] = React.useState(false);
+  // const [displayOrganisations, setDisplayOrganisations] = React.useState(false);
+  // const [displayStreames, setDisplayStreames] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
@@ -82,32 +84,32 @@ export const SearchPage: React.FC<searchPageProps> = ({ setIntiateSearch }) => {
         <div className="navigations">
           <button
             onClick={() => {
-              setDisplayAll(false);
-              setDisplayEvents(true);
+              // setDisplayAll(false);
+              // setDisplayEvents(true);
             }}
           >
             Events
           </button>
           <button
             onClick={() => {
-              setDisplayAll(false);
-              setDisplayStreamers(true);
+              // setDisplayAll(false);
+              // setDisplayStreamers(true);
             }}
           >
             Peoples
           </button>
           <button
             onClick={() => {
-              setDisplayAll(false);
-              setDisplayOrganisations(true);
+              // setDisplayAll(false);
+              // setDisplayOrganisations(true);
             }}
           >
             Organisations
           </button>
           <button
             onClick={() => {
-              setDisplayAll(false);
-              setDisplayOrganisations(true);
+              // setDisplayAll(false);
+              // setDisplayOrganisations(true);
             }}
           >
             Streames
@@ -123,7 +125,7 @@ export const SearchPage: React.FC<searchPageProps> = ({ setIntiateSearch }) => {
                 Events
               </h3>
               {searchResults.events?.length === 0 && <p>No events found</p>}
-              {searchResults.events?.map((event: any) => (
+              {searchResults.events?.map((event: IEvent) => (
                 <Link
                   onClick={() => setIntiateSearch(false)}
                   to={`/events/${event._id}`}
@@ -144,7 +146,7 @@ export const SearchPage: React.FC<searchPageProps> = ({ setIntiateSearch }) => {
                 Streames
               </h3>
               {searchResults.streames?.length === 0 && <p>No streames found</p>}
-              {searchResults.streames?.map((stream: any) => (
+              {searchResults.streames?.map((stream: IEvent) => (
                 <Link
                   onClick={() => setIntiateSearch(false)}
                   to={`/streames/${stream._id}`}
@@ -171,7 +173,7 @@ export const SearchPage: React.FC<searchPageProps> = ({ setIntiateSearch }) => {
               {searchResults.streamers?.length === 0 && (
                 <p>No streamers found</p>
               )}
-              {searchResults.streamers?.map((streamer: any) => (
+              {searchResults.streamers?.map((streamer: Streamer) => (
                 <Link
                   onClick={() => setIntiateSearch(false)}
                   to={`/streamers/${streamer._id}`}
@@ -187,7 +189,7 @@ export const SearchPage: React.FC<searchPageProps> = ({ setIntiateSearch }) => {
                 </Link>
               ))}
             </div>
-            <div className="orgs">
+            {/* <div className="orgs">
               <h3>Organisations</h3>
               {searchResults.organisations?.length === 0 && (
                 <p>No organisations found</p>
@@ -203,7 +205,7 @@ export const SearchPage: React.FC<searchPageProps> = ({ setIntiateSearch }) => {
                   </div>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         )}
       </div>

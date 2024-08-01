@@ -18,6 +18,7 @@ export type guest = {
 export type IEvent = {
   _id?: string;
   title: string;
+  time?: string;
   description: string;
   date: string;
   owner?: UserInterface;

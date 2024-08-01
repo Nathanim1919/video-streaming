@@ -1,10 +1,10 @@
 // imports
 import React, {useState, useEffect, useMemo} from 'react'
 import styled from 'styled-components'
-import { Event } from '../interfaces/event';
+import { IEvent } from '../interfaces/event';
 
 interface CountdownProps {
-    event: Event
+    event: IEvent
 }
 
 
