@@ -7,12 +7,13 @@ import { IoMdClose } from "react-icons/io";
 import { authApi } from "../../api";
 import { requestHandler } from "../../utils";
 import { UserInterface } from "../../interfaces/user";
+import { Streamer } from "../../pages/StreamerPage";
 
 // props for the EditUserBio component
 export interface EditUserBioProps {
-  setStreamer: (streamer: UserInterface) => void;
+  setStreamer: (streamer: Streamer) => void;
   setEditBio: (editBio: boolean) => void;
-  streamer: UserInterface;
+  streamer: Streamer;
 }
 
 interface MyObject {

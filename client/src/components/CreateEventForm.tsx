@@ -222,7 +222,7 @@ interface CreateEventFormProps {
   setCreateEvent: (value: boolean) => void;
   setEventEditMode: (value: boolean) => void;
   eventEditMode: boolean;
-  selectedEvent?: IEvent;
+  selectedEvent?: IEvent | null;
 }
 
 export const CreateEventForm: React.FC<CreateEventFormProps> = ({

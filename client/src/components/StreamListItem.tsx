@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-// import StreamImage from '/image/join.jpg'
 import { Link } from 'react-router-dom';
 import { requestHandler } from '../utils';
 import { useAuth } from '../contexts/AuthContext';

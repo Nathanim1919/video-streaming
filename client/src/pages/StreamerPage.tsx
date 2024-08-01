@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { authApi } from "../api";
 import { requestHandler } from "../utils";
 import Loader from "../components/Loader";
+import { IEvent } from "../interfaces/event";
 
 export interface Streamer {
     _id: string;
@@ -14,7 +15,8 @@ export interface Streamer {
     profession: string;
     followers: string[];
     following: string[];
-    events: string[];
+    events: IEvent[];
+    streams: IEvent[];
     rating: number;
     profilePicture: {
         public_id: string;
@@ -25,7 +27,7 @@ export interface Streamer {
 
 
 const StreamerPage = () => {
-    const [streamers, setStreamers] = useState([]);
+    const [streamers, setStreamers] = useState<Streamer[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
 

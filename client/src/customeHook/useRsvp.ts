@@ -2,6 +2,14 @@ import { useCallback } from 'react';
 import { requestHandler } from '../utils';
 import { eventApi } from '../api';
 
+interface RsvpResponse {
+  data: {
+    qrCodeUrl: string;
+    // Include other properties of `data.data` here
+  };
+  // Include other properties of `data` here if needed
+}
+
 export default function useRsvp(streamId: string, setIsRsvp: (value: boolean) => void, setIsLoading: (value: boolean) => void, setQrCodeUrl: (value: string) => void){
 
   const checkRsvpStatus = useCallback(async () => {
@@ -11,7 +19,7 @@ export default function useRsvp(streamId: string, setIsRsvp: (value: boolean) =>
         setIsLoading,
         (res) => {
           const { data } = res;
-          setIsRsvp(data);
+          setIsRsvp(data as boolean);
           console.log("This is the checked data: ", data);
         },
         (error) => {
@@ -26,7 +34,8 @@ export default function useRsvp(streamId: string, setIsRsvp: (value: boolean) =>
         async () => await eventApi.handleRSVP(streamId),
         setIsLoading,
         (data) => {
-          setQrCodeUrl(data?data.qrCodeUrl);
+          const rsvpData = data.data as RsvpResponse["data"];
+          setQrCodeUrl(rsvpData.qrCodeUrl as string);
           checkRsvpStatus();
         },
         (error) => {

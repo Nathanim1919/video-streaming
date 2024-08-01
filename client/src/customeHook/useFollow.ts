@@ -23,6 +23,7 @@ export default function useFollow(
                 console.log(error);
             }
         )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setIsFollow, userId]);
 
     const handleUnfollowClick = useCallback(async (e: React.MouseEvent) => {
@@ -38,6 +39,7 @@ export default function useFollow(
                 console.log(error);
             }
         )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[setIsFollow, userId]);
 
     const handleClick = useCallback((e: React.MouseEvent) => {

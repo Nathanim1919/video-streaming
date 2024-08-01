@@ -20,7 +20,7 @@ import useFollow from "../customeHook/useFollow";
 import { useAuth } from "../contexts/AuthContext";
 import Loader from "./Loader";
 import { IoIosOptions } from "react-icons/io";
-import { UserInterface } from "../interfaces/user";
+// import { UserInterface } from "../interfaces/user";
 import { CiEdit } from "react-icons/ci";
 // import { MdDelete } from "react-icons/md";
 import { IoCameraOutline } from "react-icons/io5";
@@ -43,14 +43,14 @@ const UserProfile = () => {
 
   const [editBio, setEditBio] = React.useState(false);
   const [createEvent, setCreateEvent] = React.useState(false);
-  const [selectedEvent, setSelectedEvent] = React.useState<any>({});
+  const [selectedEvent, setSelectedEvent] = React.useState<IEvent | null>({} as IEvent);
   const [eventEditMode, setEventEditMode] = React.useState(false);
   const [streamer, setStreamer] = React.useState<Streamer>({} as Streamer);
   const [actions, setActions] = React.useState<string[]>([]);
   const [isOwner, setIsOwner] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [openOptions, setOpenOptions] = React.useState(false);
-  const [userSreamsAndEvents, setUserStreamsAndEvents] = React.useState<any[]>(
+  const [userSreamsAndEvents, setUserStreamsAndEvents] = React.useState<IEvent[]>(
     []
   );
   const [uploadProfile, setUploadProfile] = React.useState(false);
@@ -66,10 +66,12 @@ const UserProfile = () => {
     setUserFollowers
   );
 
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleLabelClick = () => {
-    fileInputRef.current.click();
+    if (fileInputRef.current !== null) {
+      fileInputRef.current.click();
+    }
   };
 
   const handleSearch = async (query: string) => {
@@ -78,7 +80,7 @@ const UserProfile = () => {
       async () => await personalSearch(query),
       setIsLoading,
       (response) => {
-        setUserStreamsAndEvents(response.data);
+        setUserStreamsAndEvents(response.data as IEvent[]);
       },
       (error) => {
         console.log(error);
@@ -109,11 +111,11 @@ const UserProfile = () => {
         setIsLoading,
         (response) => {
           const { data, actions, isOwner } = response.data as {
-            data: UserInterface;
+            data: Streamer;
             actions: string[];
             isOwner: boolean;
           };
-          setStreamer(data);
+          setStreamer(data as Streamer);
           // setUserStreamsAndEvents([...data.events, ...data.streams]);
           filterEventsAndStreams(
             [...data.events, ...data.streams],
@@ -302,7 +304,7 @@ const UserProfile = () => {
                     e.preventDefault();
                     setCreateEvent(true);
                     setEventEditMode(false);
-                    setSelectedEvent({});
+                    setSelectedEvent(null);
                   }}
                   to={"/events/schedule"}
                 >
