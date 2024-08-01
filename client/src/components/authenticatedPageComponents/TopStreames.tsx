@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import Image from '/home/live.jpeg';
 import Image4 from '/image/profile.jpg';
 import { useState, useEffect } from 'react';
 import { formatDate, requestHandler } from '../../utils';
@@ -9,6 +8,7 @@ import { eventApi } from '../../api';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { MdOutlineRadioButtonChecked } from "react-icons/md";
+
 
 
 
@@ -29,7 +29,7 @@ interface Stream {
 
 export const TopStreams = () => {
     const navigate = useNavigate();
-    const [streams, setStreams] = useState([]);
+    const [streams, setStreams] = useState<Stream[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const {isAuthenticated} = useAuth();
 
@@ -38,7 +38,7 @@ export const TopStreams = () => {
             async () => await eventApi.getTopEvents(),
             setIsLoading,
             (response) => {
-                setStreams(response.data);
+                setStreams(response.data as Stream[]);
             },
             (error) => {
                 console.log(error);

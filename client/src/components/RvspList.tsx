@@ -9,9 +9,10 @@ import { IoMdDownload } from "react-icons/io";
 import QRCode from "qrcode.react";
 import { toPng } from "html-to-image";
 import { saveAs } from "file-saver";
+import {IRsvps } from "../interfaces/event";
 
 export const RvspList: React.FC = () => {
-    const [rsvpEvents, setRsvpEvents] = useState([]);
+    const [rsvpEvents, setRsvpEvents] = useState<IRsvps[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -19,7 +20,7 @@ export const RvspList: React.FC = () => {
             await requestHandler(
                 async () => getRsvpEvents(),
                 setIsLoading,
-                (data) => setRsvpEvents(data.data),
+                (data) => setRsvpEvents(data.data as IRsvps[]),
                 (error) => console.log(error)
             )
         }
@@ -30,7 +31,7 @@ export const RvspList: React.FC = () => {
     const downloadTicketAsImage = async () => {
         const ticketElement = document.getElementById('ticket');
         try {
-          const dataUrl = await toPng(ticketElement);
+          const dataUrl = await toPng(ticketElement!);
           saveAs(dataUrl, 'ticket.png');
         } catch (error) {
           console.error('Error generating image:', error);
@@ -48,7 +49,7 @@ export const RvspList: React.FC = () => {
             
             {isLoading? <Loader/>:<StreamList>
                 {
-                    rsvpEvents?.map((event) => {
+                    rsvpEvents?.map((event: IRsvps) => {
                         return (
                             <div className="ticket" id="ticket" key={event._id}>
                                <div className="header" onClick={downloadTicketAsImage}>

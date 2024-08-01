@@ -1,4 +1,3 @@
-import { Header } from "../components/authenticatedPageComponents/header";
 import { Hero } from "../components/authenticatedPageComponents/hero";
 import styled from "styled-components";
 import { UpcomingStreams } from "../components/authenticatedPageComponents/upcomingStreams";
@@ -6,7 +5,6 @@ import { TopStreamers } from "../components/authenticatedPageComponents/topTream
 import { CreateStream } from "../components/authenticatedPageComponents/createStreamCall";
 import { TopStreams } from "../components/authenticatedPageComponents/TopStreames";
 import Footer from "../components/authenticatedPageComponents/footer";
-import { motion } from "framer-motion"
 
 const AuthenticatedPage = () => {
     return (

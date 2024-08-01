@@ -1,3 +1,4 @@
+import { IEvent } from "../interfaces/event";
 import apiClient from "./config";
 
 // interface PageinationParams {
@@ -5,22 +6,7 @@ import apiClient from "./config";
 //   limit: number;
 // }
 
-const createEvent = (data: {
-  title: string;
-  description: string;
-  date: string;
-  duration: number;
-  price: number;
-  capacity: number;
-  location: string;
-  eventType: string;
-  isOpenForRsvp: string;
-  tags: string[];
-  guests: string[];
-  specialInstructions: string;
-  schedule: { time: string; activity: string }[];
-  socialLinks: { platform: string; url: string }[];
-}) => {
+const createEvent = (data: IEvent) => {
   console.log(data);
   return apiClient.post("/events/create", data);
 };

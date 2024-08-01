@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { FaTimes, FaPlus } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -11,26 +11,10 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { eventApi, streamApi } from "../api";
-import { Event, ScheduleItem, SocialLink } from "../interfaces/event";
+import { IEvent } from "../interfaces/event";
 import { requestHandler } from "../utils";
 import { ImSpinner9 } from "react-icons/im";
 
-interface AppEvent {
-  title: string;
-  description: string;
-  date: string;
-  duration: number;
-  price: number;
-  capacity: number;
-  location: string;
-  eventType: string;
-  isOpenForRsvp: string;
-  tags: string[];
-  guests: string[];
-  specialInstructions: string;
-  schedule: { /* structure here */ }[];
-  socialLinks: { /* structure here */ }[];
-}
 
 const darkTheme = createTheme({
   palette: {
@@ -233,26 +217,12 @@ const Container = styled.div`
   }
 `;
 
-const initialScheduleItem: ScheduleItem = {
-  time: "",
-  activity: "",
-};
-
-const initialGuest = {
-  name: "",
-  profession: "",
-};
-
-const initialSocialLink: SocialLink = {
-  platform: "",
-  url: "",
-};
 
 interface CreateEventFormProps {
   setCreateEvent: (value: boolean) => void;
   setEventEditMode: (value: boolean) => void;
   eventEditMode: boolean;
-  selectedEvent?: Event;
+  selectedEvent?: IEvent;
 }
 
 export const CreateEventForm: React.FC<CreateEventFormProps> = ({
@@ -263,26 +233,24 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
 }) => {
   const [date, setDate] = useState<dayjs.Dayjs | null>(dayjs());
   const [loading, setLoading] = useState(false);
-  const [event, setEvent] = useState<AppEvent>({
+  const [event, setEvent] = useState<IEvent>({
     title: "",
     description: "",
     date: "",
     location: "",
     attendees: [],
     price: 0,
+    rsvp: "",
     capacity: 100,
     eventType: "meetup",
     isOnline: false,
     isOpenForRsvp: "off",
     tags: [],
     duration: 0,
-    // guests: [initialGuest],
     specialInstructions: "",
-    schedule: [initialScheduleItem],
-    socialLinks: [initialSocialLink],
   });
 
-  
+
 
   const handleInputOnChange = (
     e: React.ChangeEvent<
@@ -313,97 +281,6 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     );
   };
 
-  const createScheduleItem = () => {
-    const lastScheduleItem = event.schedule[event.schedule.length - 1];
-    if (!lastScheduleItem.time || !lastScheduleItem.activity) return;
-
-    setEvent((prevState) => ({
-      ...prevState,
-      schedule: [...prevState.schedule, initialScheduleItem],
-    }));
-  };
-
-  const handleScheduleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const { name, value } = e.target;
-    const updatedSchedule = [...event.schedule];
-    updatedSchedule[index][name] = value;
-    setEvent((prevState) => ({
-      ...prevState,
-      schedule: updatedSchedule,
-    }));
-  };
-
-  const handleDeleteSchedule = (index: number) => {
-    const updatedSchedule = event.schedule.filter((_, i) => i !== index);
-    setEvent((prevState) => ({
-      ...prevState,
-      schedule: updatedSchedule,
-    }));
-  };
-
-  const createSocialLink = () => {
-    const lastSocialLink = event.socialLinks[event.socialLinks.length - 1];
-    if (!lastSocialLink.platform || !lastSocialLink.url) return;
-
-    setEvent((prevState) => ({
-      ...prevState,
-      socialLinks: [...prevState.socialLinks, initialSocialLink],
-    }));
-  };
-
-  const handleSocialLinkChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const { name, value } = e.target;
-    const updatedSocialLinks = [...event.socialLinks];
-    updatedSocialLinks[index][name] = value;
-    setEvent((prevState) => ({
-      ...prevState,
-      socialLinks: updatedSocialLinks,
-    }));
-  };
-
-  const handleDeleteSocialLink = (index: number) => {
-    const updatedSocialLinks = event.socialLinks.filter((_, i) => i !== index);
-    setEvent((prevState) => ({
-      ...prevState,
-      socialLinks: updatedSocialLinks,
-    }));
-  };
-
- const handleGuestChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const { name, value } = e.target;
-    const updatedGuests = [...event.guests];
-    updatedGuests[index][name] = value;
-    setEvent((prevState) => ({
-      ...prevState,
-      guests: updatedGuests,
-    }));
-  }
-
-  const handleAddGuest = () => {
-    const lastGuest = event.guests[event.schedule.length - 1];
-    if (!lastGuest.name || !lastGuest.profession) return;
-    setEvent((prevState) => ({
-      ...prevState,
-      guests: [...prevState.guests, initialGuest],
-    }));
-  };
-
-  const handleDeleteGuest = (index: number) => {
-    const updatedGuests = event.guests.filter((_, i) => i !== index);
-    setEvent((prevState) => ({
-      ...prevState,
-      guests: updatedGuests,
-    }));
-  };
 
   return (
     <Container>
@@ -444,7 +321,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
           <select
             id="rsvp"
             name="isOnline"
-            value={selectedEvent?.isOnline || event.isOnline}
+            // value={selectedEvent?.isOnline || event.isOnline}
             onChange={handleInputOnChange}
             disabled={loading}
           >
@@ -568,136 +445,6 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
             onChange={handleInputOnChange}
             disabled={loading}
           ></textarea>
-        </div>
-        <div className="schedule-section">
-          <div className="schedule-header">
-            <h3>Schedule</h3>
-            <FaPlus className="add-schedule" onClick={createScheduleItem} />
-          </div>
-          {(selectedEvent?.schedule || event.schedule).map((item, index) => (
-            <div key={index} className="schedule-card">
-              <div className="form-group">
-                <label htmlFor={`schedule-time-${index}`}>Time</label>
-                <input
-                  type="text"
-                  id={`schedule-time-${index}`}
-                  name="time"
-                  value={item.time}
-                  onChange={(e) => handleScheduleChange(e, index)}
-                  placeholder="09:00 AM"
-                  disabled={loading}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor={`schedule-activity-${index}`}>Activity</label>
-                <input
-                  type="text"
-                  id={`schedule-activity-${index}`}
-                  name="activity"
-                  value={item.activity}
-                  onChange={(e) => handleScheduleChange(e, index)}
-                  placeholder="Activity"
-                  disabled={loading}
-                />
-              </div>
-              <div className="btns">
-                <button
-                  type="button"
-                  className="delete"
-                  onClick={() => handleDeleteSchedule(index)}
-                  disabled={loading}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="social-links-section">
-          <div className="social-header">
-            <h3>Social Links</h3>
-            <FaPlus className="add-social" onClick={createSocialLink} />
-          </div>
-          {event.socialLinks.map((link, index) => (
-            <div key={index} className="social-card">
-              <div className="form-group">
-                <label htmlFor={`social-platform-${index}`}>Platform</label>
-                <input
-                  type="text"
-                  id={`social-platform-${index}`}
-                  name="platform"
-                  value={link.platform}
-                  onChange={(e) => handleSocialLinkChange(e, index)}
-                  placeholder="Platform"
-                  disabled={loading}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor={`social-url-${index}`}>URL</label>
-                <input
-                  type="text"
-                  id={`social-url-${index}`}
-                  name="url"
-                  value={link.url}
-                  onChange={(e) => handleSocialLinkChange(e, index)}
-                  placeholder="https://example.com"
-                  disabled={loading}
-                />
-              </div>
-              <div className="btns">
-                <button
-                  type="button"
-                  className="delete"
-                  onClick={() => handleDeleteSocialLink(index)}
-                  disabled={loading}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="guest-list">
-          <div className="guest-header">
-            <h3>Guest List</h3>
-            <FaPlus className="add-guest" onClick={handleAddGuest} />
-          </div>
-          {selectedEvent?.guests?.map((guest, index) => (
-  <div key={index} className="guest-card">
-    <div className="form-group">
-      <label htmlFor={`guest-${index}`}>Guest Name</label>
-      <input
-        type="text"
-        id={`guest-${index}`}
-        name={`guest-${index}`}
-        value={guest.name}
-        onChange={(e) => handleGuestChange(e, index)}
-        placeholder="Guest Name"
-        disabled={loading}
-      />
-      <label htmlFor={`guest-profession-${index}`}>Guest Profession</label>
-      <input
-        type="text"
-        id={`guest-profession-${index}`}
-        name={`guest-profession-${index}`}
-        value={guest.profession}
-        onChange={(e) => handleGuestChange(e, index)}
-        placeholder="Guest profession"
-        disabled={loading}
-      />
-    </div>
-    <div className="btns">
-      <button
-        type="button"
-        className="delete"
-        onClick={() => handleDeleteGuest(index)}
-        disabled={loading}
-      >
-        Delete
-      </button>
-    </div>
-  </div>
-))}
         </div>
         <button type="submit" disabled={loading}>
           {loading && <ImSpinner9 className="spinner" />}

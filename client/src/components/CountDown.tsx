@@ -1,9 +1,14 @@
 // imports
 import React, {useState, useEffect, useMemo} from 'react'
 import styled from 'styled-components'
+import { Event } from '../interfaces/event';
+
+interface CountdownProps {
+    event: Event
+}
 
 
-export const CountDown: React.FC = ({event}) => {
+export const CountDown: React.FC<CountdownProps> = ({event}) => {
     const [countdown, setCountdown] = useState<{days: number, hours: number, minutes: number, seconds: number, passed?:string}>({days: 0, hours: 0, minutes: 0, seconds: 0, passed:''}); 
     const eventDate = useMemo(() => new Date(event?.date), [event?.date]);
    console.log(event)   

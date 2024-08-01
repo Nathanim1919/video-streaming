@@ -29,13 +29,13 @@ export const AddGuests: React.FC<AddGuestsProps> = ({
 }) => {
   const [name, setName] = React.useState("");
   const [profession, setProfession] = React.useState("");
-  const [isLoading, setIsLoading] = React.useState(false);
+  // const [isLoading, setIsLoading] = React.useState(false);
 
     const addGuestHandler = async () => {
       const endPoint = isOnline?addStreamGuest:addGuest;
       await requestHandler(
           async () => await endPoint(eventId, { name, profession }),
-          setIsLoading,
+          null,
           (res) => {
               event.guests.push({ name, profession });
               alert(res.message);

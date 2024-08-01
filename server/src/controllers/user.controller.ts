@@ -1,11 +1,11 @@
 // import { use } from "passport"
-import { UserService } from "../services/user.service";
+import {UserService} from "../services/user.service";
 import IUser from "../interfaces/user.interface";
-import { asyncHandler } from "../utils/asyncHandler";
-import { ApiResponse } from "../utils/ApiResponse";
-import { CacheClient } from "../config/redisClient";
+import {asyncHandler} from "../utils/asyncHandler";
+import {ApiResponse} from "../utils/ApiResponse";
+import {CacheClient} from "../config/redisClient";
 
-import { Request } from "express";
+import {Request} from "express";
 import logger from "../logger";
 import path from "path";
 
@@ -35,8 +35,7 @@ export class UserController {
 
   // this is a function that is responsible for finding a user by email
   async userFindByEmail(email: string): Promise<IUser | null> {
-    const user = await this.userService.userFindByEmail(email);
-    return user;
+      return await this.userService.userFindByEmail(email);
   }
 
   userFindById = asyncHandler(

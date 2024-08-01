@@ -66,21 +66,21 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [manageSchedule, setManageSchedule] = React.useState(false);
   const [event, setEvent] = useState({} as EventDetailData);
-  const [isRsvp, setIsRsvp] = useState(
-    user ? event?.attendees?.includes(user._id) : false
-  );
+  // const [isRsvp, setIsRsvp] = useState(
+  //   user ? event?.attendees?.includes(user._id) : false
+  // );
   const [isOwner, setIsOwner] = useState(event?.owner?._id === user?._id);
-  const [qrCodeUrl, setQrCodeUrl] = useState("");
+  // const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [editSpecialInstrution, setEditSpecialInstruction] = useState(false);
   const [specialInsrution, setSpecialInstrution] = useState(
     event.specialInstructions
   );
-  const { handleRsvp, handleRemoveRsvp, checkRsvpStatus } = useRsvp(
-    eventId!,
-    setIsRsvp,
-    setIsLoading,
-    setQrCodeUrl
-  );
+  // const { handleRsvp, handleRemoveRsvp, checkRsvpStatus } = useRsvp(
+  //   eventId!,
+  //   setIsRsvp,
+  //   setIsLoading,
+  //   setQrCodeUrl
+  // );
 
   const handleInstructionEdit = async () => {
     const endPoint = event.isOnline
@@ -116,7 +116,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
     };
 
     fetchEventDetail();
-  }, [eventId]);
+  }, [eventId, type]);
 
   useEffect(() => {
     setIsOwner(event?.owner?._id === user?._id);
@@ -199,7 +199,6 @@ const EventDetail: React.FC<EventDetailProps> = ({ type }) => {
                 width="300"
                 height="250"
                 style={{ border: 0 }}
-                // allowFullScreen=""
                 loading="lazy"
               ></iframe>
               <div className="titles">

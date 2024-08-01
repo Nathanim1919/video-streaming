@@ -3,16 +3,16 @@ import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
-import { ToastContainer } from "react-toastify";
 import { IoMdClose } from "react-icons/io";
 import { authApi } from "../../api";
 import { requestHandler } from "../../utils";
+import { UserInterface } from "../../interfaces/user";
 
 // props for the EditUserBio component
 export interface EditUserBioProps {
-  setStreamer: (streamer: any) => void;
+  setStreamer: (streamer: UserInterface) => void;
   setEditBio: (editBio: boolean) => void;
-  streamer: any;
+  streamer: UserInterface;
 }
 
 interface MyObject {
@@ -27,7 +27,7 @@ export const EditUserBio: React.FC<EditUserBioProps> = ({
   streamer,
 }) => {
   const { user } = useAuth();
-  const [isLoading, setLoading] = useState(false);
+  // const [isLoading, setLoading] = useState(false);
   const [userData, setUserData] = useState({
     fullName: streamer?.fullName,
     username: streamer?.username,
@@ -62,10 +62,10 @@ export const EditUserBio: React.FC<EditUserBioProps> = ({
       removeEmpty(userData);
       await requestHandler(
         async () => await authApi.updateUserData(user?._id as string, userData),
-        setLoading,
+        null,
         (response) => {
           setEditBio(false);
-          setStreamer(response.data);
+          setStreamer(response.data as UserInterface);
         },
         (error: string) => {
           console.log(error);
@@ -148,8 +148,7 @@ const Conatiner = styled.div`
     > div {      
       position: relative; 
       width: 100%;
-      /* padding: 1rem; */
-      /* background-color: #7d1919; */
+
 
       input,
       textarea {

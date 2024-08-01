@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { FaGoogle } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
-import { useAuth } from '../contexts/AuthContext';
+// import { useAuth } from '../contexts/AuthContext';
 
 
 // Component for user registration
@@ -20,7 +20,7 @@ const OrgRegistration: React.FC = () => {
   });
 
 // Access the register function from the authentication context
-  const {register} = useAuth();
+  // const {register} = useAuth();
 
 
   // Handle data change for input fields
@@ -33,7 +33,7 @@ const OrgRegistration: React.FC = () => {
 
 
   // Handle user registration
-  const handleRegister = async () => {await register(data)};
+  // const handleRegister = async () => {await register(data)};
 
   const handleSocialRegister = (social: string) => {
     window.location.href = `http://localhost:3000/api/v1/auth/${social}`;
@@ -47,7 +47,7 @@ const OrgRegistration: React.FC = () => {
         <input type="email" value={data.email} onChange={handleDataChange('email')} placeholder="Org Email" />
         <input type="password" value={data.password} onChange={handleDataChange("password")} placeholder="Org Password" />
         {/* <input type="text" value={data.profession} onChange={handleDataChange('profession')} placeholder="Profession" /> */}
-        <button className='submit' onClick={handleRegister}
+        <button className='submit'
           disabled={Object.values(data).some((val) => !val)}
         >Register</button>
         <button onClick={() => handleSocialRegister('google')} className='google'><FaGoogle/>Sign up with Google Account</button>        

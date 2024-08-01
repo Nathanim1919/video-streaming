@@ -15,33 +15,44 @@ export type guest = {
   profession: string;
 }
 
-export type Event = {
+export type IEvent = {
   _id?: string;
   title: string;
   description: string;
   date: string;
-  time: string;
   owner?: UserInterface;
   location?: string;
-  image: string;
+  image?: string;
   price: number;
   capacity: number;
   eventType: string;
   isOnline: boolean;
   isOpenForRsvp: string;
   tags: string[];
+  rsvp: string;
   duration: 0,
-  guests: guest[];
+  guests?: guest[];
   specialInstructions: string;
-  schedule: ScheduleItem[];
-  socialLinks: SocialLink[];
-  attendees: string[];
-  
+  schedule?: ScheduleItem[];
+  socialLinks?: SocialLink[];
+  attendees?: string[];
+
+};
+
+
+export type IRsvps = {
+  _id: string;
+  eventId: IEvent;
+  userId: UserInterface;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  qrCodeUrl: string;
 };
 
 
 
 export type IEventForBookMark = {
   type: string;
-  item: Event;
+  item: IEvent;
 };

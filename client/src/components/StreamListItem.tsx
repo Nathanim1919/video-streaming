@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import StreamImage from '/image/join.jpg'
+// import StreamImage from '/image/join.jpg'
 import { Link } from 'react-router-dom';
-import { formatDate, requestHandler } from '../utils';
+import { requestHandler } from '../utils';
 import { useAuth } from '../contexts/AuthContext';
 import { ImSpinner9 } from "react-icons/im";
 import useRsvp from '../customeHook/useRsvp';
@@ -18,10 +18,10 @@ interface StreamListItemProps {
 
 const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
   const { user } = useAuth();
-  const [countdown, setCountdown] = useState<{days?: number, hours?: number, minutes?: number, seconds?: number}>({days: 0, hours: 0, minutes: 0, seconds: 0}); 
+  // const [countdown, setCountdown] = useState<{days?: number, hours?: number, minutes?: number, seconds?: number}>({days: 0, hours: 0, minutes: 0, seconds: 0}); 
   const [isRsvp, setIsRsvp] = useState((user!.rvps).includes(user!._id));
   const [isLoading, setIsLoading] = useState(false);
-  const eventDate = useMemo(() => new Date(stream?.date), [stream?.date]);
+  // const eventDate = useMemo(() => new Date(stream?.date), [stream?.date]);
   const [qrCodeUrl, setQrCodeUrl] = useState('');
 
   const {handleRemoveRsvp, handleRsvp, checkRsvpStatus} = useRsvp(stream._id, setIsRsvp, setIsLoading, setQrCodeUrl);
@@ -47,46 +47,46 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
   }
 
   // Countdown timer 
-  useEffect(() => {
-      // Update the countdown every second
-      const intervalId = setInterval(() => {
-        const now = new Date();
-        const distance = eventDate.getTime() - now.getTime();
+  // useEffect(() => {
+  //     // Update the countdown every second
+  //     const intervalId = setInterval(() => {
+  //       const now = new Date();
+  //       const distance = eventDate.getTime() - now.getTime();
     
-        if (distance < 0) {
+  //       if (distance < 0) {
 
-          // Event has already occurred
-          setCountdown({days: 0});
-          clearInterval(intervalId);
-        } else {
-          // Calculate and set the countdown time
-          const seconds = Math.floor((distance / 1000) % 60);
-          const minutes = Math.floor((distance / 1000 / 60) % 60);
-          const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  //         // Event has already occurred
+  //         setCountdown({days: 0});
+  //         clearInterval(intervalId);
+  //       } else {
+  //         // Calculate and set the countdown time
+  //         const seconds = Math.floor((distance / 1000) % 60);
+  //         const minutes = Math.floor((distance / 1000 / 60) % 60);
+  //         const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+  //         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
 
-          if (days !== 0) {
-            // Event is more than 24 hours away
-            setCountdown({days});
-          } 
-          else if (hours !== 0) {
-            // Event is less than 24 hours away
-            setCountdown({hours});
-          }
-          else if (minutes !== 0) {
-            // Event is less than 1 hour away
-            setCountdown({minutes});
-          } 
-          else {
-            // Event is less than 1 minute away
-            setCountdown({seconds});
-          }
-        }
-      }, 1000);
+  //         if (days !== 0) {
+  //           // Event is more than 24 hours away
+  //           setCountdown({days});
+  //         } 
+  //         else if (hours !== 0) {
+  //           // Event is less than 24 hours away
+  //           setCountdown({hours});
+  //         }
+  //         else if (minutes !== 0) {
+  //           // Event is less than 1 hour away
+  //           setCountdown({minutes});
+  //         } 
+  //         else {
+  //           // Event is less than 1 minute away
+  //           setCountdown({seconds});
+  //         }
+  //       }
+  //     }, 1000);
     
-      // Clear the interval when the component is unmounted
-      return () => clearInterval(intervalId);
-    }, [eventDate]);
+  //     // Clear the interval when the component is unmounted
+  //     return () => clearInterval(intervalId);
+  //   }, [eventDate]);
 
 
   // Render the component
@@ -98,20 +98,12 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
         </div>
         <div className='info'> 
           <Link to={'/'}  className='bookmark' onClick={(e)=>{e.preventDefault();handleBookmark()}}><FaBookmark/></Link>
-          <div className="schedule">
-            <p>{formatDate(stream?.date)} Eastern centeral time </p>
-            <h3>{countdown.days && countdown.days} days to go</h3>
-            {countdown.hours && <h3>{countdown.hours} hours to go</h3>}
-            {countdown.minutes && <h3>{countdown.minutes} minutes to go</h3>}
-            {countdown.seconds && <h3>{countdown.seconds} seconds to go</h3>}
-          </div>
           <div className="titles">
             <h3>{stream.title}</h3>
             <h4>{stream.isOnline?`Online ${stream.eventType}`:stream.location}<span>{stream.status}</span></h4>
           </div>
           <p className='introduction'>
-            {/* {stream.description} */}
-          this workshop will be a great opportunity to learn from the best in the industry. We will be discussing the latest trends in the industry and how you can leverage them to grow your business. Don't miss out!
+            {stream.description}
           </p>
           <div className="tags">
           {stream.tags.map((tag, index) => (
@@ -129,7 +121,7 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
           </div>
          
 
-          <div className='button.bookmarks'>
+          <div className='buttons'>
               <div className="btns">
                 <Link to={'/'} className={isRsvp? 'cancel' : 'rsvp'} 
                   onClick={isRsvp?handleRemoveRsvp:handleRsvp}>{isLoading && <ImSpinner9/>}{isRsvp? 'Cancel My Online RSVP' : 'RSVP to Attend Online'}
@@ -150,7 +142,7 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
   // Styled components
   const Container = styled.div`
       display: grid;
-      grid-template-columns: .35fr .65fr;
+      grid-template-columns: .3fr .70fr;
       width: 85vw;
       gap: 2rem;
       margin: 0 auto;
@@ -254,7 +246,7 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
           }
 
 
-          >a{
+          >a.bookmark{
             color: #fff;
             font-size: 1.5rem;
             margin: 1rem 0;
@@ -339,25 +331,24 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
                 font-size: .8rem;
                 border-radius: 50px;
             }
+            
             .btns{
               display: flex;
               gap: 1rem;
               flex-direction: row;
-              a{
-                  font-family: inherit;
-                  padding: 10px 20px;
-                  background: #007bff;
-                  color: #fff;
-                  text-decoration: none;
-                  border-radius: 5px;
-                  /* margin-top: 2rem; */
-                  transition: all 0.3s ease-in-out;
-                  border: none;
-                  cursor: pointer;
-                  display: flex;
-                  align-items: center;
-                  gap: .3rem;
-                  transition: all 0.3s ease-in-out;
+              
+
+              >a{
+                padding: .5rem 1rem;
+                background: #007bff;
+                color: #fff;
+                /* border-radius: 50px; */
+                font-size: .8rem;
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+                transition: all .3s;
+                text-decoration: none;
               }
 
               a:nth-child(1){
@@ -377,7 +368,7 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
               }
 
               .details{
-                  background: #6c757d;
+                  background: #c0ca76;
               }
             }
           }

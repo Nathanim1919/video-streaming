@@ -26,7 +26,7 @@ export default function useRsvp(streamId: string, setIsRsvp: (value: boolean) =>
         async () => await eventApi.handleRSVP(streamId),
         setIsLoading,
         (data) => {
-          setQrCodeUrl(data?.data.qrCodeUrl);
+          setQrCodeUrl(data?data.qrCodeUrl);
           checkRsvpStatus();
         },
         (error) => {

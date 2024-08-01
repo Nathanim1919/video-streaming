@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import Image from "/home/live3.jpg";
 import { Link } from "react-router-dom";
 import { eventApi } from "../api";
 import { formatDate, requestHandler } from "../utils";
-import { Event } from "../interfaces/event";
+import { IEvent } from "../interfaces/event";
 import Loader from "./Loader";
 
 export const Events = () => {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<IEvent[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -17,7 +16,7 @@ export const Events = () => {
         async () => eventApi.getEvents(),
         setIsLoading,
         (res) => {
-          setEvents(res.data as Event[]);
+          setEvents(res.data as IEvent[]);
         },
         alert
       );
@@ -31,10 +30,10 @@ export const Events = () => {
   ) : (
     <Conatainer className="container">
       <div className="events">
-        {events.map((event) => (
+        {events.map((event: IEvent) => (
           <div className="event">
             <div className="image">
-              <img src={event?.image} alt="" />
+              <img src={event.image} alt="" />
               <div className="price">
                 <p>ETH {event.price}</p>
               </div>
@@ -52,11 +51,11 @@ export const Events = () => {
                 </div>
                 <div className="host">
                   <div className="image">
-                    <img src={event.owner.profilePicture?.url} alt="" />
+                    <img src={event.owner?.profilePicture?.url} alt="" />
                   </div>
                   <div className="pro">
-                    <h2>{event.owner.fullName}</h2>
-                    <p>{event.owner.profession}</p>
+                    <h2>{event.owner?.fullName}</h2>
+                    <p>{event.owner?.profession}</p>
                   </div>
                 </div>
               </div>
@@ -78,7 +77,6 @@ export const Events = () => {
 
 const Conatainer = styled.div`
   width: 100%;
-  /* background-color: #151515; */
   padding: 2rem 0;
 
   > h1 {
@@ -102,7 +100,7 @@ const Conatainer = styled.div`
       color: #fff;
       border-radius: 10px;
       overflow: hidden;
-      /* max-width: 300px; */
+      max-width: 300px;
 
       .image {
         max-height: 200px;

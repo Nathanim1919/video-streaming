@@ -3,7 +3,7 @@ import Image from "/home/bg.jpg";
 import { requestHandler } from "../utils";
 import { getSimilartEvents } from "../api/event";
 import { useEffect, useState } from "react";
-import { Event } from "../interfaces/event";
+import { IEvent } from "../interfaces/event";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "./Loader";
 import { getSimilartStreams } from "../api/stream";
@@ -16,7 +16,7 @@ interface SimplarEventsprops {
 export const SimplarEvents: React.FC<SimplarEventsprops> = ({ eventId, isOnline }) => {
 
   const [isLoading, setIsLoading] = useState(false);
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<IEvent[]>([]);
   const navigate = useNavigate();
 
   const handleSimilarEvents = async () => {
@@ -25,7 +25,7 @@ export const SimplarEvents: React.FC<SimplarEventsprops> = ({ eventId, isOnline 
       async () => await endPoints(eventId),
       setIsLoading,
       (response) => {
-        setEvents(response.data as Event[]);
+        setEvents(response.data as IEvent[]);
         console.log(response);
       },
       (error) => {
@@ -43,6 +43,7 @@ export const SimplarEvents: React.FC<SimplarEventsprops> = ({ eventId, isOnline 
 
   useEffect(() => {
     handleSimilarEvents();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventId]);
 
   return (
@@ -67,7 +68,7 @@ export const SimplarEvents: React.FC<SimplarEventsprops> = ({ eventId, isOnline 
               <p>{even.description}</p>
             </div>
             <div className="btns">
-              <button onClick={()=> displayEventDetail(even._id)}>More info</button>
+              <button onClick={()=> displayEventDetail(even._id!)}>More info</button>
             </div>
           </div>
         ))}

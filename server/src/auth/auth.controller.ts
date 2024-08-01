@@ -57,7 +57,7 @@ export class AuthController {
   register = async (req: Request, res: Response): Promise<void> => {
     try {
       const registrationMessage =  await this.authService.register(req.body as Partial<IUser>);
-      
+
       res.status(201).json({ message: registrationMessage });
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -67,26 +67,24 @@ export class AuthController {
   // Login user
   login = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const existingUser = await this.authService.login(req.body as IUser);
-    
+
     if (existingUser) {
-        const { username, _id } = existingUser;
+        const {_id } = existingUser;
         const { token, refreshToken } = this.generateTokens(_id);
 
         res.cookie('token', token, {
             httpOnly: true,
             maxAge: 15 * 60 * 1000, // 15 minutes
-            // secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict'
         });
 
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
-            // secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict'
         });
 
-        res.json(new ApiResponse(200, existingUser, "Login successfull"))
+        res.json(new ApiResponse(200, existingUser, "Login successfully"))
     } else {
         res.status(403).redirect('/login?error=Invalid login credentials.');
     }
@@ -97,7 +95,7 @@ export class AuthController {
     res.clearCookie('username');
     res.clearCookie('token');
     res.clearCookie('refreshToken')
-    res.json(new ApiResponse(200, null,'logout successfull'));
+    res.json(new ApiResponse(200, null,'logout successfully'));
   });
 
   refreshToken = asyncHandler(async(req: Request, res: Response): Promise<void> => {
@@ -113,17 +111,4 @@ export class AuthController {
       }
     }
   });
-
-
-  // loginGoogle = asyncHandler(async(req: Request, res: Response): Promise<void> => {
-  //     return await this.authService.loginGoogle(req.query);
-  // });
-
-   // Callback method for after Google has authenticated the user
-   googleCallback = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    // Your AuthService would handle the callback logic
-    // For simplicity, let's just redirect the user
-    res.redirect('/home');
-  });
-
 }

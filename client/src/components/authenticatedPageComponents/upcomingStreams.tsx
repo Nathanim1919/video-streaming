@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import coverImage from '/home/live.jpeg'
-import profilePic from '/image/profile.jpg'
 import { useAuth } from '../../contexts/AuthContext';
 import { GrFormNextLink } from "react-icons/gr";
 import { formatDate, requestHandler } from '../../utils';
 import { getUpcomingEvents } from '../../api/event';
 import Loader from '../Loader';
+import { Event } from '../../interfaces/event';
 
 
 export const UpcomingStreams: React.FC = () => {
-    const [upcomingEvents, setUpcomingEvents] = useState([]);
+    const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ export const UpcomingStreams: React.FC = () => {
             await requestHandler(
                 async () => getUpcomingEvents(),
                 setIsLoading,
-                (data) => setUpcomingEvents(data.data),
+                (data) => setUpcomingEvents(data.data as Event[]),
                 (error) => console.log(error)
             )
         }
@@ -160,7 +160,6 @@ const StreamList = styled.div`
 
             .profile{
                color: #fff;
-               /* background-color: red; */
                position: absolute;
                z-index: 5;
                bottom: 0;
@@ -168,7 +167,6 @@ const StreamList = styled.div`
                align-items: center;
                gap: 1rem;
                padding: 0 1rem;
-               /* justify-content: center; */
                width: 100%;
 
                 >*{
@@ -190,16 +188,11 @@ const StreamList = styled.div`
                     }
                 }
 
-                .profilePic{
-                    /* background-color: blue; */
-                }
-
                 .profilePic img{
                     width: 50px;
                     height: 50px;
                     border-radius: 50%;
                     object-fit: cover;
-                    /* border: 5px solid #8b0909; */
                 }
             }
         }
@@ -263,5 +256,4 @@ const StreamList = styled.div`
                 }
             }
         }
-    }
-`
+`;

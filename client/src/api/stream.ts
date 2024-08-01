@@ -1,6 +1,7 @@
+import { IEvent } from "../interfaces/event";
 import apiClient from "./config";
 
-const createStream = (data: Event) => {
+const createStream = (data: IEvent) => {
   return apiClient.post("/stream/create", data);
 };
 

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import TechImage from '/image/bg.jpg';
 
 export const Account = () => {

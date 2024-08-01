@@ -10,7 +10,7 @@ import { RiUserFollowLine } from "react-icons/ri";
 import { MdOutlineWatchLater } from "react-icons/md";
 import { MdOutlineStarRate } from "react-icons/md";
 import { LuGhost } from "react-icons/lu";
-import TechImage from "/home/live3.jpg";
+// import TechImage from "/home/live3.jpg";
 import { formatDate, requestHandler } from "../utils";
 import { authApi } from "../api";
 import { useParams } from "react-router-dom";
@@ -28,7 +28,7 @@ import { MdCreate } from "react-icons/md";
 import { EditUserBio } from "./profile/editBio";
 import { CreateEventForm } from "./CreateEventForm";
 import { UploadProfileImage } from "./profile/uploadProfileImage";
-import { Event } from "../interfaces/event";
+import { IEvent } from "../interfaces/event";
 import { personalSearch } from "../api/search";
 
 enum FilterType {
@@ -86,8 +86,8 @@ const UserProfile = () => {
     );
   };
 
-  const filterEventsAndStreams = (data: Event[], filter: FilterType) => {
-    const filteredData = data.filter((item: Event) => {
+  const filterEventsAndStreams = (data: IEvent[], filter: FilterType) => {
+    const filteredData = data.filter((item: IEvent) => {
       switch (filter) {
         case FilterType.All:
           return true;

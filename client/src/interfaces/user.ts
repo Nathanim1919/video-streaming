@@ -1,4 +1,4 @@
-import { Event } from "./event";
+import { IEvent } from "./event";
 export interface UserInterface {
     _id: string;
     avatar:string;
@@ -9,7 +9,7 @@ export interface UserInterface {
     createdAt: string;
     updatedAt: string;
     rvps:string[];
-    streams:Event[];
+    streams:IEvent[];
     followers:string[];
     following:string[];
     bio:string;

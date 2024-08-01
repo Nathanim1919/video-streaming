@@ -2,7 +2,6 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { requestHandler } from "../../utils";
 import { authApi } from "../../api";
-import Loader from "../Loader";
 import { IoMdClose } from "react-icons/io";
 
 interface Props {
@@ -15,8 +14,8 @@ export const UploadProfileImage: React.FC<Props> = ({
   profilePic,
 }) => {
   const [userProfilePic, setUserProfilePic] = useState<File | null>(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(profilePic); // Use state to hold the preview URL
-  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(profilePic);
+  // const [uploadProgress, setUploadProgress] = useState<number>(0);
   // use form data to upload image
   const formData = new FormData();
 
@@ -31,8 +30,8 @@ export const UploadProfileImage: React.FC<Props> = ({
     };
   }, [imagePreviewUrl]);
 
-  const handleProfilePicUpload = async (e: React.ChangeEvent<HTMLInputElement>, file: File) => {
-    // const file = e.target.files && e.target.files[0];
+  const handleProfilePicUpload = async (e: React.FormEvent<HTMLFormElement>, file: File) => {
+
     e.preventDefault();
     console.log("Selected Image is: ", file);
     if (file) {
@@ -46,7 +45,7 @@ export const UploadProfileImage: React.FC<Props> = ({
         console.log(data);
         // setUploadProfile(false);
         // set progress
-        setUploadProgress(100);
+        // setUploadProgress(100);
       },
       (error) => console.log(error)
     );
@@ -88,7 +87,7 @@ export const UploadProfileImage: React.FC<Props> = ({
           <div className="form">
             <form
               encType="multipart/form-data"
-              onSubmit={(e) =>
+              onSubmit={(e:React.FormEvent<HTMLFormElement>) =>
                 userProfilePic && handleProfilePicUpload(e, userProfilePic)
               }
             >

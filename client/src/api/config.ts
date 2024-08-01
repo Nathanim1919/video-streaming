@@ -1,9 +1,12 @@
 import axios from "axios";
 
 
+export const BASE_URL = "http://localhost:3000/api/v1";
+
+
 // Create an axios instance for API requests
 const apiClient = axios.create({
-    baseURL: 'http://localhost:3000/api/v1',
+    baseURL: BASE_URL,
     withCredentials: true,
     timeout: 120000,
 });
@@ -14,11 +17,10 @@ apiClient.interceptors.response.use(
         if (error.response.status === 401 && !error.config.__isRetryRequest) {
             error.config.__isRetryRequest = true;
             try {
-                await axios.post('http://localhost:3000/api/v1/auth/refresh-token', {}, { withCredentials: true });
+                await apiClient.post('/auth/refresh-token', {}, { withCredentials: true });
                 return apiClient(error.config);
             } catch (refreshError) {
                 console.error("Failed to refresh access token", refreshError);
-                // window.location.href = '/';
             }
         }
         return Promise.reject(error);

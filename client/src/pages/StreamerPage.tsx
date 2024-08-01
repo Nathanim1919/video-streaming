@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import StreamerList from "../components/StreamerList";
-import { IoArrowBackOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { authApi } from "../api";
 import { requestHandler } from "../utils";
@@ -39,7 +37,7 @@ const StreamerPage = () => {
             (response) => {
                 console.log(response);
                 const {data} = response;
-                setStreamers(data);
+                setStreamers(data as Streamer[]);
             },
             (error) => {
                 console.log(error);
@@ -55,7 +53,7 @@ const StreamerPage = () => {
                 <div className="streamer-list">
                     {streamers.length === 0 ? <p>No streamers available</p> :
                         streamers.map((streamer: Streamer) => (
-                            <StreamerList key={streamer.id} streamer={streamer} />
+                            <StreamerList key={streamer._id} streamer={streamer} />
                         ))
                     }
                 </div>

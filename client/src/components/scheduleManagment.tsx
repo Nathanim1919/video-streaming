@@ -7,12 +7,12 @@ import { MdDeleteOutline } from "react-icons/md";
 import { addSchedule, editSchedule } from "../api/event";
 import { addStreamSchedule, editStreamSchedule } from "../api/stream";
 import { requestHandler } from "../utils";
-import { Event } from "../interfaces/event";
+import { IEvent } from "../interfaces/event";
 import { FaPlus } from "react-icons/fa";
 import Loader from "./Loader";
 
 interface ScheduleManagmentProps {
-  event: Event;
+  event: IEvent;
   manageSchedule: boolean;
   setManageSchedule: (value: boolean) => void;
 }
@@ -30,12 +30,12 @@ export const ScheduleManagment: FC<ScheduleManagmentProps> = ({
   const handleAddSchedule = async () => {
     const endPoint = event.isOnline ? addStreamSchedule : addSchedule;
     await requestHandler(
-      async () => await endPoint(event._id, { time, activity }),
+      async () => await endPoint(event._id!, { time, activity }),
       setIsLoading,
       (res) => {
         setActivity("");
         setTime("");
-        event.schedule.push({ time, activity });
+        event.schedule?.push({ time, activity });
         alert(res.message);
       },
       (error) => {
@@ -45,7 +45,7 @@ export const ScheduleManagment: FC<ScheduleManagmentProps> = ({
   };
 
   const handleEditSchedule = async (index: number) => {
-    const updatedSchedule = event.schedule.map((schedule, i) => {
+    const updatedSchedule = event.schedule?.map((schedule, i) => {
       if (i === index) {
         return { time, activity };
       }
@@ -53,7 +53,7 @@ export const ScheduleManagment: FC<ScheduleManagmentProps> = ({
     });
     const endPoint = !event.isOnline ? editSchedule : editStreamSchedule;
     await requestHandler(
-      async () => await endPoint(event._id, updatedSchedule),
+      async () => await endPoint(event._id!, updatedSchedule!),
       setIsLoading,
       (res) => {
         event.schedule = updatedSchedule;

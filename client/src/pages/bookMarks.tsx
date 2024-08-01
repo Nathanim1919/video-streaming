@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Event, IEventForBookMark } from "../interfaces/event";
+import { IEventForBookMark } from "../interfaces/event";
 import Loader from "../components/Loader";
 import { BookMarkedEventCard } from "../components/bookmarkedEventCard";
 import { requestHandler } from "../utils";

@@ -32,7 +32,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       setIsLoading,
       (res) => {
         const { data } = res;
-        setUser(data);
+        setUser(data as UserInterface);
         navigate('/me');
       },
       () => {
@@ -75,7 +75,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             async () => await authApi.getUserData(),
             setIsLoading,
             (res) => {
-                setUser(res.data)
+                setUser(res.data as UserInterface)
                 navigate('/me')
             },
             (error) => {
@@ -85,7 +85,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         );
     }
     fetchUserData()
-  }, []);
+  }, [navigate]);
 
   // Provide authentication-related data and functions through the context
   return (
@@ -96,4 +96,5 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 };
 
 // Export the context, provider component, and custom hook
+// eslint-disable-next-line react-refresh/only-export-components
 export { AuthContext, AuthProvider, useAuth };

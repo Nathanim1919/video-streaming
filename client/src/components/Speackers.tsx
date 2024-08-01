@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import Image from "/home/bg.jpg";
-import { Event } from "../interfaces/event";
+import { IEvent } from "../interfaces/event";
 import { useState } from "react";
 import { AddGuests } from "./addGuests";
 import { FaPlus } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
 
 interface SpeakerProps {
-  event: Event;
+  event: IEvent;
 }
 
 export const Speakers: React.FC<SpeakerProps> = ({ event }) => {
@@ -18,7 +18,7 @@ export const Speakers: React.FC<SpeakerProps> = ({ event }) => {
       {intiateAddGuest && (
         <AddGuests
           isOnline={event.isOnline}
-          eventId={event._id}
+          eventId={event._id!}
           event={event}
           setIntiateAddGuest={setIntiateAddGuest}
           title="Guest"

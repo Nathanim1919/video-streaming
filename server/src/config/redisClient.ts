@@ -31,7 +31,7 @@ export class CacheClient {
     }
   }
 
-  public async set(key: string, value: string, ttl: number = 10 * 60): Promise<void> {
+  public async set(key: string, value: string, ttl: number = 60): Promise<void> {
     try {
       // Determine the type of the value
       const valueType = typeof value;
