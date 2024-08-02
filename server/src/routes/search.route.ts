@@ -7,4 +7,4 @@ const router = express.Router();
 router.get("/",verifyJWT, [SearchController.search]);
 router.get("/personal",verifyJWT, [SearchController.personalSearch]);
 
-export default router;
+export default router
