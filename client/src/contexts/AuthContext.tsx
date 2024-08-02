@@ -80,12 +80,14 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             },
             (error) => {
                 console.log(error)
-                navigate('/')
+                // navigate('/')
             }
         );
     }
-    fetchUserData()
-  }, [navigate]);
+    if (user === null){
+      fetchUserData()
+    }
+  }, [navigate, user]);
 
   // Provide authentication-related data and functions through the context
   return (
