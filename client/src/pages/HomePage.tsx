@@ -19,7 +19,7 @@ const HomePage = () => {
       <Content>
         <div className="navbar">
           <div className="logo">
-            <h1>DevSphere</h1>
+            <h1>Eventify.</h1>
           </div>
           <div className="menu">
             <Link to="/signup">Sign Up</Link>
