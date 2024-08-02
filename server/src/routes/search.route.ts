@@ -1,6 +1,6 @@
 import express from "express";
 import { SearchController } from "../controllers/search.controller";
-import { verifyJWT } from "../auth/guards/jwt-auth.guard";
+import { verifyJWT } from "../auth/guards/jwt-auth.guard"
 
 const router = express.Router();
 
