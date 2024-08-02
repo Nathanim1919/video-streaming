@@ -3,7 +3,6 @@ import IUser from '../interfaces/user.interface';
 import { Request as ExpressRequest, Response } from 'express';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';
-import logger from '../logger';
 import jwt from 'jsonwebtoken';
 import { UserService } from '../services/user.service';
 

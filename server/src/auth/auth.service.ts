@@ -1,7 +1,7 @@
 // auth.service.ts
 
 import bcrypt from "bcrypt";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { Request } from "express";
 import IUser from "../interfaces/user.interface";
 import { UserService } from "../services/user.service";

@@ -1,4 +1,4 @@
-import mongoose, { Mongoose, Schema} from "mongoose";
+import mongoose from "mongoose";
 import { CacheClient } from "../config/redisClient";
 import { StreamService } from "../services/stream.service";
 import { ApiResponse } from "../utils/ApiResponse";

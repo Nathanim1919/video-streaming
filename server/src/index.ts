@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://eventify.nathanimt.me",
     credentials: true,
   })
 );
