@@ -81,16 +81,16 @@ export class AuthController {
 
       res.cookie("token", token, {
         domain: ".nathanimt.me",
-        httpOnly: true,
+        secure: true,
         maxAge: 15 * 60 * 1000, // 15 minutes
-        sameSite: "strict",
+        sameSite: "none",
       });
 
       res.cookie("refreshToken", refreshToken, {
         domain: ".nathanimt.me",
-        httpOnly: true,
+        secure: true,
         maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
-        sameSite: "strict",
+        sameSite: "none",
       });
 
       res.json(new ApiResponse(200, existingUser, "Login successfully"));
@@ -115,8 +115,10 @@ export class AuthController {
         );
         res.clearCookie("token")
         res.cookie("token", newAccessToken, {
-          domain: ".nathanimt.me", // Add this line
-          httpOnly: true
+          domain: ".nathanimt.me",
+          httpOnly: true,
+          maxAge: 15 * 60 * 1000, // 15 minutes
+          sameSite: "none",
         });
         res.status(200).send("Access token refreshed");
       } catch (error) {
