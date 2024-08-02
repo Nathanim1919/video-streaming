@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-export const BASE_URL = "https://eventify-api.nathanimt.me/api/v1";
+export const BASE_URL = "https://eventifyapi.nathanimt.me/api/v1";
 
 
 // Create an axios instance for API requests

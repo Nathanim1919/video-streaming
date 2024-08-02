@@ -35,7 +35,7 @@ const LoginPage: React.FC = () => {
 
 
   const handleSocialRegister = (social: string) => {
-    window.location.href = `http://localhost:3000/api/v1/auth/${social}`;
+    window.location.href = `http://eventifyapi.nathanimt.me/api/v1/auth/${social}`;
   } 
 
 
