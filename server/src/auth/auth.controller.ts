@@ -101,9 +101,8 @@ export class AuthController {
 
   // Logout user
   logout = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    res.clearCookie("username");
-    res.clearCookie("token");
-    res.clearCookie("refreshToken");
+    res.clearCookie("token", { domain: ".nathanimt.me" });
+    res.clearCookie("refreshToken", { domain: ".nathanimt.me" });
     res.json(new ApiResponse(200, null, "logout successfully"));
   });
 
