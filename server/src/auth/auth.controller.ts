@@ -114,7 +114,10 @@ export class AuthController {
           req.cookies?.refreshToken
         );
         res.clearCookie("token")
-        res.cookie("token", newAccessToken, { httpOnly: true });
+        res.cookie("token", newAccessToken, {
+          domain: ".nathanimt.me", // Add this line
+          httpOnly: true
+        });
         res.status(200).send("Access token refreshed");
       } catch (error) {
         if (
