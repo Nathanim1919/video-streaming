@@ -4,7 +4,7 @@
   "description": "This project is supposed to be a final project for my alx full stack software engineering program",
   "main": "dist/index.js",
   "scripts": {
-    "build":"npm install",
+    "build":"tsc",
     "start":"node dist/server/src/index.js",
     "dev": "nodemon src/index.ts",
     "test": "jest"
