@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import session from "express-session";
 // import '../passport/index.js';
 import cookieParser from "cookie-parser";
-import { createRouteHandler } from "uploadthing/express";
+// import { createRouteHandler } from "uploadthing/express";
 // import { uploadRouter } from "./uploadthing";
 import dotenv from 'dotenv';
 
