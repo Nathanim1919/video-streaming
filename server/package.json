@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "This project is supposed to be a final project for my alx full stack software engineering program",
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
     "build": "npm install",
     "start":"node src/index.ts",
