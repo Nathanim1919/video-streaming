@@ -83,14 +83,14 @@ export class AuthController {
         domain: ".nathanimt.me",
         httpOnly: true,
         maxAge: 15 * 60 * 1000, // 15 minutes
-        sameSite: "none",
+        sameSite: "strict",
       });
 
       res.cookie("refreshToken", refreshToken, {
         domain: ".nathanimt.me",
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
-        sameSite: "none",
+        sameSite: "strict",
       });
 
       res.json(new ApiResponse(200, existingUser, "Login successfully"));
@@ -101,8 +101,9 @@ export class AuthController {
 
   // Logout user
   logout = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    res.clearCookie("token", { domain: ".nathanimt.me" });
-    res.clearCookie("refreshToken", { domain: ".nathanimt.me" });
+    res.clearCookie("username");
+    res.clearCookie("token");
+    res.clearCookie("refreshToken");
     res.json(new ApiResponse(200, null, "logout successfully"));
   });
 
@@ -112,8 +113,8 @@ export class AuthController {
         const newAccessToken = await this.authService.refreshAccessToken(
           req.cookies?.refreshToken
         );
-        res.clearCookie("token");
-        res.cookie("token", newAccessToken, { httpOnly: true, sameSite: "none",domain: ".nathanimt.me",});
+        res.clearCookie("token")
+        res.cookie("token", newAccessToken, { httpOnly: true });
         res.status(200).send("Access token refreshed");
       } catch (error) {
         if (
