@@ -1,3 +1,17 @@
+//{
+//  "compilerOptions": {
+//    "module": "commonjs",
+//    "noImplicitAny": true,
+//    "removeComments": true,
+//    "preserveConstEnums": true,
+//    "sourceMap": true,
+//    "target": "es6",
+//    "esModuleInterop": true,
+//  },
+//    "include": ["src/**/*.ts", "../client/src/interfaces/stream.interface.ts"],
+//    "exclude": ["node_modules"]
+//  }
+//
 {
   "compilerOptions": {
     "module": "commonjs",
@@ -7,8 +21,11 @@
     "sourceMap": true,
     "target": "es6",
     "esModuleInterop": true,
+    "baseUrl": ".", // Add this line
+    "paths": { // Add this block
+      "uploadthing/express": ["src/uploadthing.ts"]
+    }
   },
-    "include": ["src/**/*.ts", "../client/src/interfaces/stream.interface.ts"],
-    "exclude": ["node_modules"]
-  }
-  
+  "include": ["src/**/*.ts", "../client/src/interfaces/stream.interface.ts"],
+  "exclude": ["node_modules"]
+}
