@@ -1,15 +1,13 @@
 import axios from "axios";
 
-
 export const BASE_URL = "https://eventifyapi.nathanimt.me/api/v1";
 // export const BASE_URL = "http://localhost:3000/api/v1";
-
 
 // Create an axios instance for API requests
 const apiClient = axios.create({
     baseURL: BASE_URL,
     withCredentials: true,
-    timeout: 60000, // 60 seconds
+    timeout: 60000,
 });
 
 apiClient.interceptors.response.use(

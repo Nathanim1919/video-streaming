@@ -53,7 +53,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     );
   };
 
-  const isAuthenticated = () => (user ? true : false);
+  const isAuthenticated = () => (!!user);
 
   // Function to handle user logout
   const logout = async () => {
@@ -75,19 +75,19 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             async () => await authApi.getUserData(),
             setIsLoading,
             (res) => {
+                alert('User data fetched')
                 setUser(res.data as UserInterface)
                 navigate('/me')
             },
             (error) => {
-                console.log(error)
-                // navigate('/')
+                console.log(error);
             }
         );
     }
     if (user === null){
       fetchUserData()
     }
-  }, [navigate, user]);
+  }, []);
 
   // Provide authentication-related data and functions through the context
   return (
