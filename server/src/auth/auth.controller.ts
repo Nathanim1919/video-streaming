@@ -115,7 +115,7 @@ export class AuthController {
         );
         res.clearCookie("token")
         res.cookie("token", newAccessToken, {
-          // domain: ".nathanimt.me",
+          domain: ".nathanimt.me",
           secure: true,
           maxAge: 15 * 60 * 1000, // 15 minutes
           sameSite: "none",

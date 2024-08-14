@@ -75,7 +75,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             async () => await authApi.getUserData(),
             setIsLoading,
             (res) => {
-                alert('User data fetched')
                 setUser(res.data as UserInterface)
                 navigate('/me')
             },

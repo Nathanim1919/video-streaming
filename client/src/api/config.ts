@@ -7,7 +7,7 @@ export const BASE_URL = "https://eventifyapi.nathanimt.me/api/v1";
 const apiClient = axios.create({
     baseURL: BASE_URL,
     withCredentials: true,
-    timeout: 60000,
+    timeout: 30000,// 30 seconds
 });
 
 apiClient.interceptors.response.use(
