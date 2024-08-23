@@ -56,7 +56,6 @@ const uploadProfile = (data: FormData) => {
 
 
 const getBookMarks = () => {
-    console.log("Getting Bookmarks");
     return apiClient.get("/users/bookmarks");
 };
 

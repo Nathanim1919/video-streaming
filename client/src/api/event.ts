@@ -12,7 +12,7 @@ const createEvent = (data: IEvent) => {
 };
 
 const getEvents = () => {
-  return apiClient.get("/events/all");
+  return apiClient.get("/events");
 };
 
 const getUpcomingEvents = () => {
