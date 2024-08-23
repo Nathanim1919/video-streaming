@@ -1,16 +1,16 @@
 import { AuthService } from "./auth.service";
 import IUser from "../interfaces/user.interface";
-import { Request as ExpressRequest, Response } from "express";
+import { Request, Response } from "express";
 import { ApiResponse } from "../utils/ApiResponse";
 import { asyncHandler } from "../utils/asyncHandler";
 import jwt from "jsonwebtoken";
 import { UserService } from "../services/user.service";
 
-interface Request extends ExpressRequest {
-  locals: {
-    token: string;
-  };
-}
+// interface Request extends ExpressRequest {
+//   locals: {
+//     token: string;
+//   };
+// }
 
 export class AuthController {
   private authService: AuthService;
