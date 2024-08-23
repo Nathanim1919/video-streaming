@@ -160,8 +160,8 @@ const Container = styled.div`
 
           overflow: hidden;
           img {
-            width: 100%;
-            height: 100%;
+            width: 100px;
+            height: 100px;
             filter: brightness(20%);
             object-fit: cover;
           }
