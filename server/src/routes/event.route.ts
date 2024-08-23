@@ -9,7 +9,7 @@ const eventController = new EventController();
 router.post("/create", verifyJWT, [
   eventController.createEvent.bind(eventController),
 ]);
-router.get("/all", verifyJWT, [
+router.get("", verifyJWT, [
   eventController.getAllEvents.bind(eventController),
 ]);
 router.get("/upcoming", verifyJWT, [

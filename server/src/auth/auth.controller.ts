@@ -22,10 +22,10 @@ export class AuthController {
   }
 
   generateTokens = (userId: string) => {
-    const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId:userId }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_SECRET_EXPIRY,
     });
-    const refreshToken = jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET, {
+    const refreshToken = jwt.sign({ userId:userId }, process.env.JWT_REFRESH_SECRET, {
       expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
     });
     return { token, refreshToken };
@@ -80,14 +80,14 @@ export class AuthController {
       const { token, refreshToken } = this.generateTokens(_id);
 
       res.cookie("token", token, {
-        domain: ".nathanimt.me",
+        // domain: ".nathanimt.me",
         secure: true,
         maxAge: 15 * 60 * 1000, // 15 minutes
         sameSite: "none",
       });
 
       res.cookie("refreshToken", refreshToken, {
-        domain: ".nathanimt.me",
+        // domain: ".nathanimt.me",
         secure: true,
         maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
         sameSite: "none",
@@ -115,7 +115,7 @@ export class AuthController {
         );
         res.clearCookie("token")
         res.cookie("token", newAccessToken, {
-          domain: ".nathanimt.me",
+          // domain: ".nathanimt.me",
           secure: true,
           maxAge: 15 * 60 * 1000, // 15 minutes
           sameSite: "none",

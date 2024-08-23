@@ -386,7 +386,7 @@ export class EventService {
       status: { $ne: "full" },
     })
       .sort("date")
-      .limit(4)
+      // .limit(4)
       .populate("owner")
       .populate("attendees");
 

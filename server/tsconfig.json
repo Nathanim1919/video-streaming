@@ -7,8 +7,9 @@
     "sourceMap": true,
     "target": "es6",
     "esModuleInterop": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
   },
-  "include": ["src/**/*.ts", "../client/src/interfaces/stream.interface.ts"],
+  "include": ["src/**/*.ts","src/tests/**/*.ts","../client/src/interfaces/stream.interface.ts"],
   "exclude": ["node_modules"]
 }
+

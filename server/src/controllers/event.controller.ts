@@ -390,8 +390,9 @@ export class EventController {
             "Similar events fetched successfully"
           )
         );
+        return;
       }
-      
+
       const events = await this.eventService.getSimilartEventsBasedOnTag(
         req.params.id
       );

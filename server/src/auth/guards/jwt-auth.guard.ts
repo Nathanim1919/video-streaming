@@ -2,6 +2,7 @@ import { User } from '../../models/user.model';
 import jwt from 'jsonwebtoken';
 import { asyncHandler } from "../../utils/asyncHandler";
 import { NextFunction, Response, Request } from "express";
+import logger from "../../logger";
 
 
 interface JwtPayload {
@@ -21,6 +22,7 @@ export const verifyJWT = asyncHandler(async (req: Request, res: Response, next: 
     try {
         const JWT_SECRET = process.env.JWT_SECRET;
         const decodedToken = jwt.verify(token, JWT_SECRET) as JwtPayload;
+        logger.log("info", `Decoded token: ${JSON.stringify(decodedToken)}`);
         const user = await User.findById(decodedToken.userId).select('-password');
         if (!user) {
             return res.status(401).json({
