@@ -62,7 +62,7 @@ export const TopStreams = () => {
             <div className="header">
             {streams.length > 0 && <h1>Top <span>{streams.length}</span> Streams of the Week</h1>}
             </div>
-            {streams.length > 0 && 
+            {streams.length > 0 &&
             <StreamContainer>
                 <div className='streams'>
             { streams.map((stream: Stream, index) => {
@@ -118,14 +118,23 @@ const Container = styled.div`
     
 
     .header{
+        padding: 1rem;
         h1{
             font-size: 3rem;
             color: #fff;
+            
+            @media screen and (max-width: 800px){
+                font-size: 2rem;
+            }
             span{
                 color: #f32e1c;
                 font-size: 5rem;
                 background-color: #fff;
                 padding: 0 1.4rem;
+                
+                @media screen and (max-width: 800px) {
+                    font-size: 3rem;
+                }
             }
         }
     }
@@ -160,23 +169,23 @@ const Container = styled.div`
             top: 20%;
 
             @media screen and (max-width: 800px){
-            top: 0;
-        }
+                   top: 0;
+           }
         }
 
         >div:nth-child(3){
             position: relative;
             top: 40%;
             @media screen and (max-width: 800px){
-            top: 40%;
-        }
+                      top: 0%;
+                }
         }
 
         >div:nth-child(1){
             position: relative;
            
             @media screen and (max-width: 800px){
-            top: 20%;
+            top: 0%;
         }}
         
     }
@@ -192,10 +201,12 @@ const Container = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 1rem;
 
         >*{
             margin: 0;
             color: #fff;
+            padding: 1rem;
         }
         a{
             color: #333;
@@ -208,6 +219,11 @@ const Container = styled.div`
         h1{
             font-size: 3rem;
             color: #fff;
+            text-align: center;
+            
+            @media screen and (max-width: 800px){
+                font-size: 2rem;
+            }
         }
     }
 
@@ -218,12 +234,11 @@ const StreamContainer = styled.div`
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    background: linear-gradient(30deg,transparent, transparent,#052e74);
-    padding: 1rem;
-    padding-bottom: 5rem;
+    background: linear-gradient(30deg, transparent, transparent, #052e74);
+    padding: 1rem 1rem 5rem;
     position: relative;
-    margin: 2rem 0 ;
-    
+    margin: 2rem 0;
+
 
 
 `
