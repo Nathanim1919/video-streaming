@@ -115,14 +115,14 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    
+
 
     .header{
         padding: 1rem;
         h1{
             font-size: 3rem;
             color: #fff;
-            
+
             @media screen and (max-width: 800px){
                 font-size: 2rem;
             }
@@ -131,7 +131,7 @@ const Container = styled.div`
                 font-size: 5rem;
                 background-color: #fff;
                 padding: 0 1.4rem;
-                
+
                 @media screen and (max-width: 800px) {
                     font-size: 3rem;
                 }
@@ -153,15 +153,15 @@ const Container = styled.div`
         margin-bottom: 3rem;
 
 
-      
+
 
 
         @media screen and (max-width: 800px){
             grid-template-columns: 1fr;
             width: 95%;
-            
+
         }
-       
+
 
 
         >div:nth-child(2){
@@ -183,11 +183,11 @@ const Container = styled.div`
 
         >div:nth-child(1){
             position: relative;
-           
+
             @media screen and (max-width: 800px){
             top: 0%;
         }}
-        
+
     }
 
 
@@ -220,14 +220,14 @@ const Container = styled.div`
             font-size: 3rem;
             color: #fff;
             text-align: center;
-            
+
             @media screen and (max-width: 800px){
                 font-size: 2rem;
             }
         }
     }
 
-    
+
 `
 const StreamContainer = styled.div`
     display: flex;

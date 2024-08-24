@@ -24,8 +24,8 @@ const Conatiner = styled.div`
     padding:5rem 2rem;
     display: flex;
     flex-direction: column;
-    
-    
+
+
     >div{
         display: flex;
         flex-direction: column;
@@ -35,34 +35,34 @@ const Conatiner = styled.div`
         h1{
             font-size: 3rem;
             margin: 0rem;
-            
+
             @media (max-width: 768px){
                 font-size: 2rem;
             }
         }
-        
+
         p {
             font-size: 1.5rem;
             margin: 0rem;
             text-align: center;
         }
     }
-    
-    
-  
-   
-    
-    
+
+
+
+
+
+
     @media (max-width: 768px){
         align-items: center;
-        
-        
+
+
         a{
             margin-top: 1rem;
         }
     }
-    
-    
+
+
     a{
         padding: .5rem 1rem;
         background-color: #0835b3;

@@ -126,7 +126,7 @@ const Container = styled.div`
     gap: 1rem;
     width: 70vw;
     margin: 5rem auto;
-    
+
     @media screen and (max-width: 800px){
         grid-template-columns: 1fr;
         width: 90%;
@@ -149,7 +149,7 @@ const Container = styled.div`
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      
+
       @media screen and (max-width: 800px){
             grid-column: span 1;
       }
@@ -162,7 +162,7 @@ const Container = styled.div`
         font-size: 3rem;
         text-align: center;
         margin-bottom: 1rem;
-        
+
         @media screen and (max-width: 800px){
             font-size: 1rem;
         }
@@ -198,7 +198,7 @@ const Container = styled.div`
         left: 0rem;
         font-size: 6rem;
         opacity: .09;
-      
+
     }
 
     > h2 {
@@ -206,7 +206,7 @@ const Container = styled.div`
       margin: 2rem 0;
       text-align: center;
       padding: 1rem;
-      
+
         @media screen and (max-width: 800px) {
             font-size: 2rem;
         }
@@ -219,11 +219,11 @@ const Container = styled.div`
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1rem;
       position: relative;
-      
+
       @media screen and (max-width: 800px){
             grid-template-columns: 1fr;
             width: 90%;
-        
+
       }
 
       > * {
@@ -284,7 +284,7 @@ const Content = styled.div`
         font-size: 4rem;
         margin: 0;
         font-weight: 900;
-        
+
         @media screen and (max-width: 800px){
             font-size: 2rem;
         }
@@ -338,7 +338,7 @@ const Content = styled.div`
         right: -10%;
         width: 60%;
         top: -15%;
-        
+
         @media screen and (max-width: 800px){
             display: none;
         }
@@ -348,7 +348,7 @@ const Content = styled.div`
         top: -20%;
         width: 40%;
         display: grid;
-        
+
         @media screen and (max-width: 800px){
             display: none;
         }
@@ -358,7 +358,7 @@ const Content = styled.div`
         top: 40%;
         width: 40%;
         display: grid;
-        
+
         @media screen and (max-width: 800px){
           display: none;
         }
