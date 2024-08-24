@@ -4,11 +4,13 @@ import styled from "styled-components";
 export const CreateStream = () => {
     return (
         <Container>
-            <h1>Schedule Your Own Stream</h1>
-            <p>Click the button below to schedule your own Very first stream and get to know your fans!</p>
-            <Link to={'/create-stream'}>Schedule Stream</Link>
+            <h1>Have an Event Idea?<br/> Schedule Your Own Stream</h1>
+            <p>Click the button below to schedule your first stream and engage with your audience!</p>
+            <Link to={'/create-stream'}>Schedule Your Stream</Link>
         </Container>
-    );
+
+)
+    ;
 }
 
 
@@ -17,34 +19,39 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 2rem;
-    margin-top: 2rem;
-    background: linear-gradient(to right, #f32e1c, rgba(0, 0, 0, 1));
+    //background: linear-gradient(to right, #f32e1c, rgba(0, 0, 0, 1));
     width: 50%;
-    margin: auto;
     margin: 2rem auto;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 5rem 2rem;
     position: relative;
     z-index: 10;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
+    //box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
     border-radius: 10px;
 
 
-
-    h1{
-        color: #fff;
-        font-size: 2rem;
-        margin: 0;
+    @media (max-width: 768px) {
+        width: 80%;
     }
-    p{
+
+
+    h1 {
+        color: #fff;
+        font-size: 3rem;
+        margin: 0;
+        
+        @media (max-width: 768px) {
+            font-size: 2rem;
+        }
+    }
+
+    p {
         color: #fff;
         font-size: 1.4rem;
         text-align: center;
         margin: 0;
     }
-    a{
+
+    a {
         text-decoration: none;
         color: red;
         background-color: #fff;

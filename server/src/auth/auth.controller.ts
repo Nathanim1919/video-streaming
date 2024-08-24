@@ -80,14 +80,14 @@ export class AuthController {
       const { token, refreshToken } = this.generateTokens(_id);
 
       res.cookie("token", token, {
-        domain: ".nathanimt.me",
+        // domain: ".nathanimt.me",
         secure: true,
         maxAge: 15 * 60 * 1000, // 15 minutes
         sameSite: "none",
       });
 
       res.cookie("refreshToken", refreshToken, {
-        domain: ".nathanimt.me",
+        // domain: ".nathanimt.me",
         secure: true,
         maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
         sameSite: "none",
@@ -115,7 +115,7 @@ export class AuthController {
         );
         res.clearCookie("token")
         res.cookie("token", newAccessToken, {
-          domain: ".nathanimt.me",
+          // domain: ".nathanimt.me",
           secure: true,
           maxAge: 15 * 60 * 1000, // 15 minutes
           sameSite: "none",

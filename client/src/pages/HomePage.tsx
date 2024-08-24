@@ -124,8 +124,13 @@ const Container = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
-    width: 70%;
+    width: 70vw;
     margin: 5rem auto;
+    
+    @media screen and (max-width: 800px){
+        grid-template-columns: 1fr;
+        width: 90%;
+    }
 
     > div {
       background: linear-gradient(45deg, #970505, #59033f);
@@ -144,6 +149,10 @@ const Container = styled.div`
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      
+      @media screen and (max-width: 800px){
+            grid-column: span 1;
+      }
 
       > * {
         margin: 0;
@@ -152,6 +161,11 @@ const Container = styled.div`
       h1 {
         font-size: 3rem;
         text-align: center;
+        margin-bottom: 1rem;
+        
+        @media screen and (max-width: 800px){
+            font-size: 1rem;
+        }
       }
 
       .btns {
@@ -177,7 +191,6 @@ const Container = styled.div`
     justify-content: center;
     display: flex;
     flex-direction: column;
-    padding: 2rem;
 
     h1{
         position: absolute;
@@ -185,11 +198,18 @@ const Container = styled.div`
         left: 0rem;
         font-size: 6rem;
         opacity: .09;
+      
     }
 
     > h2 {
       font-size: 3rem;
       margin: 2rem 0;
+      text-align: center;
+      padding: 1rem;
+      
+        @media screen and (max-width: 800px) {
+            font-size: 2rem;
+        }
     }
 
     .membership-steps {
@@ -199,6 +219,12 @@ const Container = styled.div`
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1rem;
       position: relative;
+      
+      @media screen and (max-width: 800px){
+            grid-template-columns: 1fr;
+            width: 90%;
+        
+      }
 
       > * {
         display: flex;
@@ -258,6 +284,10 @@ const Content = styled.div`
         font-size: 4rem;
         margin: 0;
         font-weight: 900;
+        
+        @media screen and (max-width: 800px){
+            font-size: 2rem;
+        }
       }
 
       h3 {
@@ -308,16 +338,30 @@ const Content = styled.div`
         right: -10%;
         width: 60%;
         top: -15%;
+        
+        @media screen and (max-width: 800px){
+            display: none;
+        }
       }
       img:nth-child(2) {
         left: -30%;
         top: -20%;
         width: 40%;
+        display: grid;
+        
+        @media screen and (max-width: 800px){
+            display: none;
+        }
       }
       img:nth-child(3) {
         left: -5%;
         top: 40%;
         width: 40%;
+        display: grid;
+        
+        @media screen and (max-width: 800px){
+          display: none;
+        }
       }
     }
   }

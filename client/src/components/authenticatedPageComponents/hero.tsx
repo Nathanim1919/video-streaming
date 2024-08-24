@@ -11,7 +11,7 @@ export const Hero = () => {
             <div>
                 <h1>Welcome, {user?.fullName}</h1>
                 <p>Get access to all the features by upgrading your account</p>
-                <Link to={'/streames/live'}>Who is Live Now? </Link>
+                {/*<Link to={'/streames/live'}>Who is Live Now? </Link>*/}
             </div>
             <Link to="/subscription">Upgrade Account</Link>
         </Conatiner>
@@ -20,46 +20,56 @@ export const Hero = () => {
 
 const Conatiner = styled.div`
     background: linear-gradient(to right, #1ca7f3, #0835b3);
+    color: white;
+    padding:5rem 2rem;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding:5rem 0;
-    width: 100%;
-    margin: 2rem auto;
-    /* border-radius: 10px; */
-
-
-    >*{
+    flex-direction: column;
+    
+    
+    >div{
         display: flex;
-        align-items: flex-start;
         flex-direction: column;
-
-        button:nth-child(3){
-            margin-top: 2rem;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        h1{
+            font-size: 3rem;
+            margin: 0rem;
+            
+            @media (max-width: 768px){
+                font-size: 2rem;
+            }
         }
-
-        >*{
-            margin: 0;
+        
+        p {
+            font-size: 1.5rem;
+            margin: 0rem;
+            text-align: center;
         }
     }
-
-    h1{
-        color: #fff;
+    
+    
+  
+   
+    
+    
+    @media (max-width: 768px){
+        align-items: center;
+        
+        
+        a{
+            margin-top: 1rem;
+        }
     }
-
-    p{
-        color: #fff;
-    }
-
-    a, button{
-        background-color: #ffffff;
-        padding: .6rem 1rem;
-        border-radius: 5px;
-        color: #333;
-        border: none;
-        cursor: pointer;
-        font-family: inherit;
-        border: none;
+    
+    
+    a{
+        padding: .5rem 1rem;
+        background-color: #0835b3;
+        color: white;
         text-decoration: none;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        align-self: center;
     }
 `
