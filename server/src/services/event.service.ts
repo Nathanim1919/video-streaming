@@ -300,20 +300,16 @@ export class EventService {
 
   async getTopEventsOfTheWeek(): Promise<IEvent[]> {
     const today = new Date();
-    const weekStart = new Date(today.setDate(today.getDate() - today.getDay()));
-    const weekEnd = new Date(
-      today.setDate(today.getDate() - today.getDay() + 6)
-    );
+
     const events = await EventModel.find({
       date: {
-        $gte: weekStart.toISOString().split("T")[0],
-        $lte: weekEnd.toISOString().split("T")[0],
+        $gte: today.toISOString().split("T")[0],
       },
     })
-      .populate("owner")
-      .populate("attendees")
-      .sort({ attendees: -1 })
-      .limit(3);
+        .populate("owner")
+        .populate("attendees")
+        .sort({ startDate: 1 }) // Sort by startDate in ascending order
+        .limit(3); // Limit to 3 events
 
     return events;
   }
