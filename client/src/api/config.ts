@@ -42,7 +42,7 @@ apiClient.interceptors.response.use(
 
             try {
                 const { data } = await apiClient.post('/auth/refresh-token', {}, { withCredentials: true });
-                const newToken = data.accessToken;
+                const newToken = data.newAccessToken;
                 apiClient.defaults.headers.common['Authorization'] = 'Bearer ' + newToken;
                 onRrefreshed(newToken);
                 refreshSubscribers = [];

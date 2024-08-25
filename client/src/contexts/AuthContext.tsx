@@ -81,7 +81,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 setIsLoading,
                 (res) => {
                     setUser(res.data as UserInterface);
-                    setNotifier({ type: 'success', message: `Welcome back ${res.data?.fullName}`, show: true });
+                    if (res.data){
+                        setNotifier({ type: 'success', message: `Welcome back ${res.data?.fullName!}`, show: true });
+                    }
                     navigate('/me');
                 },
                 (error) => {
