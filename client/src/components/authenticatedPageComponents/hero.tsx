@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
-import {Notifier} from "../Notifier.tsx";
 
 
 export const Hero = () => {
@@ -9,7 +8,6 @@ export const Hero = () => {
     const {user} = useAuth()
     return (
         <Conatiner className="hero">
-            <Notifier type={'success'} message={"Welcome back and this is eventify"}/>
             <div>
                 <h1>Welcome, {user?.fullName}</h1>
                 <p>Get access to all the features by upgrading your account</p>

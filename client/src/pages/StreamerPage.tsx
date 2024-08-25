@@ -79,12 +79,12 @@ const Container = styled.div`
     margin: auto;
 
 
-    @media screen and (max-width:800px){
+    @media screen and (max-width: 800px) {
         width: 95vw;
     }
 
 
-    .streamer-list{
+    .streamer-list {
         display: flex;
         gap: 1rem;
         grid-row-gap: 2rem;
@@ -92,7 +92,6 @@ const Container = styled.div`
         justify-content: center;
         height: 100%;
         overflow-y: auto;
-        padding-bottom: 2rem;
         padding: 2rem;
     }
 `;

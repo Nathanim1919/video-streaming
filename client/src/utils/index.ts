@@ -40,8 +40,6 @@ export const requestHandler = async (
 export const isBrowser = typeof window !== "undefined";
 
 
-
-
 // A class that provides utility functions for working with local storage
 export class LocalStorage {
     // Get a value from local storage by key

@@ -20,82 +20,88 @@ const AuthContext = createContext<AuthContextInterface>({
 const useAuth = () => useContext(AuthContext);
 
 // Create a component that provides authentication-related data and functions
-const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<UserInterface | null>(null);
+const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {const [isLoading, setIsLoading] = useState(true);
+    const [user, setUser] = useState<UserInterface | null>(null);
+    const [notifier, setNotifier] = useState<{ type: string; message: string; show: boolean }>({ type: '', message: '', show: false });
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  // Function to handle user login
-  const login = async (data: { email: string; password: string }) => {
-    await requestHandler(
-      async () => await authApi.loginUser(data),
-      setIsLoading,
-      (res) => {
-        const { data } = res;
-        setUser(data as UserInterface);
-        navigate('/me');
-      },
-      () => {
-        navigate('/login');
-      }
-    );
-  };
-
-  // Function to handle user registration
-  const register = async (data: RegisterInterface) => {
-    await requestHandler(
-      async () => await authApi.registerUser(data),
-      setIsLoading,
-      () => {
-         return (
-        <Notifier type={'success'} message={"Registered Successfully!"} show={true} />
-         )
-      },
-      alert
-    );
-  };
-
-  const isAuthenticated = () => (!!user);
-
-  // Function to handle user logout
-  const logout = async () => {
-    await requestHandler(
-      async () => await authApi.logoutUser(),
-      null,
-      () => {
-        setUser(null);
-        navigate('/login'); // Redirect to the login page after successful logout
-      },
-      alert // Display error alerts on request failure
-    );
-  };
-
-  // Check for saved user during component initialization
-  useEffect(() => {
-    const fetchUserData = async() => {
+    const login = async (data: { email: string; password: string }) => {
         await requestHandler(
-            async () => await authApi.getUserData(),
+            async () => await authApi.loginUser(data),
             setIsLoading,
             (res) => {
-                setUser(res.data as UserInterface)
-                navigate('/me')
+                const { data } = res;
+                setUser(data as UserInterface);
+                setNotifier({ type: 'success', message: 'Logged in Successfully!', show: true });
+                navigate('/me');
             },
-            (error) => {
-                console.log(error);
+            () => {
+                setNotifier({ type: 'error', message: 'Login Failed!', show: true });
+                navigate('/login');
             }
         );
-    }
-    if (user === null){
-      fetchUserData()
-    }
-  }, []);
+    };
+
+    const register = async (data: RegisterInterface) => {
+        await requestHandler(
+            async () => await authApi.registerUser(data),
+            null,
+            () => {
+                setNotifier({ type: 'success', message: 'Registered Successfully!', show: true });
+                navigate('/login');
+            },
+            () => {
+                setNotifier({ type: 'error', message: 'Registration Failed!', show: true });
+            }
+        );
+    };
+
+    const logout = async () => {
+        await requestHandler(
+            async () => await authApi.logoutUser(),
+            null,
+            () => {
+                setUser(null);
+                setNotifier({ type: 'success', message: 'Logged out Successfully!', show: true });
+                navigate('/login');
+            },
+            () => {
+                setNotifier({ type: 'error', message: 'Logout Failed!', show: true });
+            }
+        );
+    };
+
+    const isAuthenticated = () => (!!user);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            await requestHandler(
+                async () => await authApi.getUserData(),
+                setIsLoading,
+                (res) => {
+                    setUser(res.data as UserInterface);
+                    setNotifier({ type: 'success', message: `Welcome back ${res.data?.fullName}`, show: true });
+                    navigate('/me');
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+        };
+        if (user === null) {
+            fetchUserData();
+        }
+    }, []);
 
   // Provide authentication-related data and functions through the context
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, isAuthenticated }}>
-      {isLoading ? <Loader /> : children}
-    </AuthContext.Provider>
+      <>
+          <AuthContext.Provider value={{ user, login, register, logout, isAuthenticated }}>
+              {isLoading ? <Loader /> : children}
+              {notifier.show && <Notifier type={notifier.type} message={notifier.message} />}
+          </AuthContext.Provider>
+      </>
   );
 };
 

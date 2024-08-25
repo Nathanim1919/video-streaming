@@ -105,6 +105,7 @@ const Container = styled.div`
         background-color: #fff;
         padding: 0.5rem 1rem;
 
+
         &:hover {
             color: #524f4f;
         }
@@ -120,7 +121,7 @@ const Container = styled.div`
     .streamerList {
         display: flex;
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: 2rem;
         justify-content: center;
         margin-top: 2rem;
 
@@ -136,7 +137,9 @@ const Container = styled.div`
             border-radius: 10px;
             cursor: pointer;
             backdrop-filter: blur(10px);
-            border: 1px solid #032b45;
+            //border-top: 3px solid red;
+            box-shadow: 10px 10px 0px #924e4e;
+            //border: 1px solid #032b45;
 
             &:hover {
                 /* border: 1px solid #0670fa; */
