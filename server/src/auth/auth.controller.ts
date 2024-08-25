@@ -120,7 +120,8 @@ export class AuthController {
           maxAge: 15 * 60 * 1000, // 15 minutes
           sameSite: "none",
         });
-        res.status(200).send("Access token refreshed");
+        // res.status(200).send("Access token refreshed", newAccessToken);
+        res.json(new ApiResponse(200, newAccessToken, "Access token refreshed"));
       } catch (error) {
         if (
           error.message === "Unauthorized request" ||
