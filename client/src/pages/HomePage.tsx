@@ -13,6 +13,7 @@ import Icon1 from "/icon/icon1.png";
 import Icon2 from "/icon/icon2.png";
 import Icon3 from "/icon/icon3.png";
 
+
 const HomePage = () => {
   return (
     <Container>

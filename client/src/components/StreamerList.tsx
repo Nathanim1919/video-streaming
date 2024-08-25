@@ -92,8 +92,15 @@ const Card = styled.div`
   flex-direction: column;
   position: relative;
   padding: 1rem;
-  border-radius: 10px;
   margin-top: 0.3rem;
+  border-top: 8px solid red;
+  transition: 0.3s;
+  
+  
+  &:hover {
+    border-top: 8px solid #007bff;
+    transform: scale(1.02);
+  }
 
   .header {
     display: flex;

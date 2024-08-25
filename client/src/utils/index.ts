@@ -19,7 +19,6 @@ export const requestHandler = async (
         if (data?.success){
             // Call the onSuccess callback with thresponsee response data
             onSuccess(data)
-            console.log(data)
         }
     } catch (error: any) {
         // Handle error cases, including unauthorized and forbidded case
@@ -39,8 +38,6 @@ export const requestHandler = async (
 
 // Check if the code is running in a browser environment
 export const isBrowser = typeof window !== "undefined";
-
-
 
 
 // A class that provides utility functions for working with local storage

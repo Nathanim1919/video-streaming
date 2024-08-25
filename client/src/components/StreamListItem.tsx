@@ -9,6 +9,7 @@ import { FaBookmark } from "react-icons/fa6";
 import { EventTicket } from './EventTicket';
 import { IStream } from '../interfaces/stream.interface';
 import { bookMarkStream } from '../api/stream';
+import {Notifier} from "./Notifier.tsx";
 
 
 interface StreamListItemProps {
@@ -17,11 +18,12 @@ interface StreamListItemProps {
 
 const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
   const { user } = useAuth();
-  // const [countdown, setCountdown] = useState<{days?: number, hours?: number, minutes?: number, seconds?: number}>({days: 0, hours: 0, minutes: 0, seconds: 0}); 
+  // const [countdown, setCountdown] = useState<{days?: number, hours?: number, minutes?: number, seconds?: number}>({days: 0, hours: 0, minutes: 0, seconds: 0});
   const [isRsvp, setIsRsvp] = useState((user!.rvps).includes(user!._id));
   const [isLoading, setIsLoading] = useState(false);
   // const eventDate = useMemo(() => new Date(stream?.date), [stream?.date]);
   const [qrCodeUrl, setQrCodeUrl] = useState('');
+  const [notifyBookmark, setNotifyBookMark] = useState(false)
 
   const {handleRemoveRsvp, handleRsvp, checkRsvpStatus} = useRsvp(stream._id, setIsRsvp, setIsLoading, setQrCodeUrl);
   // console.log(isRsvp)
@@ -36,8 +38,8 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
     await requestHandler(
       async () => await bookMarkStream(stream._id),
       setIsLoading,
-      (response) => {
-        console.log(response);
+      () => {
+        setNotifyBookMark(true)
       },
       (error) => {
         console.log(error);
@@ -45,13 +47,13 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
     )
   }
 
-  // Countdown timer 
+  // Countdown timer
   // useEffect(() => {
   //     // Update the countdown every second
   //     const intervalId = setInterval(() => {
   //       const now = new Date();
   //       const distance = eventDate.getTime() - now.getTime();
-    
+
   //       if (distance < 0) {
 
   //         // Event has already occurred
@@ -67,7 +69,7 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
   //         if (days !== 0) {
   //           // Event is more than 24 hours away
   //           setCountdown({days});
-  //         } 
+  //         }
   //         else if (hours !== 0) {
   //           // Event is less than 24 hours away
   //           setCountdown({hours});
@@ -75,14 +77,14 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
   //         else if (minutes !== 0) {
   //           // Event is less than 1 hour away
   //           setCountdown({minutes});
-  //         } 
+  //         }
   //         else {
   //           // Event is less than 1 minute away
   //           setCountdown({seconds});
   //         }
   //       }
   //     }, 1000);
-    
+
   //     // Clear the interval when the component is unmounted
   //     return () => clearInterval(intervalId);
   //   }, [eventDate]);
@@ -91,11 +93,12 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
   // Render the component
     return (
       <Container>
+          {notifyBookmark && <Notifier type={"success"} message={"Stream Bookmarked SuccessFully"}/>}
         {qrCodeUrl && <EventTicket qrCodeUrl={qrCodeUrl}/>}
         <div className='image'>
           <img src={stream.image} alt='Stream' />
         </div>
-        <div className='info'> 
+        <div className='info'>
           <Link to={'/'}  className='bookmark' onClick={(e)=>{e.preventDefault();handleBookmark()}}><FaBookmark/></Link>
           <div className="titles">
             <h3>{stream.title}</h3>
@@ -118,11 +121,11 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
                   <p>{stream.owner?.profession}</p>
               </div>
           </div>
-         
+
 
           <div className='buttons'>
               <div className="btns">
-                <Link to={'/'} className={isRsvp? 'cancel' : 'rsvp'} 
+                <Link to={'/'} className={isRsvp? 'cancel' : 'rsvp'}
                   onClick={isRsvp?handleRemoveRsvp:handleRsvp}>{isLoading && <ImSpinner9/>}{isRsvp? 'Cancel My Online RSVP' : 'RSVP to Attend Online'}
                 </Link>
                 <Link to={`/streames/${stream._id}`} className='details'>Details and Schedule</Link>

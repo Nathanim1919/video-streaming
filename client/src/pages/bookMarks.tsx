@@ -6,10 +6,12 @@ import { requestHandler } from "../utils";
 import { getBookMarks } from "../api/auth";
 import styled from "styled-components";
 import { removeFromBookMark } from "../api/stream";
+import {Notifier} from "../components/Notifier.tsx";
 
 export const BookMarks = () => {
   const [bookMarks, setBookMarks] = useState<IEventForBookMark[]>([]);
   const [loading, setLoading] = useState(true);
+  const [notifyRemoveBookmark, setNotifyRemoveBookmark] = useState(false);
 
   useEffect(() => {
     const fetchBookMarks = async () => {
@@ -26,14 +28,14 @@ export const BookMarks = () => {
     fetchBookMarks();
   }, []);
 
-  
+
   const handleRemoveBookMark = async (id: string) => {
     await requestHandler(
       async () => await removeFromBookMark(id),
       setLoading,
-      (data) => {
-        console.log(data);
+      () => {
         setBookMarks((prev) => prev.filter((event) => event.item?._id !== id));
+        setNotifyRemoveBookmark(true)
       },
       () => {}
     );
@@ -42,6 +44,7 @@ export const BookMarks = () => {
 
   return (
     <Container className="bookMarks">
+      {notifyRemoveBookmark && <Notifier type={"success"} message={"Event Removed From Bookmark Successfully!"}/>}
       <h1>Bookmarks</h1>
       {loading ? (
         <Loader />
