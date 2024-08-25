@@ -5,6 +5,7 @@ import { UserInterface } from '../interfaces/user';
 import { requestHandler } from '../utils';
 import Loader from '../components/Loader';
 import { AuthContextInterface, RegisterInterface } from '../interfaces/authContext';
+import {Notifier} from "../components/Notifier.tsx";
 
 // Create a context to manage authentication-related data and functions
 const AuthContext = createContext<AuthContextInterface>({
@@ -47,7 +48,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       async () => await authApi.registerUser(data),
       setIsLoading,
       () => {
-        navigate('/login');
+         return (
+        <Notifier type={'success'} message={"Registered Successfully!"} show={true} />
+         )
       },
       alert
     );

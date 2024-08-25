@@ -14,6 +14,7 @@ import { eventApi, streamApi } from "../api";
 import { IEvent } from "../interfaces/event";
 import { requestHandler } from "../utils";
 import { ImSpinner9 } from "react-icons/im";
+import {Notifier} from "./Notifier.tsx";
 
 
 const darkTheme = createTheme({
@@ -232,6 +233,8 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
   selectedEvent,
 }) => {
   const [date, setDate] = useState<dayjs.Dayjs | null>(dayjs());
+  const [successNotify, setSuccessNotify] = useState(false)
+  const [errroNotify, setErrorNotify] = useState(false)
   const [loading, setLoading] = useState(false);
   const [event, setEvent] = useState<IEvent>({
     title: "",
@@ -276,14 +279,23 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({
     await requestHandler(
       async () => apiFunction(event),
       setLoading,
-      () => setCreateEvent(false),
-      () => {}
+      () => {
+        setSuccessNotify(true)
+        setTimeout(()=>{
+          setCreateEvent(false);
+        }, 2000)
+      },
+      () => {
+        setErrorNotify(true)
+      }
     );
   };
 
 
   return (
     <Container>
+      {successNotify && <Notifier type={"success"} message={"Event Scheduled Successfully"}/>}
+      {errroNotify && <Notifier type={"error"} message={"Failed Scheduling The Event"}/>}
       <div className="header">
         <h4>Create Event</h4>
         <FaTimes

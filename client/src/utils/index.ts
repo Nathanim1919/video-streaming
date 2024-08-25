@@ -19,7 +19,6 @@ export const requestHandler = async (
         if (data?.success){
             // Call the onSuccess callback with thresponsee response data
             onSuccess(data)
-            console.log(data)
         }
     } catch (error: any) {
         // Handle error cases, including unauthorized and forbidded case

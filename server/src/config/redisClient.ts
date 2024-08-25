@@ -4,28 +4,28 @@ export class CacheClient {
   private static instance: CacheClient;
   private client: RedisClientType;
 
-  private constructor() {
-    this.client = createClient({
-      password: process.env.REDIS_PASSWORD || 'ltN3huYP4jrHDTqr07dNUTsxChnsFjZZ',
-      socket: {
-        host: process.env.REDIS_HOST || 'redis-11532.c12.us-east-1-4.ec2.redns.redis-cloud.com',
-        port: parseInt(process.env.REDIS_PORT) || 11532,
-        reconnectStrategy: (retries) => {
-          if (retries > 10) {
-            return new Error('Retry attempts exhausted');
-          }
-          return Math.min(retries * 50, 2000); // Exponential backoff
-        }
-      }
-    });
-    this.connectClient();
-  }
+  // private constructor() {
+  //   this.client = createClient({
+  //     password: process.env.REDIS_PASSWORD || 'ltN3huYP4jrHDTqr07dNUTsxChnsFjZZ',
+  //     socket: {
+  //       host: process.env.REDIS_HOST || 'redis-11532.c12.us-east-1-4.ec2.redns.redis-cloud.com',
+  //       port: parseInt(process.env.REDIS_PORT) || 11532,
+  //       reconnectStrategy: (retries) => {
+  //         if (retries > 10) {
+  //           return new Error('Retry attempts exhausted');
+  //         }
+  //         return Math.min(retries * 50, 2000); // Exponential backoff
+  //       }
+  //     }
+  //   });
+  //   this.connectClient();
+  // }
 
   // redis connection with local redis
-  //   private constructor() {
-  //       this.client = createClient();
-  //       this.connectClient();
-  //   }
+    private constructor() {
+        this.client = createClient();
+        this.connectClient();
+    }
 
   private async connectClient() {
     console.log('Connecting...');
