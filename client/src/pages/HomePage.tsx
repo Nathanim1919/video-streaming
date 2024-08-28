@@ -5,10 +5,6 @@ import { TopStreamers } from "../components/authenticatedPageComponents/topTream
 import { TopStreams } from "../components/authenticatedPageComponents/TopStreames";
 import Footer from "../components/authenticatedPageComponents/footer";
 import { CreateStream } from "../components/authenticatedPageComponents/createStreamCall";
-import Image1 from "/home/live.jpeg";
-import Image3 from "/home/live2.jpeg";
-import Image4 from "/home/live3.jpg";
-import Image2 from "/home/people.jpg";
 import Icon1 from "/icon/icon1.png";
 import Icon2 from "/icon/icon2.png";
 import Icon3 from "/icon/icon3.png";
@@ -32,15 +28,15 @@ const HomePage = () => {
             <h1>Discover and Host Live Events</h1>
             {/* <h3>Experience the thrill of live events, both online and in person</h3> */}
             <p>
-              Whether you're a fan of live events or a host, you can discover and attend exciting events or host your own through DevSphere.
+              Whether you're a fan of live events or a host, you can discover and attend exciting events or host your own through Eventify.
             </p>
-            <button>Get Started</button>
+            <button>Get Started Now</button>
           </div>
           <div className="images">
-            <img src={Image1} alt="Live Stream" />
-            <img src={Image3} alt="Live Stream" />
-            <img src={Image4} alt="Live Stream" />
-            <img src={Image2} alt="People" />
+            <img src={"https://res.cloudinary.com/dkmnjsvw2/image/upload/v1724844949/eventify/live_pjejtz.jpg"} alt="Live Stream" />
+            <img src={"https://res.cloudinary.com/dkmnjsvw2/image/upload/v1724844949/eventify/live2_f35q8e.jpg"} alt="Live Stream" />
+            <img src={"https://res.cloudinary.com/dkmnjsvw2/image/upload/v1724844956/eventify/live3_hgqzck.jpg"} alt="Live Stream" />
+            <img src={"https://res.cloudinary.com/dkmnjsvw2/image/upload/v1724844952/eventify/people_ceomv2.jpg"} alt="People" />
           </div>
         </div>
       </Content>
