@@ -81,7 +81,6 @@ const Conatainer = styled.div`
 
   > h1 {
     color: #fff;
-    margin-left: 2rem;
     width: 80%;
     margin: auto;
     padding: 3rem 0;
@@ -100,7 +99,8 @@ const Conatainer = styled.div`
       color: #fff;
       border-radius: 10px;
       overflow: hidden;
-      max-width: 300px;
+      height: 100%;
+      //width: 300px;
 
       .image {
         max-height: 200px;
@@ -111,10 +111,10 @@ const Conatainer = styled.div`
           position: absolute;
           top: 0;
           right: 0;
-          background-color: #c50e0e;
-          padding: 0.5rem;
+          background-color: #fff;
+          padding: 0 0.5rem;
           border-bottom-left-radius: 10px;
-          color: #fff;
+          color: #333;
           z-index: 10;
         }
       }
@@ -164,6 +164,7 @@ const Conatainer = styled.div`
                 color: #bdb9b9;
               }
             }
+
             .image {
               width: 30px;
               height: 30px;
@@ -180,7 +181,7 @@ const Conatainer = styled.div`
         }
 
         .date {
-          background-color: red;
+          background-color: #333;
           display: flex;
           flex-direction: column;
           justify-content: space-around;
@@ -197,6 +198,7 @@ const Conatainer = styled.div`
           }
         }
       }
+
       img {
         width: 100%;
       }

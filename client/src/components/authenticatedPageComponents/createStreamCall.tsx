@@ -38,6 +38,7 @@ const Container = styled.div`
         color: #fff;
         font-size: 3rem;
         margin: 0;
+        text-align: center;
         
         @media (max-width: 768px) {
             font-size: 2rem;

@@ -93,8 +93,10 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         };
         if (user === null) {
             fetchUserData();
+        }else {
+            setIsLoading(false);
         }
-    }, []);
+    }, [user]);
 
   // Provide authentication-related data and functions through the context
   return (

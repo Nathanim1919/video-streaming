@@ -35,7 +35,7 @@ export const TopStreamers = () => {
   ) : (
     <Container>
       <div className="header">
-        <h1>Get to know The Top Streamers around the globe</h1>
+        <h1>Get to know The Top Streamers.</h1>
       </div>
       <div className="streamerList">
         {streamers.map((streamer, index) => {

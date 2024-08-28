@@ -82,7 +82,7 @@ export class AuthController {
       res.cookie("token", token, {
         domain: ".nathanimt.me",
         secure: true,
-        maxAge: 15 * 60 * 1000, // 15 minutes
+        maxAge: 30 * 60 * 1000, // 30 minutes
         sameSite: "none",
       });
 

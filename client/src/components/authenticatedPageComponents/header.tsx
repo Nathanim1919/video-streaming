@@ -69,7 +69,7 @@ export const Header = () => {
               <li>
                 <Link
                   onClick={() => setShowOptions(false)}
-                  to={`/streamers/${user!._id}`}
+                  to={`/streamers/${user?._id}`}
                 >
                   Profile
                 </Link>
