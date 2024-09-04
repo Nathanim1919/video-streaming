@@ -102,6 +102,10 @@ const Container = styled.div`
 
             .countdown__timer__item__value{
                 font-size: 5rem;
+
+                @media screen and (max-width: 768px){
+                    font-size: .5rem;
+                }
             }
 
             .countdown__timer__item__label{
@@ -113,6 +117,10 @@ const Container = styled.div`
 
             .countdown__timer__item__value{
                 font-size: 3.5rem;
+
+                @media screen and (max-width: 768px){
+                    font-size: 2.5rem;
+                }
             }
         }
     }

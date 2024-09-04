@@ -54,11 +54,11 @@ export const Header = () => {
             <Link to="/orgs">Organizations</Link>
           </li>
         </ul>
-        <li className="menuIcon" onClick={() => setShowNavBar(true)}>
-          <RiMenu4Line />
-        </li>
         <li onClick={() => setIntiateSearch(true)}>
           <FaSearch />
+        </li>
+        <li className="menuIcon" onClick={() => setShowNavBar(true)}>
+          <RiMenu4Line />
         </li>
         <div className="account">
           <li onClick={() => setShowOptions(!showOptions)}>
@@ -115,15 +115,17 @@ const Conatiner = styled.div<ContainerProps>`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  /* padding: 1rem 2rem; */
   background-color: #212020;
   color: #958f8f;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
+  /* position: sticky; */
+  top: 0rem;
+  left: 0;
+  right: 0;
   z-index: 100;
   border-bottom: 5px solid rgb(111, 31, 31);
-  padding: 0.5rem 0;
+  padding: 1rem 0;
+  width: 100vw;
 
   > a {
     text-decoration: none;
@@ -132,9 +134,11 @@ const Conatiner = styled.div<ContainerProps>`
     font-weight: bold;
   }
 
+
   li {
     cursor: pointer;
   }
+
 
   li.closeIcon {
     display: none;

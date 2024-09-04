@@ -413,6 +413,12 @@ const Container = styled.div<ContainerProps>`
 
     @media screen and (max-width: 800px) {
       grid-template-columns: 1fr;
+
+      > div:nth-child(1){
+        h1{
+          font-size: 2rem;
+        }
+      }
     }
   }
   .header {
@@ -431,20 +437,25 @@ const Container = styled.div<ContainerProps>`
 
     @media screen and (max-width: 768px) {
       flex-direction: column;
-      height: auto;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      left: 0;
+      /* height: auto; */
     }
 
     button {
       padding: 0.6rem 4rem;
       border: none;
       border-radius: 35px;
-      background-color: transparent;
+      background-color: red;
       color: #fff;
       cursor: pointer;
       border: 1px solid #5f5c5c;
       transition: all 0.3s;
       &:hover {
-        background-color: #bdb4b4;
+        background-color: #ffffff;
+        color: red;
       }
     }
 
@@ -454,6 +465,7 @@ const Container = styled.div<ContainerProps>`
       gap: 1rem;
       max-width: 50%;
       text-align: center;
+      padding: 1rem;
 
       @media screen and (max-width: 768px) {
         max-width: 100%;
@@ -462,6 +474,10 @@ const Container = styled.div<ContainerProps>`
       h1 {
         font-size: 4rem;
         margin: 0;
+
+        @media screen and (max-width: 768px) {
+          font-size: 2rem;
+        }
       }
       p {
         margin: 0;
@@ -475,7 +491,6 @@ const Container = styled.div<ContainerProps>`
   }
   .eventInfos {
     width: 80%;
-
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -486,7 +501,7 @@ const Container = styled.div<ContainerProps>`
     padding-bottom: 2rem;
 
     @media screen and (max-width: 800px) {
-      flex-direction: column;
+      grid-template-columns: 1fr;
     }
 
     .schedules {

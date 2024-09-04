@@ -51,26 +51,18 @@ export const Speakers: React.FC<SpeakerProps> = ({ event }) => {
           <div className="speackersList">
             {event.guests?.map((guest) => (
               <div className="speak">
-                <div>
-                  <div className="image">
-                    <img src={Image} alt="host" />
-                  </div>
                   <div className="infos">
                     <h2>{guest.name}</h2>
                     <p>{guest.profession}</p>
                   </div>
-                </div>
               </div>
             ))}
-          </div>
-          {event?.owner?._id === user?._id && (
+             {event?.owner?._id === user?._id && (
             <div className="addGuest" onClick={() => setIntiateAddGuest(true)}>
-              <div className="icon">
-                <FaPlus />
-              </div>
               <p>Add Guest</p>
             </div>
           )}
+          </div>
         </div>
       </div>
     </Container>
@@ -94,7 +86,7 @@ const Container = styled.div`
     gap: 1rem;
     align-self: flex-end;
     flex: 1;
-    padding: 1rem;
+    padding:0 1rem;
     position: relative;
     cursor: pointer;
     border-radius: 10px;
@@ -150,6 +142,7 @@ const Container = styled.div`
       .host {
         display: flex;
         justify-content: center;
+        flex-direction: column;
         align-items: center;
         gap: 1rem;
         position: relative;
@@ -157,11 +150,11 @@ const Container = styled.div`
         .image {
           width: 100%;
           height: 100%;
-
           overflow: hidden;
+
           img {
-            width: 100px;
-            height: 100px;
+            max-width: 140px;
+            height: auto;
             filter: brightness(20%);
             object-fit: cover;
           }
@@ -172,7 +165,7 @@ const Container = styled.div`
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          position: absolute;
+          /* position: absolute; */
           bottom: 1rem;
           right: 1rem;
 
@@ -208,17 +201,21 @@ const Container = styled.div`
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 1rem;
+        /* gap: 1rem; */
 
         > div {
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          gap: 1rem;
+         margin: 0;
           background-color: #333;
+          padding: 0.5rem 1rem;
 
-          padding: 0.5rem;
+
+          >*{
+            margin: 0;
+          }
 
           .image {
             width: 100px;

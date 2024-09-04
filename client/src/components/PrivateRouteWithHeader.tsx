@@ -6,7 +6,7 @@ import PrivateRoute from './PrivateRoute';
 const PrivateRouteWithHeader = ({ children, ...rest }: { children: ReactNode }) => {
     return (
         <PrivateRoute {...rest}>
-            <Header /> {/* Your common header */}
+            <Header />
             {children}
             <Outlet />
         </PrivateRoute>

@@ -22,10 +22,10 @@ export class CacheClient {
   }
 
   // redis connection with local redis
-  //   private constructor() {
-  //       this.client = createClient();
-  //       this.connectClient();
-  //   }
+    // private constructor() {
+    //     this.client = createClient();
+    //     this.connectClient();
+    // }
 
   private async connectClient() {
     console.log('Connecting...');
