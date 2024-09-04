@@ -1,9 +1,7 @@
 import styled from "styled-components";
-import Image from "/home/bg.jpg";
 import { IEvent } from "../interfaces/event";
 import { useState } from "react";
 import { AddGuests } from "./addGuests";
-import { FaPlus } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
 
 interface SpeakerProps {
