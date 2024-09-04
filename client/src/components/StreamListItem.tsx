@@ -47,48 +47,6 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
     )
   }
 
-  // Countdown timer
-  // useEffect(() => {
-  //     // Update the countdown every second
-  //     const intervalId = setInterval(() => {
-  //       const now = new Date();
-  //       const distance = eventDate.getTime() - now.getTime();
-
-  //       if (distance < 0) {
-
-  //         // Event has already occurred
-  //         setCountdown({days: 0});
-  //         clearInterval(intervalId);
-  //       } else {
-  //         // Calculate and set the countdown time
-  //         const seconds = Math.floor((distance / 1000) % 60);
-  //         const minutes = Math.floor((distance / 1000 / 60) % 60);
-  //         const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-  //         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-
-  //         if (days !== 0) {
-  //           // Event is more than 24 hours away
-  //           setCountdown({days});
-  //         }
-  //         else if (hours !== 0) {
-  //           // Event is less than 24 hours away
-  //           setCountdown({hours});
-  //         }
-  //         else if (minutes !== 0) {
-  //           // Event is less than 1 hour away
-  //           setCountdown({minutes});
-  //         }
-  //         else {
-  //           // Event is less than 1 minute away
-  //           setCountdown({seconds});
-  //         }
-  //       }
-  //     }, 1000);
-
-  //     // Clear the interval when the component is unmounted
-  //     return () => clearInterval(intervalId);
-  //   }, [eventDate]);
-
 
   // Render the component
     return (
@@ -122,15 +80,14 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
               </div>
           </div>
 
-
           <div className='buttons'>
               <div className="btns">
                 <Link to={'/'} className={isRsvp? 'cancel' : 'rsvp'}
                   onClick={isRsvp?handleRemoveRsvp:handleRsvp}>{isLoading && <ImSpinner9/>}{isRsvp? 'Cancel My Online RSVP' : 'RSVP to Attend Online'}
                 </Link>
                 <Link to={`/streames/${stream._id}`} className='details'>Details and Schedule</Link>
-              </div>
               <span>Free</span>
+              </div>
           </div>
 
         </div>
@@ -182,11 +139,11 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
           justify-content: center;
           align-items: center;
           border-radius: 50%;
-          color: #eee;
+          color: #101010;
 
           a{
             font-size: 1.5rem;
-            color: gold;
+            color: #ffffff;
           }
         }
       }
@@ -327,6 +284,8 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
             flex-direction: row;
             align-items: center;
 
+           
+
             span{
                 background: #333;
                 padding: .3rem 1rem;
@@ -338,6 +297,12 @@ const StreamListItem: React.FC<StreamListItemProps> = ({ stream }) => {
               display: flex;
               gap: 1rem;
               flex-direction: row;
+
+              @media screen and (max-width: 400px){
+                 flex-direction: column;
+                 width: 100%;
+                 /* align-items: center; */
+             }
               
 
               >a{

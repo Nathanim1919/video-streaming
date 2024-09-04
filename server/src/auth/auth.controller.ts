@@ -61,11 +61,34 @@ export class AuthController {
   // Register a new user
   register = async (req: Request, res: Response): Promise<void> => {
     try {
-      const registrationMessage = await this.authService.register(
+      const newUser = await this.authService.register(
         req.body as Partial<IUser>
       );
 
-      res.status(201).json({ message: registrationMessage });
+      
+  if(newUser){
+      const { token, refreshToken } = this.generateTokens(newUser?.id);
+
+      res.cookie("token", token, {
+        domain: ".nathanimt.me",
+        secure: true,
+        maxAge: 30 * 60 * 1000, // 30 minutes
+        sameSite: "none",
+      });
+
+      res.cookie("refreshToken", refreshToken, {
+        domain: ".nathanimt.me",
+        secure: true,
+        maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+        sameSite: "none",
+      });
+
+       res.json(new ApiResponse(200, newUser, "Login successfully"));
+    } else {
+      res.status(201).json({ message: "Registration Failed" });
+    }
+
+      
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

@@ -46,10 +46,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     const register = async (data: RegisterInterface) => {
         await requestHandler(
             async () => await authApi.registerUser(data),
-            null,
-            () => {
+            setIsLoading,
+            (res) => {
+                const { data } = res;
+                setUser(data as UserInterface);
                 setNotifier({ type: 'success', message: 'Registered Successfully!', show: true });
-                navigate('/login');
+                navigate('/me');
             },
             () => {
                 setNotifier({ type: 'error', message: 'Registration Failed!', show: true });

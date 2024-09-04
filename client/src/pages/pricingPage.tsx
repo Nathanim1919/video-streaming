@@ -23,10 +23,12 @@ const Container = styled.div`
     }
 
     .header{
+        display: flex;
+        align-items: center;
         a{
             position: absolute;
-            top: 1rem;
-            left: 10rem;
+            top: 7rem;
+            left: 1rem;
             color:#fff;
             font-size: 2rem;
         }
@@ -43,6 +45,12 @@ const Container = styled.div`
             h1{
                 font-size: 3rem;
                 margin: 0;
+
+                @media screen and (max-width: 700px){
+                   font-size: 2rem;
+                    
+                }
+
             }
 
         }
@@ -51,18 +59,28 @@ const Container = styled.div`
 
 
     .plans{
-        width: 60%;
+        width: 80%;
         gap: 2rem;
         /* place-items: center; */
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        align-items: center;
+        justify-content: center;
+
+
+        @media screen and (max-width: 1000px){
+            width: 90%;
+            
+        }
 
 
         div:nth-child(2){
-            transform: scale(1.14);
+            transform: scale(1.142);
+            @media screen and (max-width: 768px){
+                transform: scale(1);    
+            }
 
-          
-
+        
             button{
                 background-color: #c6c6ff;
                 color:#333
@@ -78,8 +96,6 @@ const Container = styled.div`
         /* align-items: center; */
         justify-content: space-between;
         gap: 1rem;
-       
-        /* width: 30%; */
         padding: 2rem;
         background: linear-gradient(34deg, #181717, #041542);
         border-radius: 10px;

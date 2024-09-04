@@ -33,6 +33,7 @@ export const verifyJWT = asyncHandler(async (req: Request, res: Response, next: 
         req.user = user;
         next();
     } catch (error) {
+        logger.log("error", `Failed to verify token: ${error}`);
         return res.status(401).json({
             message: "Invalid access token"
         });

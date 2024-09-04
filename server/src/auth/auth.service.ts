@@ -33,7 +33,7 @@ export class AuthService {
    * @returns A promise that resolves to a success message or user ID.
    * @throws If registration fails.
    */
-  async register(userData: Partial<IUser>): Promise<string> {
+  async register(userData: Partial<IUser>): Promise<IUser> {
     try {
       // Example: Check if user already exists in the database
       const existingUser = await this.userService.userFindByEmail(
@@ -54,7 +54,7 @@ export class AuthService {
       });
 
       // Return a success message or user ID
-      return `User registered successfully: ${newUser?._id}`;
+      return newUser;
     } catch (error) {
       // Handle registration errors
       throw new Error(`Registration failed: ${error.message}`);
